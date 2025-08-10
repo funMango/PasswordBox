@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5A0EC0542E483BE100500B66 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0532E483BE100500B66 /* Resolver */; };
+		5A0EC0562E483BE100500B66 /* Resolver-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0552E483BE100500B66 /* Resolver-Dynamic */; };
+		5A0EC0582E483BE100500B66 /* Resolver-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0572E483BE100500B66 /* Resolver-Static */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5A0EC03E2E4839EF00500B66 /* PasswordBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +29,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A0EC0562E483BE100500B66 /* Resolver-Dynamic in Frameworks */,
+				5A0EC0582E483BE100500B66 /* Resolver-Static in Frameworks */,
+				5A0EC0542E483BE100500B66 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +74,9 @@
 			);
 			name = PasswordBox;
 			packageProductDependencies = (
+				5A0EC0532E483BE100500B66 /* Resolver */,
+				5A0EC0552E483BE100500B66 /* Resolver-Dynamic */,
+				5A0EC0572E483BE100500B66 /* Resolver-Static */,
 			);
 			productName = PasswordBox;
 			productReference = 5A0EC03E2E4839EF00500B66 /* PasswordBox.app */;
@@ -94,6 +106,9 @@
 			);
 			mainGroup = 5A0EC0352E4839EF00500B66;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5A0EC0522E483BE100500B66 /* XCRemoteSwiftPackageReference "Resolver" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5A0EC03F2E4839EF00500B66 /* Products */;
 			projectDirPath = "";
@@ -324,6 +339,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5A0EC0522E483BE100500B66 /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A0EC0532E483BE100500B66 /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A0EC0522E483BE100500B66 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
+		5A0EC0552E483BE100500B66 /* Resolver-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A0EC0522E483BE100500B66 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = "Resolver-Dynamic";
+		};
+		5A0EC0572E483BE100500B66 /* Resolver-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A0EC0522E483BE100500B66 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = "Resolver-Static";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A0EC0362E4839EF00500B66 /* Project object */;
 }

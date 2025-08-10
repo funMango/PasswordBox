@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5A0EC0542E483BE100500B66 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0532E483BE100500B66 /* Resolver */; };
-		5A0EC0562E483BE100500B66 /* Resolver-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0552E483BE100500B66 /* Resolver-Dynamic */; };
-		5A0EC0582E483BE100500B66 /* Resolver-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0572E483BE100500B66 /* Resolver-Static */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,8 +27,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A0EC0562E483BE100500B66 /* Resolver-Dynamic in Frameworks */,
-				5A0EC0582E483BE100500B66 /* Resolver-Static in Frameworks */,
 				5A0EC0542E483BE100500B66 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

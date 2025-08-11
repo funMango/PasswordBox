@@ -10,8 +10,8 @@ import SwiftUI
 struct IconBtnStyleLarge: View {
     var image: String
     var color: Color = .blue
-    var width: CGFloat = 40
-    var height: CGFloat = 40
+    var width: CGFloat = 50
+    var height: CGFloat = 50
     
     var body: some View {
         Image(systemName: image)

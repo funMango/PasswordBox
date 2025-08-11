@@ -15,12 +15,19 @@ struct SiteListView: View {
     var body: some View {
         List {
             ForEach(samples, id: \.self) { site in
-                Text(site)
-                    .listRowSeparator(.hidden)
+                SiteListCellView(
+                    viewModel: SiteListCellViewModel(name: site)
+                )
             }
         }
         .listStyle(.plain)
         .navigationTitle("Site")
+    }
+}
+
+struct SiteListCell: View {
+    var body: some View {
+        
     }
 }
 

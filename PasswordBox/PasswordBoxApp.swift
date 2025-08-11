@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import Resolver
 
 @main
 struct PasswordBoxApp: App {
+    
+    init() {
+        Resolver.registerAllServices()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SiteView()
         }
     }
 }

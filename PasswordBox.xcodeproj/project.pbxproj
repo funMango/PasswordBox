@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A1AB40B2E4B2077003F15BA /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5A1AB40A2E4B2077003F15BA /* Localizable.xcstrings */; };
 		5AF4299E2E48452D005B0BD2 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 5A0EC0532E483BE100500B66 /* Resolver */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5A0EC03E2E4839EF00500B66 /* PasswordBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A1AB40A2E4B2077003F15BA /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,6 +39,7 @@
 		5A0EC0352E4839EF00500B66 = {
 			isa = PBXGroup;
 			children = (
+				5A1AB40A2E4B2077003F15BA /* Localizable.xcstrings */,
 				5A0EC0402E4839EF00500B66 /* PasswordBox */,
 				5AF4299D2E48450D005B0BD2 /* Frameworks */,
 				5A0EC03F2E4839EF00500B66 /* Products */,
@@ -105,6 +108,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 5A0EC0352E4839EF00500B66;
 			minimizedProjectReferenceProxies = 1;
@@ -126,6 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A1AB40B2E4B2077003F15BA /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +207,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -259,6 +265,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

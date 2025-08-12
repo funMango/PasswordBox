@@ -12,11 +12,7 @@ struct SiteListCellView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "lock.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 38, height: 38)
-                .foregroundStyle(.gray)
+            Icon(name: "lock.circle.fill")
             
             VStack(alignment: .leading) {
                 Text(viewModel.name)

@@ -41,11 +41,13 @@ class DefaultSiteRepository: SiteRepository {
     }
     
     func delete(_ site: Site) {
-        modelContext.delete(site)
-        
         do {
-            try modelContext.save()
-            print("🗑️ Site 삭제완료 (id: \(site.id), title: \(site.siteName)")
+            let fetchedSites = fetch()
+            if let siteToDelete = fetchedSites.first(where: { $0.id == site.id }) {
+                modelContext.delete(siteToDelete)
+                try modelContext.save()
+                print("🗑️ Site 삭제완료 (id: \(site.id), title: \(site.siteName)")
+            }
         } catch {
             print("⚠️ Site 삭제실패: \(error)")
         }

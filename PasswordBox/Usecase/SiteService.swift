@@ -10,6 +10,7 @@ import Resolver
 
 protocol SiteService {
     func save(_ site: Site)
+    func delete(_ site: Site)
 }
 
 class DefaultSiteService: SiteService {
@@ -18,5 +19,9 @@ class DefaultSiteService: SiteService {
     func save(_ site: Site) {
         site.setOrder(repository.fetch().count)
         repository.save(site)
-    }        
+    }
+    
+    func delete(_ site: Site) {
+        repository.delete(site)
+    }
 }

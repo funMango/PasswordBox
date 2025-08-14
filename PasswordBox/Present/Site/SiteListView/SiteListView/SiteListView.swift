@@ -14,11 +14,12 @@ struct SiteListView: View {
     
     var body: some View {
         List {
-            ForEach(sites, id: \.id) { site in
+            ForEach(viewModel.sites, id: \.id) { site in
                 SiteListCellView(
                     viewModel: SiteListCellViewModel(site: site)
                 )
             }
+            .onDelete(perform: viewModel.deleteSite)
         }
         .listStyle(.plain)
         .navigationTitle("Site")
@@ -31,12 +32,15 @@ struct SiteListView: View {
     }
 }
 
-struct SiteListCell: View {
-    var body: some View {
-        
-    }
-}
-
 #Preview {
-    SiteListView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Site.self, configurations: config)
+        
+    let site1 = Site(siteName: "Google")
+    let site2 = Site(siteName: "Apple")
+    container.mainContext.insert(site1)
+    container.mainContext.insert(site2)
+    
+    return SiteListView()
+        .modelContainer(container)
 }

@@ -11,12 +11,23 @@ import Combine
 
 class SiteAddViewModel: ObservableObject {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
+    @Injected var siteService: SiteService
     @Published var siteName: String = ""
     @Published var siteURL: String = ""
     
     func deactivatePage() {
         reset()
         controlSubject.send(.toggleIsShowingSiteAddSheet)
+    }
+    
+    func saveSite() {
+        let site = Site(
+            siteName: siteName,
+            siteURL: siteURL
+        )
+        
+        siteService.save(site)
+        deactivatePage()
     }
     
     private func reset() {

@@ -6,22 +6,28 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SiteListView: View {
-    @State var samples: [String] = [
-        "Goggle", "Naver", "Amazone","Goggle", "Naver", "Amazone","Goggle", "Naver", "Amazone","Goggle", "Naver", "Amazone","Goggle", "Naver", "Amazone","Goggle", "Naver", "Amazone"
-    ]
+    @StateObject var viewModel = SiteListViewModel()
+    @Query var sites: [Site]
     
     var body: some View {
         List {
-            ForEach(samples, id: \.self) { site in
+            ForEach(sites, id: \.id) { site in
                 SiteListCellView(
-                    viewModel: SiteListCellViewModel(name: site)
+                    viewModel: SiteListCellViewModel(site: site)
                 )
             }
         }
         .listStyle(.plain)
         .navigationTitle("Site")
+        .onAppear() {
+            viewModel.setSites(sites)
+        }
+        .onChange(of: sites) { _, newValue in
+            viewModel.setSites(newValue)
+        }
     }
 }
 

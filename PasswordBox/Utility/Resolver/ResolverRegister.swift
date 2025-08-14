@@ -10,6 +10,9 @@ import Resolver
 
 extension Resolver: @retroactive ResolverRegistering {
     public static func registerAllServices() {
+        registerSwiftData()
         registerSubjects()
-    }        
+        registerRepositories()
+        registerUsecases()
+    }
 }

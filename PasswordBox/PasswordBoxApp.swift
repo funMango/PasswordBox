@@ -7,9 +7,11 @@
 
 import SwiftUI
 import Resolver
+import SwiftData
 
 @main
 struct PasswordBoxApp: App {
+    @Injected var container: ModelContainer
     
     init() {
         Resolver.registerAllServices()
@@ -19,5 +21,6 @@ struct PasswordBoxApp: App {
         WindowGroup {
             SiteView()
         }
+        .modelContainer(container)
     }
 }

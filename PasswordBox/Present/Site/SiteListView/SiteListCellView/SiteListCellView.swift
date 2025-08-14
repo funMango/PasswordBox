@@ -10,12 +10,16 @@ import SwiftUI
 struct SiteListCellView: View {
     @StateObject var viewModel: SiteListCellViewModel
     
+    init(viewModel: SiteListCellViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         HStack(spacing: 12) {
             Icon(name: "lock.circle.fill")
             
             VStack(alignment: .leading) {
-                Text(viewModel.name)
+                Text(viewModel.site.siteName)
                     .fontWeight(.regular)
                 
                 Text("1개의 계정")
@@ -30,5 +34,5 @@ struct SiteListCellView: View {
 }
 
 #Preview {
-    SiteListCellView(viewModel: SiteListCellViewModel(name: "Amazone"))
+    SiteListCellView(viewModel: SiteListCellViewModel(site: Site(siteName: "Amazone")))
 }

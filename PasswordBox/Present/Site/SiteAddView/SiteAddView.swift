@@ -35,10 +35,11 @@ struct SiteAddView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        
+                        viewModel.saveSite()
                     } label: {
                         Text(String(localized: "save"))
                     }
+                    .disabled(viewModel.siteName.isEmpty)
                 }
             }
         }

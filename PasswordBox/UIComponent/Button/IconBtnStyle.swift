@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IconBtnStyleLarge: View {
+struct IconBtnStyle: View {
     var image: String
     var color: Color = .blue
     var width: CGFloat = 50
@@ -22,5 +22,5 @@ struct IconBtnStyleLarge: View {
 }
 
 #Preview {
-    IconBtnStyleLarge(image: "plus.circle")
+    IconBtnStyle(image: "plus.circle")
 }

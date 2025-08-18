@@ -15,9 +15,15 @@ struct SiteListView: View {
     var body: some View {
         List {
             ForEach(viewModel.sites, id: \.id) { site in
-                SiteListCellView(
-                    viewModel: SiteListCellViewModel(site: site)
-                )
+                NavigationLink {
+                    SiteDetailView(
+                        viewModel: SiteDetailViewModel(site: site)
+                    )
+                } label: {
+                    SiteListCellView(
+                        viewModel: SiteListCellViewModel(site: site)
+                    )
+                }                
             }
             .onDelete(perform: viewModel.deleteSite)
         }

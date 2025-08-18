@@ -20,7 +20,7 @@ struct SiteFooterView: View {
                 Button {
                     
                 } label: {
-                    IconBtnStyleLarge(
+                    IconBtnStyle(
                         image: "magnifyingglass.circle.fill"                        
                     )
                 }
@@ -28,7 +28,7 @@ struct SiteFooterView: View {
                 Button {
                     viewModel.toggleIsShowingSiteAddSheet()
                 } label: {
-                    IconBtnStyleLarge(
+                    IconBtnStyle(
                         image: "plus.circle.fill"
                     )
                 }

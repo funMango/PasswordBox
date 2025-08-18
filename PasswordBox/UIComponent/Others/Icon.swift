@@ -8,10 +8,13 @@
 import SwiftUI
 
 enum IconSize {
+    case small
     case medium
-    
+        
     func getSize() -> CGFloat {
         switch self {
+        case .small:
+            return 18
         case .medium:
             return 38
         }
@@ -33,5 +36,9 @@ struct Icon: View {
 }
 
 #Preview {
-    Icon(name: "lock.circle.fill")
+    Icon(
+        name: "chevron.left",
+        size: .small
+    )
+    
 }

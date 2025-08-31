@@ -21,12 +21,7 @@ class SiteAddViewModel: ObservableObject {
     }
     
     func saveSite() {
-        let site = Site(
-            siteName: siteName,
-            siteURL: siteURL
-        )
-        
-        siteService.save(site)
+        siteService.save(name: siteName, url: siteURL)
         deactivatePage()
     }
     

@@ -10,17 +10,22 @@ import Resolver
 import Combine
 
 class SiteListViewModel: ObservableObject {
-    @Injected var siteService: SiteService
+    @Injected var siteService: SiteService    
     @Published var sites: [Site] = []
-    
+    var cancellabels: Set<AnyCancellable> = []
+            
     func setSites(_ sites: [Site]) {
         self.sites = sites.sorted{ $0.siteName < $1.siteName }
     }
     
     func deleteSite(offset: IndexSet) {
         for index in offset {
-            let siteToDelete = sites[index]
-            siteService.delete(siteToDelete)
+            let siteIdToDelete = sites[index].id
+            siteService.delete(siteIdToDelete)
         }
+    }
+    
+    func fetchSites() {
+        self.sites = siteService.fetchAll()
     }
 }

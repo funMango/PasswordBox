@@ -1,15 +1,15 @@
 //
-//  Site.swift
+//  SiteDTO.swift
 //  PasswordBox
 //
-//  Created by 이민호 on 8/12/25.
+//  Created by 이민호 on 8/30/25.
 //
 
 import Foundation
 import SwiftData
 
 @Model
-class Site {
+class SiteDTO {
     var id: String = ""
     var siteName: String = ""
     var siteURL: String?
@@ -32,5 +32,16 @@ class Site {
     
     func setOrder(_ order: Int) {
         self.order = order
+    }
+}
+
+extension SiteDTO {
+    func toEntity() -> Site {
+        return Site(
+            id: self.id,
+            siteName: self.siteName,
+            siteURL: self.siteURL,
+            order: self.order
+        )
     }
 }

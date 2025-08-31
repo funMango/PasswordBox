@@ -20,7 +20,7 @@ struct SiteDetailView: View {
             }
             
             Button {
-                
+                viewModel.toggleSheet()
             } label: {
                 Text("비밀번호 추가하기")
                     .padding()
@@ -29,6 +29,9 @@ struct SiteDetailView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle(viewModel.site.siteName)
+        .sheet(isPresented: $viewModel.isShowingPasswordAddSheet) {
+            PasswordAddView()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -54,6 +57,6 @@ struct SiteDetailView: View {
 }
 
 #Preview {
-    let site = Site(siteName: "Google")
+    let site = Site(siteName: "Google", order: 0)
     SiteDetailView(viewModel: SiteDetailViewModel(site: site))
 }

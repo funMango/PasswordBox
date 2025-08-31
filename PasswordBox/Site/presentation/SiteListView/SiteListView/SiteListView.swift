@@ -10,11 +10,11 @@ import SwiftData
 
 struct SiteListView: View {
     @StateObject var viewModel = SiteListViewModel()
-    @Query var sites: [Site]
+    @Query var sites: [SiteDTO]
     
     var body: some View {
         List {
-            ForEach(viewModel.sites, id: \.id) { site in
+            ForEach(viewModel.sites, id: \.self) { site in
                 NavigationLink {
                     SiteDetailView(
                         viewModel: SiteDetailViewModel(site: site)
@@ -30,23 +30,23 @@ struct SiteListView: View {
         .listStyle(.plain)
         .navigationTitle("Site")
         .onAppear() {
-            viewModel.setSites(sites)
+            viewModel.fetchSites()
         }
-        .onChange(of: sites) { _, newValue in
-            viewModel.setSites(newValue)
+        .onChange(of: sites) { _, _ in
+            viewModel.fetchSites()
         }
     }
 }
 
-#Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Site.self, configurations: config)
-        
-    let site1 = Site(siteName: "Google")
-    let site2 = Site(siteName: "Apple")
-    container.mainContext.insert(site1)
-    container.mainContext.insert(site2)
-    
-    return SiteListView()
-        .modelContainer(container)
-}
+//#Preview {
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(for: SiteDTO.self, configurations: config)
+//        
+//    let site1 = SiteDTO(siteName: "Google")
+//    let site2 = SiteDTO(siteName: "Apple")
+//    container.mainContext.insert(site1)
+//    container.mainContext.insert(site2)
+//    
+//    SiteListView()
+//        .modelContainer(container)
+//}

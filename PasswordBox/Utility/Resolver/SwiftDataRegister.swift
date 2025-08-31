@@ -13,7 +13,7 @@ extension Resolver {
     public static func registerSwiftData() {
         register {
             do {
-                let schema = Schema([Site.self])
+                let schema = Schema([SiteDTO.self])
                 let container = try ModelContainer(
                     for: schema,
                     configurations: ModelConfiguration(

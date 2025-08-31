@@ -14,6 +14,6 @@ extension Resolver {
         register {
             PassthroughSubject<ControlMessage, Never>()
         }
-        .scope(.application)
+        .scope(.application)                
     }
 }

@@ -12,14 +12,17 @@ import SwiftData
 protocol SiteRepository {
     func save(_ site: Site)
     func fetch() -> [Site]
-    func delete(_ site: Site)
+    func delete(siteId: String)
 }
 
 class DefaultSiteRepository: SiteRepository {
     @Injected var modelContext: ModelContext
     
     func save(_ site: Site) {
-        modelContext.insert(site)
+        let order = fetchDTO().count + 1
+        let siteDTO = SiteDTO(siteName: site.siteName, siteURL: site.siteURL, order: order)
+        
+        modelContext.insert(siteDTO)
                 
         do {
             try modelContext.save()
@@ -30,23 +33,28 @@ class DefaultSiteRepository: SiteRepository {
     }
     
     func fetch() -> [Site] {
-        let descriptor = FetchDescriptor<Site>(sortBy: [SortDescriptor(\.updateDate, order: .reverse)])
+        let siteDTOs: [SiteDTO] = fetchDTO()
+        return siteDTOs.map{ $0.toEntity() }
+    }
+    
+    func fetchDTO() -> [SiteDTO] {
+        let descriptor = FetchDescriptor<SiteDTO>(sortBy: [SortDescriptor(\.updateDate, order: .reverse)])
         
         do {
             return try modelContext.fetch(descriptor)
         } catch {
-            print("⚠️ Site 가져오기 실패: \(error)")
+            print("⚠️ SiteDTO 가져오기 실패: \(error)")
             return []
         }
     }
     
-    func delete(_ site: Site) {
+    func delete(siteId: String) {
         do {
-            let fetchedSites = fetch()
-            if let siteToDelete = fetchedSites.first(where: { $0.id == site.id }) {
+            let fetchedSites = fetchDTO()
+            if let siteToDelete = fetchedSites.first(where: { $0.id == siteId }) {
                 modelContext.delete(siteToDelete)
                 try modelContext.save()
-                print("🗑️ Site 삭제완료 (id: \(site.id), title: \(site.siteName)")
+                print("🗑️ Site 삭제완료 (id: \(siteToDelete.id), title: \(siteToDelete.siteName)")
             }
         } catch {
             print("⚠️ Site 삭제실패: \(error)")

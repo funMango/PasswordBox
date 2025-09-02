@@ -24,7 +24,7 @@ enum IconSize {
 struct Icon: View {
     var name: String
     var size: IconSize = .medium
-    var color: Color = .gray
+    var color: Color = .blackWhite
     
     var body: some View {
         Image(systemName: name)

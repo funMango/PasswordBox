@@ -9,18 +9,19 @@ import SwiftUI
 
 struct IconBtnStyle: View {
     var image: String
-    var color: Color = .blue
-    var width: CGFloat = 50
-    var height: CGFloat = 50
+    var color: Color = .primary
+    var width: CGFloat = 25
+    var height: CGFloat = 25
     
     var body: some View {
         Image(systemName: image)
             .resizable()
+            .scaledToFit()
             .frame(width: width, height: height)
             .foregroundStyle(color)
     }
 }
 
 #Preview {
-    IconBtnStyle(image: "plus.circle")
+    IconBtnStyle(image: "line.3.horizontal")
 }

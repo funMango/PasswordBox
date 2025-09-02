@@ -14,7 +14,7 @@ struct SiteListView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.sites, id: \.self) { site in
+            ForEach(viewModel.filteredSites, id: \.self) { site in
                 NavigationLink {
                     SiteDetailView(
                         viewModel: SiteDetailViewModel(site: site)
@@ -23,10 +23,10 @@ struct SiteListView: View {
                     SiteListCellView(
                         viewModel: SiteListCellViewModel(site: site)
                     )
-                }                
+                }
             }
             .onDelete(perform: viewModel.deleteSite)
-        }
+        }        
         .listStyle(.plain)
         .navigationTitle("Site")
         .onAppear() {
@@ -38,15 +38,6 @@ struct SiteListView: View {
     }
 }
 
-//#Preview {
-//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//    let container = try! ModelContainer(for: SiteDTO.self, configurations: config)
-//        
-//    let site1 = SiteDTO(siteName: "Google")
-//    let site2 = SiteDTO(siteName: "Apple")
-//    container.mainContext.insert(site1)
-//    container.mainContext.insert(site2)
-//    
-//    SiteListView()
-//        .modelContainer(container)
-//}
+#Preview {
+    SiteListView()
+}

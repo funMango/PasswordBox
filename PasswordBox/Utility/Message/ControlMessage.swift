@@ -10,6 +10,7 @@ import Combine
 
 enum ControlMessage{
     case toggleIsShowingSiteAddSheet
+    case activateSearchBar
 }
 
 protocol ControlMessageBindable: AnyObject {

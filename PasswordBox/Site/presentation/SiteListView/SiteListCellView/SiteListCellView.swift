@@ -16,7 +16,10 @@ struct SiteListCellView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            Icon(name: "lock.circle.fill")
+            Icon(
+                name: "lock.circle.fill",
+                color: .gray
+            )
             
             VStack(alignment: .leading) {
                 Text(viewModel.site.siteName)

@@ -15,7 +15,11 @@ struct SiteView: View {
             ZStack {
                 SiteListView()
                 
-                SiteFooterView()
+                VStack {
+                    Spacer()
+                    
+                    SiteFooterView()
+                }
             }
             .sheet(isPresented: $viewModel.isShowingSiteAddSheet) {
                 SiteAddView()

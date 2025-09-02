@@ -29,7 +29,7 @@ struct SiteAddView: View {
                         viewModel.deactivatePage()
                     } label: {
                         Text(String(localized: "cancel"))
-                            .foregroundStyle(.red)
+                            .foregroundStyle(.blackWhite)
                     }
                 }
                 

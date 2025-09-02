@@ -9,15 +9,31 @@ import Foundation
 import Resolver
 import Combine
 
-class SiteListViewModel: ObservableObject {
-    @Injected var siteService: SiteService    
+class SiteListViewModel: ObservableObject, SiteMessageBindable {
+    @Injected var siteService: SiteService
+    @Injected var siteSubject: PassthroughSubject<SiteMessage, Never>
     @Published var sites: [Site] = []
-    var cancellabels: Set<AnyCancellable> = []
-            
-    func setSites(_ sites: [Site]) {
-        self.sites = sites.sorted{ $0.siteName < $1.siteName }
+    @Published var searchText: String = ""
+    var cancellables: Set<AnyCancellable> = []
+    
+    var filteredSites: [Site] {
+        guard !searchText.isEmpty else {
+            return sites
+        }
+        
+        return sites.filter { site in
+            site.siteName.localizedCaseInsensitiveContains(searchText)
+        }
+    }    
+    
+    init() {
+        setupSiteMessageBinding()
     }
     
+    func fetchSites() {
+        self.sites = siteService.fetchAll()
+    }
+                    
     func deleteSite(offset: IndexSet) {
         for index in offset {
             let siteIdToDelete = sites[index].id
@@ -25,7 +41,17 @@ class SiteListViewModel: ObservableObject {
         }
     }
     
-    func fetchSites() {
-        self.sites = siteService.fetchAll()
+    func setupSiteMessageBinding() {
+        bindSiteMessage{ message in
+            switch message {
+            case .changeSearchText(let newText):
+                DispatchQueue.main.async {
+                    self.searchText = newText
+                }
+            default:
+                return
+            }
+            
+        }
     }
 }

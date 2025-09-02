@@ -25,8 +25,11 @@ struct SiteListView: View {
                     )
                 }
             }
-            .onDelete(perform: viewModel.deleteSite)
-        }        
+            .onDelete(perform: viewModel.deleteSite)                        
+        }
+        .safeAreaInset(edge: .bottom) {
+            SiteFooterView()
+        }
         .listStyle(.plain)
         .navigationTitle("Site")
         .onAppear() {

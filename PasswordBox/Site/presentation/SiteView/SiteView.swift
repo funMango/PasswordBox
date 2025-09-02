@@ -12,18 +12,10 @@ struct SiteView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                SiteListView()
-                
-                VStack {
-                    Spacer()
-                    
-                    SiteFooterView()
-                }
-            }
-            .sheet(isPresented: $viewModel.isShowingSiteAddSheet) {
-                SiteAddView()
-            }
+            SiteListView()
+        }
+        .sheet(isPresented: $viewModel.isShowingSiteAddSheet) {
+            SiteAddView()
         }
     }
 }

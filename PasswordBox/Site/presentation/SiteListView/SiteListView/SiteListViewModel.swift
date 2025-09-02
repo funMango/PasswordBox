@@ -24,7 +24,7 @@ class SiteListViewModel: ObservableObject, SiteMessageBindable {
         return sites.filter { site in
             site.siteName.localizedCaseInsensitiveContains(searchText)
         }
-    }    
+    }
     
     init() {
         setupSiteMessageBinding()

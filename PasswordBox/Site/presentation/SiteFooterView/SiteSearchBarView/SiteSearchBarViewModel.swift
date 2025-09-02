@@ -11,6 +11,7 @@ import Combine
 
 
 class SiteSearchBarViewModel: ObservableObject {
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var siteSubject: PassthroughSubject<SiteMessage, Never>
     @Published var text: String = ""
     var cancellables = Set<AnyCancellable>()
@@ -25,5 +26,12 @@ class SiteSearchBarViewModel: ObservableObject {
                 self?.siteSubject.send(.changeSearchText(newText))
             }
             .store(in: &cancellables)
+    }
+    
+    func sendFocuseState(by focusState: Bool) {
+        if !focusState {
+            self.text = ""
+        }
+        controlSubject.send(.changeSearchBarState)
     }
 }

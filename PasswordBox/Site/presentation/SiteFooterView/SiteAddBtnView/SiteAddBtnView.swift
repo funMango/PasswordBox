@@ -13,7 +13,7 @@ struct SiteAddBtnView: View {
     var body: some View {
         if viewModel.isSearchBarActive {
             Button {
-                
+                hideKeyboard()                
             } label: {
                 IconBgCircleBtnStyle(image: "xmark")
             }
@@ -24,7 +24,6 @@ struct SiteAddBtnView: View {
                 IconBgCircleBtnStyle(image: "plus")
             }
         }
-        
     }
 }
 

@@ -5,6 +5,7 @@
 //  Created by 이민호 on 9/2/25.
 //
 
+import SwiftUI
 import Foundation
 import Resolver
 import Combine
@@ -15,18 +16,24 @@ class SiteAddBtnViewModel: ObservableObject, ControlMessageBindable {
     var cancellables: Set<AnyCancellable> = []
     
     init() {
-        
+        setupControlMessageBinding()
     }
     
     func toggleIsShowingSiteAddSheet() {
         controlSubject.send(.toggleIsShowingSiteAddSheet)
     }
     
+    func changeSearchBarActive() {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            self.isSearchBarActive.toggle()
+        }
+    }
+    
     func setupControlMessageBinding() {
-        bindControlMessage { message in
+        bindControlMessage { [weak self] message in
             switch message {
-            case .activateSearchBar:
-                self.isSearchBarActive.toggle()
+            case .changeSearchBarState:
+                self?.changeSearchBarActive()
             default:
                 return
             }

@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct SiteFooterView: View {
-    @State var searchText: String = ""
+    @StateObject var viewModel = SiteFooterViewModel()
     
     var body: some View {
         HStack(spacing: 10) {
-            Button {
-                
-            } label: {
-                IconBgCircleBtnStyle(image: "arrow.up.arrow.down")
+            if !viewModel.isSearchBarActive {
+                SiteSortBtnView()
             }
-            
+                        
             SiteSearchBarView()
             
             SiteAddBtnView()

@@ -163,12 +163,6 @@
         }
       }
     },
-    "header one" : {
-
-    },
-    "header two" : {
-
-    },
     "memo" : {
       "extractionState" : "manual",
       "localizations" : {

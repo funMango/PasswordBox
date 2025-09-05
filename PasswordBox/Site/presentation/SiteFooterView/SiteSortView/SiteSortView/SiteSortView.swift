@@ -10,47 +10,21 @@ import SwiftUI
 struct SiteSortView: View {
     var body: some View {
         Menu {
-            Section("header one") {
-                Button {
-                    
-                } label: {
-                    MenuBtnStyle(
-                        text: String(localized: "descendingOrder"),
-                        image: "arrow.down"
-                    )
-                }
-                
-                Button {
-                    
-                } label: {
-                    MenuBtnStyle(
-                        text: String(localized: "ascendingOrder"),
-                        image: "arrow.up"
+            Section {
+                ForEach(SiteOrderBy.allCases, id: \.self) { option in
+                    SiteSortBtnView(
+                        viewModel: SiteSortBtnViewModel(type: option)
                     )
                 }
             }
             
-            Section("header two") {
-                Button {
-                    
-                } label: {
-                    MenuBtnStyle(
-                        text: String(localized: "descendingOrder"),
-                        image: "arrow.down"
+            Section {
+                ForEach(SiteOrder.allCases, id: \.self) { option in
+                    SiteSortBtnView(
+                        viewModel: SiteSortBtnViewModel(type: option)
                     )
                 }
-                
-                Button {
-                    
-                } label: {
-                    MenuBtnStyle(
-                        text: String(localized: "ascendingOrder"),
-                        image: "arrow.up"
-                    )
-                }
-            }
-            
-            
+            }            
         } label: {
             IconBgCircleBtnStyle(image: "arrow.up.arrow.down")
         }

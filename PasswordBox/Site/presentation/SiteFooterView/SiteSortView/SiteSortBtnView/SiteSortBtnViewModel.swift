@@ -9,9 +9,12 @@ import Foundation
 import Resolver
 import Combine
 
-class SiteSortBtnViewModel: ObservableObject, ControlMessageBindable {
+class SiteSortBtnViewModel<T: SortOption>: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     var cancellables: Set<AnyCancellable> = []
-
+    var type: T
     
+    init(type: T) {
+        self.type = type
+    }
 }

@@ -7,18 +7,21 @@
 
 import SwiftUI
 
-struct SiteSortBtnView: View {
-    var text: String
-    var image: String
-    
+struct SiteSortBtnView<T: SortOption>: View {
+    @ObservedObject var viewModel: SiteSortBtnViewModel<T>
+            
     var body: some View {
-        HStack {
-            Text(text)
-            Image(systemName: image)
+        Button {
+            
+        } label: {
+            HStack {
+                Text(viewModel.type.text)
+                Image(systemName: viewModel.type.image)
+            }
         }
     }
 }
 
-#Preview {
-    SiteSortBtnView(text: String(localized: "ascendingOrder"), image: "arrow.up")
-}
+//#Preview {
+//    SiteSortBtnView(text: String(localized: "ascendingOrder"), image: "arrow.up")
+//}

@@ -6,46 +6,47 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol SortOption {
-    var type: String { get }
+    var text: LocalizedStringKey { get }
     var image: String { get }
 }
 
-enum SiteOrderBy: String, SortOption {
-    case title, createDate, updateDate
+enum SiteOrderBy: String, CaseIterable, SortOption {
+    case updateDate, createDate, title
     
-    var type: String {
+    var text: LocalizedStringKey {
         switch self {
-        case .title: return "title"
-        case .createDate: return "createDate"
         case .updateDate: return "updateDate"
+        case .createDate: return "createDate"
+        case .title: return "title"
         }
     }
     
     var image: String {
         switch self {
-        case .title: return "textformat"
-        case .createDate: return "calendar"
         case .updateDate: return "clock"
+        case .createDate: return "calendar"
+        case .title: return "textformat"        
         }
     }
 }
 
-enum SiteOrder: String, SortOption {
-    case ascending, descending
+enum SiteOrder: String, CaseIterable, SortOption {
+    case descending, ascending
     
-    var type: String {
+    var text: LocalizedStringKey {
         switch self {
-        case .ascending: return "Ascending"
-        case .descending: return "Descending"
+        case .descending: return "descending"
+        case .ascending: return "ascending"
         }
     }
     
     var image: String {
         switch self {
-        case .ascending: return "arrow.up"
-        case .descending: return "arrow.down"
+        case .descending: return "arrow.up"
+        case .ascending: return "arrow.down"
         }
     }
 }

@@ -11,6 +11,7 @@ import Combine
 enum ControlMessage{
     case toggleIsShowingSiteAddSheet   
     case changeSearchBarState
+    case setupSiteOrder(SiteOrder, SiteOrderBy)
 }
 
 protocol ControlMessageBindable: AnyObject {

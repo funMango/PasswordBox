@@ -19,8 +19,10 @@ class DefaultSiteRepository: SiteRepository {
     @Injected var modelContext: ModelContext
     
     func save(_ site: Site) {
-        let order = fetchDTO().count + 1
-        let siteDTO = SiteDTO(siteName: site.siteName, siteURL: site.siteURL, order: order)
+        let siteDTO = SiteDTO(
+            siteName: site.siteName,
+            siteURL: site.siteURL
+        )
         
         modelContext.insert(siteDTO)
                 

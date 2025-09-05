@@ -13,6 +13,7 @@ class SiteDTO {
     var id: String = ""
     var siteName: String = ""
     var siteURL: String?
+    var createDate: Date = Date()
     var updateDate: Date = Date()
     var order: Int = 0
     
@@ -20,17 +21,15 @@ class SiteDTO {
         id: String = UUID().uuidString,
         siteName: String,
         siteURL: String? = nil,
+        createDate: Date = Date(),
         updateDate: Date = Date(),
         order: Int = 0
     ) {
         self.id = id
         self.siteName = siteName
         self.siteURL = siteURL
+        self.createDate = createDate
         self.updateDate = updateDate
-        self.order = order
-    }
-    
-    func setOrder(_ order: Int) {
         self.order = order
     }
 }
@@ -41,7 +40,8 @@ extension SiteDTO {
             id: self.id,
             siteName: self.siteName,
             siteURL: self.siteURL,
-            order: self.order
+            createDate: self.createDate,
+            updateDate: self.updateDate
         )
     }
 }

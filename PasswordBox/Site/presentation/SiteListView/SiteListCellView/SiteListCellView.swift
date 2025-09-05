@@ -39,7 +39,7 @@ struct SiteListCellView: View {
 #Preview {
     SiteListCellView(
         viewModel: SiteListCellViewModel(
-            site: Site(siteName: "Amazone", order: 0)
+            site: Site(siteName: "Amazone")
         )
     )
 }

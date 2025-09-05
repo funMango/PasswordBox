@@ -12,5 +12,6 @@ struct Site: Hashable, Equatable {
     var id: String = UUID().uuidString
     var siteName: String
     var siteURL: String?
-    var order: Int
+    var createDate: Date = Date()
+    var updateDate: Date = Date()
 }

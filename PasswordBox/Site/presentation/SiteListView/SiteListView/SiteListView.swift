@@ -31,7 +31,7 @@ struct SiteListView: View {
             SiteFooterView()
         }
         .listStyle(.plain)
-        .navigationTitle("Site")
+        .navigationTitle(String(localized: "Site"))
         .onAppear() {
             viewModel.fetchSites()
         }

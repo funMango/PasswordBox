@@ -18,7 +18,10 @@ class DefaultSiteService: SiteService {
     @Injected var repository: SiteRepository
     
     func save(name: String, url: String?) {
-        let site = Site(siteName: name, siteURL: url, order: 0)
+        let site = Site(
+            siteName: name,
+            siteURL: url
+        )
         repository.save(site)
     }
     

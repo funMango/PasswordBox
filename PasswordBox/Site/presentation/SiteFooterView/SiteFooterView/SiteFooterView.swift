@@ -13,7 +13,7 @@ struct SiteFooterView: View {
     var body: some View {
         HStack(spacing: 10) {
             if !viewModel.isSearchBarActive {
-                SiteSortBtnView()
+                SiteSortView()
             }
                         
             SiteSearchBarView()

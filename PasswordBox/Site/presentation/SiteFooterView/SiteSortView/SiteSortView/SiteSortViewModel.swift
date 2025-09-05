@@ -7,6 +7,6 @@
 
 import Foundation
 
-class SiteSortBtnViewModel: ObservableObject {
+class SiteSortViewModel: ObservableObject {
     
 }

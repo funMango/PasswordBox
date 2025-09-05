@@ -13,5 +13,9 @@ extension Resolver {
         register{
             DefaultSiteRepository() as SiteRepository
         }
+        
+        register{
+            DefaultUserRepository() as UserRepository
+        }
     }
 }

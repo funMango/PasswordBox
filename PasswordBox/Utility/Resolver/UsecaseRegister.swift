@@ -13,5 +13,9 @@ extension Resolver {
         register {
             DefaultSiteService() as SiteService
         }
+        
+        register {
+            DefaultUserService() as UserService
+        }
     }
 }

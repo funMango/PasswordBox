@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 enum ControlMessage{
-    case toggleIsShowingSiteAddSheet   
+    case toggleIsShowingAccountAddSheet   
     case changeSearchBarState
     case setupSiteOrder(SiteOrder, SiteOrderBy)
+    case activateSiteTextField
+    case createSite(String)
+    case changeAccountInfoState(Bool)
 }
 
 protocol ControlMessageBindable: AnyObject {

@@ -20,7 +20,7 @@ class SiteAddBtnViewModel: ObservableObject, ControlMessageBindable {
     }
     
     func toggleIsShowingSiteAddSheet() {
-        controlSubject.send(.toggleIsShowingSiteAddSheet)
+        controlSubject.send(.toggleIsShowingAccountAddSheet)
     }
     
     func changeSearchBarActive() {

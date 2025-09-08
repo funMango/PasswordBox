@@ -9,10 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-class SiteDTO {
+class AccountDTO {
     var id: String = ""
     var siteName: String = ""
-    var siteURL: String?
     var createDate: Date = Date()
     var updateDate: Date = Date()
     var order: Int = 0
@@ -20,26 +19,23 @@ class SiteDTO {
     init(
         id: String = UUID().uuidString,
         siteName: String,
-        siteURL: String? = nil,
         createDate: Date = Date(),
         updateDate: Date = Date(),
         order: Int = 0
     ) {
         self.id = id
         self.siteName = siteName
-        self.siteURL = siteURL
         self.createDate = createDate
         self.updateDate = updateDate
         self.order = order
     }
 }
 
-extension SiteDTO {
-    func toEntity() -> Site {
-        return Site(
+extension AccountDTO {
+    func toEntity() -> Account {
+        return Account(
             id: self.id,
-            siteName: self.siteName,
-            siteURL: self.siteURL,
+            siteName: self.siteName,            
             createDate: self.createDate,
             updateDate: self.updateDate
         )

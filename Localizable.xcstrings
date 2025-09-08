@@ -1,15 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@" : {
-
-    },
-    "%@ *" : {
-
-    },
-    "1개의 계정" : {
-
-    },
     "account" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -27,6 +18,23 @@
         }
       }
     },
+    "addAccount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정 추가"
+          }
+        }
+      }
+    },
     "addPassword" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -40,23 +48,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "비밀번호 추가"
-          }
-        }
-      }
-    },
-    "addSite" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Site"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사이트 추가"
           }
         }
       }
@@ -129,6 +120,23 @@
         }
       }
     },
+    "createSite" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 생성"
+          }
+        }
+      }
+    },
     "descending" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -180,19 +188,19 @@
         }
       }
     },
-    "name" : {
+    "next" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "name"
+            "value" : "Next"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이름"
+            "value" : "다음"
           }
         }
       }
@@ -265,6 +273,23 @@
         }
       }
     },
+    "searchOrCreateSite" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Or Create Site"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사이트 검색 또는 생성"
+          }
+        }
+      }
+    },
     "Site" : {
       "localizations" : {
         "ko" : {
@@ -326,14 +351,45 @@
         }
       }
     },
-    "URL" : {
-
+    "username" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username or Email"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이름"
+          }
+        }
+      }
     },
     "비밀번호" : {
 
     },
     "비밀번호 추가하기" : {
 
+    },
+    "사이트 이름 *" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Site Name"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사이트 이름"
+          }
+        }
+      }
     },
     "편집" : {
 

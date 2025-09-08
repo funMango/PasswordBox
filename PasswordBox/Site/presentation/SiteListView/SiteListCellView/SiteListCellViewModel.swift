@@ -8,9 +8,9 @@
 import Foundation
 
 class SiteListCellViewModel: ObservableObject {
-    @Published var site: Site
+    @Published var site: Account
     
-    init(site: Site){
+    init(site: Account){
         self.site = site
     }
 }

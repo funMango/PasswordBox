@@ -8,10 +8,10 @@
 import Foundation
 
 class SiteDetailViewModel: ObservableObject {
-    @Published var site: Site
+    @Published var site: Account
     @Published var isShowingPasswordAddSheet: Bool = false
     
-    init(site: Site) {
+    init(site: Account) {
         self.site = site
     }
     

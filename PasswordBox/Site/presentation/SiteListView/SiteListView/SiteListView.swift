@@ -10,7 +10,7 @@ import SwiftData
 
 struct SiteListView: View {
     @StateObject var viewModel = SiteListViewModel()
-    @Query var sites: [SiteDTO]
+    @Query var sites: [AccountDTO]
     
     var body: some View {
         List {

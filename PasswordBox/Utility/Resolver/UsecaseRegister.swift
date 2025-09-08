@@ -11,7 +11,7 @@ import Resolver
 extension Resolver {
     public static func registerUsecases() {
         register {
-            DefaultSiteService() as SiteService
+            DefaultAccountService() as AccountService
         }
         
         register {

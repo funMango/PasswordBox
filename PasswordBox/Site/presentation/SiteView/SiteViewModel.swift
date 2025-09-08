@@ -34,7 +34,7 @@ class SiteViewModel: ObservableObject, ControlMessageBindable {
     func setupControlMessageBindng() {
         bindControlMessage { message in
             switch message {
-            case .toggleIsShowingSiteAddSheet:                
+            case .toggleIsShowingAccountAddSheet:                
                 self.isShowingSiteAddSheet.toggle()
             default:
                 return

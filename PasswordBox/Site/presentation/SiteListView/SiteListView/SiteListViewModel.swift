@@ -10,13 +10,13 @@ import Resolver
 import Combine
 
 class SiteListViewModel: ObservableObject, SiteMessageBindable {
-    @Injected var siteService: SiteService
+    @Injected var siteService: AccountService
     @Injected var siteSubject: PassthroughSubject<SiteMessage, Never>
-    @Published var sites: [Site] = []
+    @Published var sites: [Account] = []
     @Published var searchText: String = ""
     var cancellables: Set<AnyCancellable> = []
     
-    var filteredSites: [Site] {
+    var filteredSites: [Account] {
         guard !searchText.isEmpty else {
             return sites
         }

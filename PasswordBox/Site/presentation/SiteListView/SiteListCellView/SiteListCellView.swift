@@ -15,21 +15,16 @@ struct SiteListCellView: View {
     }
     
     var body: some View {
-        HStack(spacing: 12) {
-            Icon(
-                name: "lock.circle.fill",
-                color: .gray
-            )
-            
-            VStack(alignment: .leading) {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(viewModel.site.siteName)
                     .fontWeight(.regular)
                 
-                Text("1개의 계정")
+                Text(verbatim: "example@example.com")
+                    .foregroundStyle(Color.gray)
                     .font(.caption)
-                    .foregroundStyle(.gray)
             }
-                                    
+            
             Spacer()
         }
         .frame(height: 40)
@@ -39,7 +34,7 @@ struct SiteListCellView: View {
 #Preview {
     SiteListCellView(
         viewModel: SiteListCellViewModel(
-            site: Site(siteName: "Amazone")
+            site: Account(siteName: "Amazone")
         )
     )
 }

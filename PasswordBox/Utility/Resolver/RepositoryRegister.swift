@@ -11,7 +11,7 @@ import Resolver
 extension Resolver {
     public static func registerRepositories() {
         register{
-            DefaultSiteRepository() as SiteRepository
+            DefaultAccountRepository() as AccountRepository
         }
         
         register{

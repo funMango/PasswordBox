@@ -57,6 +57,6 @@ struct SiteDetailView: View {
 }
 
 #Preview {
-    let site = Site(siteName: "Google")
+    let site = Account(siteName: "Google")
     SiteDetailView(viewModel: SiteDetailViewModel(site: site))
 }

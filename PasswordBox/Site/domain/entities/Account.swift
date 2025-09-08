@@ -8,10 +8,9 @@
 import Foundation
 import SwiftData
 
-struct Site: Hashable, Equatable {
+struct Account: Hashable, Equatable {
     var id: String = UUID().uuidString
-    var siteName: String
-    var siteURL: String?
+    var siteName: String    
     var createDate: Date = Date()
     var updateDate: Date = Date()
 }

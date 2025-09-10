@@ -13,7 +13,7 @@ enum ControlMessage{
     case changeSearchBarState
     case setupSiteOrder(SiteOrder, SiteOrderBy)
     case activateSiteTextField
-    case createSite(String)
+    case updateSitename(String)
     case changeAccountInfoState(Bool)
 }
 

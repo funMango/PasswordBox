@@ -17,7 +17,7 @@ extension Resolver {
         .scope(.application)
         
         register {
-            PassthroughSubject<SiteMessage, Never>()
+            PassthroughSubject<AccountMessage, Never>()
         }
         .scope(.application)
     }

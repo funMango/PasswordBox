@@ -171,6 +171,9 @@
         }
       }
     },
+    "Key" : {
+      "extractionState" : "manual"
+    },
     "memo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -291,6 +294,7 @@
       }
     },
     "Site" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ko" : {
           "stringUnit" : {

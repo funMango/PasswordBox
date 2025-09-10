@@ -9,6 +9,6 @@ import Foundation
 
 struct User {
     var id: String = UUID().uuidString
-    var siteOrder: SiteOrder = .ascending
-    var siteOrderBy: SiteOrderBy = .title
+    var siteOrder: AccountOrder = .ascending
+    var siteOrderBy: AccountOrderBy = .title
 }

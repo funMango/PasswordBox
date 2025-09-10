@@ -9,10 +9,9 @@ import Foundation
 import Resolver
 import Combine
 
-
-class SiteSearchBarViewModel: ObservableObject {
+class AccountSearchBarViewModel: ObservableObject {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
-    @Injected var siteSubject: PassthroughSubject<AccountMessage, Never>
+    @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Published var text: String = ""
     var cancellables = Set<AnyCancellable>()
     
@@ -23,7 +22,7 @@ class SiteSearchBarViewModel: ObservableObject {
     func setupBindings() {
         $text
             .sink { [weak self] newText in
-                self?.siteSubject.send(.changeSearchText(newText))
+                self?.accountSubject.send(.changeSearchText(newText))
             }
             .store(in: &cancellables)
     }

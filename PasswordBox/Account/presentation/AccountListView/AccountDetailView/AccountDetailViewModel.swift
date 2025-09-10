@@ -7,12 +7,12 @@
 
 import Foundation
 
-class SiteDetailViewModel: ObservableObject {
-    @Published var site: Account
+class AccountDetailViewModel: ObservableObject {
+    @Published var account: Account
     @Published var isShowingPasswordAddSheet: Bool = false
     
-    init(site: Account) {
-        self.site = site
+    init(account: Account) {
+        self.account = account
     }
     
     func toggleSheet() {

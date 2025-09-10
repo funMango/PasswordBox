@@ -9,7 +9,7 @@ import Foundation
 import Resolver
 import Combine
 
-class SiteViewModel: ObservableObject, ControlMessageBindable {
+class AccountViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var userService: UserService
     @Published var isShowingSiteAddSheet = false

@@ -11,23 +11,23 @@ import SwiftData
 @Model
 class UserDTO {
     var id: String = ""
-    var sortOrderRaw: String = SiteOrder.ascending.rawValue
-    var sortByRaw: String = SiteOrderBy.title.rawValue
+    var sortOrderRaw: String = AccountOrder.ascending.rawValue
+    var sortByRaw: String = AccountOrderBy.title.rawValue
     
-    var sortOrder: SiteOrder {
-        get { SiteOrder(rawValue: sortOrderRaw) ?? .ascending }
+    var sortOrder: AccountOrder {
+        get { AccountOrder(rawValue: sortOrderRaw) ?? .ascending }
         set { sortOrderRaw = newValue.rawValue }
     }
         
-    var sortBy: SiteOrderBy {
-        get { SiteOrderBy(rawValue: sortByRaw) ?? .title }
+    var sortBy: AccountOrderBy {
+        get { AccountOrderBy(rawValue: sortByRaw) ?? .title }
         set { sortByRaw = newValue.rawValue }
     }
     
     init(
         id: String = UUID().uuidString,
-        sortOrder: SiteOrder = .ascending,
-        sortBy: SiteOrderBy = .title
+        sortOrder: AccountOrder = .ascending,
+        sortBy: AccountOrderBy = .title
     ) {
         self.id = id
         self.sortOrder = sortOrder

@@ -19,7 +19,7 @@ struct PasswordBoxApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SiteView()
+            AccountView()
         }
         .modelContainer(container)
     }

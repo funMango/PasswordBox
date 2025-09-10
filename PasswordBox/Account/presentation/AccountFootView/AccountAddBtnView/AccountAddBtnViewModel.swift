@@ -1,8 +1,8 @@
 //
-//  SiteFooterViewModel.swift
+//  SiteAddBtnViewModel.swift
 //  PasswordBox
 //
-//  Created by 이민호 on 9/3/25.
+//  Created by 이민호 on 9/2/25.
 //
 
 import SwiftUI
@@ -10,14 +10,17 @@ import Foundation
 import Resolver
 import Combine
 
-
-class SiteFooterViewModel: ObservableObject, ControlMessageBindable {
+class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Published var isSearchBarActive: Bool = false
     var cancellables: Set<AnyCancellable> = []
     
     init() {
         setupControlMessageBinding()
+    }
+    
+    func toggleIsShowingSiteAddSheet() {
+        controlSubject.send(.toggleIsShowingAccountAddSheet)
     }
     
     func changeSearchBarActive() {

@@ -7,10 +7,10 @@
 
 import Foundation
 
-class SiteListCellViewModel: ObservableObject {
-    @Published var site: Account
+class AccountListCellViewModel: ObservableObject {
+    @Published var account: Account
     
     init(site: Account){
-        self.site = site
+        self.account = site
     }
 }

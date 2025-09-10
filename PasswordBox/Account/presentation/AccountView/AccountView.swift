@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct SiteView: View {
-    @StateObject var viewModel = SiteViewModel()
+struct AccountView: View {
+    @StateObject var viewModel = AccountViewModel()
     
     var body: some View {
         NavigationStack {
-            SiteListView()
+            AccountListView()
         }
         .sheet(isPresented: $viewModel.isShowingSiteAddSheet) {
             AccountAddView()
@@ -21,5 +21,5 @@ struct SiteView: View {
 }
 
 #Preview {
-    SiteView()
+    AccountView()
 }

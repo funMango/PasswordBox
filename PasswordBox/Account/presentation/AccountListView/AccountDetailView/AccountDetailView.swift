@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SiteDetailView: View {
-    @ObservedObject var viewModel: SiteDetailViewModel
+struct AccountDetailView: View {
+    @ObservedObject var viewModel: AccountDetailViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -28,7 +28,7 @@ struct SiteDetailView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(viewModel.site.sitename)
+        .navigationTitle(viewModel.account.sitename)
         .sheet(isPresented: $viewModel.isShowingPasswordAddSheet) {
             AccountCredentialsAddView()
         }
@@ -58,5 +58,5 @@ struct SiteDetailView: View {
 
 #Preview {
     let site = Account(sitename: "Google", username: "", password: "")
-    SiteDetailView(viewModel: SiteDetailViewModel(site: site))
+    AccountDetailView(viewModel: AccountDetailViewModel(account: site))
 }

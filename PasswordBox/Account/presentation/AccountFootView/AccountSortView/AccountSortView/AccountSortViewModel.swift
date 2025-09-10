@@ -7,6 +7,6 @@
 
 import Foundation
 
-class SiteSortViewModel: ObservableObject {
+class AccountSortViewModel: ObservableObject {
     
 }

@@ -10,9 +10,9 @@ import SwiftData
 
 struct Account: Hashable, Equatable {
     var id: String = UUID().uuidString
-    var sitename: String = ""
-    var username: String = ""
-    var password: String = ""
+    var sitename: String
+    var username: String
+    var password: String
     var pin: String? = nil
     var memo: String? = nil
     var createDate: Date = Date()

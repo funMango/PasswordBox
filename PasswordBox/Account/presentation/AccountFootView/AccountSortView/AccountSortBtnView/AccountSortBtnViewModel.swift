@@ -9,7 +9,7 @@ import Foundation
 import Resolver
 import Combine
 
-class SiteSortBtnViewModel<T: SortOption>: ObservableObject, ControlMessageBindable {
+class AccountSortBtnViewModel<T: AccountOption>: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     var cancellables: Set<AnyCancellable> = []
     var type: T

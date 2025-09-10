@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-struct SiteSortView: View {
+struct AccountSortView: View {
     var body: some View {
         Menu {
             Section {
-                ForEach(SiteOrderBy.allCases, id: \.self) { option in
-                    SiteSortBtnView(
-                        viewModel: SiteSortBtnViewModel(type: option)
+                ForEach(AccountOrderBy.allCases, id: \.self) { option in
+                    AccountSortBtnView(
+                        viewModel: AccountSortBtnViewModel(type: option)
                     )
                 }
             }
             
             Section {
-                ForEach(SiteOrder.allCases, id: \.self) { option in
-                    SiteSortBtnView(
-                        viewModel: SiteSortBtnViewModel(type: option)
+                ForEach(AccountOrder.allCases, id: \.self) { option in
+                    AccountSortBtnView(
+                        viewModel: AccountSortBtnViewModel(type: option)
                     )
                 }
             }            
@@ -34,5 +34,5 @@ struct SiteSortView: View {
 }
 
 #Preview {
-    SiteSortView()
+    AccountSortView()
 }

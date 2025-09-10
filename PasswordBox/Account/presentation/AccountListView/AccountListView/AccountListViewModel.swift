@@ -9,39 +9,39 @@ import Foundation
 import Resolver
 import Combine
 
-class SiteListViewModel: ObservableObject, AccountMessageBindable {
-    @Injected var siteService: AccountService
+class AccountListViewModel: ObservableObject, AccountMessageBindable {
+    @Injected var accountService: AccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Published var sites: [Account] = []
+    @Published var accounts: [Account] = []
     @Published var searchText: String = ""
     var cancellables: Set<AnyCancellable> = []
     
     var filteredSites: [Account] {
         guard !searchText.isEmpty else {
-            return sites
+            return accounts
         }
         
-        return sites.filter { site in
+        return accounts.filter { site in
             site.sitename.localizedCaseInsensitiveContains(searchText)
         }
     }
     
     init() {
-        setupSiteMessageBinding()
+        setupAccountMessageBinding()
     }
     
-    func fetchSites() {
-        self.sites = siteService.fetchAll()
+    func fetchAccounts() {
+        self.accounts = accountService.fetchAll()
     }
                     
-    func deleteSite(offset: IndexSet) {
+    func deleteAccount(offset: IndexSet) {
         for index in offset {
-            let siteIdToDelete = sites[index].id
-            siteService.delete(siteIdToDelete)
+            let siteIdToDelete = accounts[index].id
+            accountService.delete(siteIdToDelete)
         }
     }
     
-    func setupSiteMessageBinding() {
+    func setupAccountMessageBinding() {
         bindAccountMessage{ message in
             switch message {
             case .changeSearchText(let newText):

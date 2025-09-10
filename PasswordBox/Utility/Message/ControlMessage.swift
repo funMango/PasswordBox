@@ -11,7 +11,7 @@ import Combine
 enum ControlMessage{
     case toggleIsShowingAccountAddSheet   
     case changeSearchBarState
-    case setupSiteOrder(SiteOrder, SiteOrderBy)
+    case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField
     case updateSitename(String)
     case changeAccountInfoState(Bool)

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SiteSearchBarView: View {
-    @StateObject var viewModel = SiteSearchBarViewModel()
+struct AccountSearchBarView: View {
+    @StateObject var viewModel = AccountSearchBarViewModel()
     @FocusState var isSearchBarFocused: Bool
     
     var body: some View {
@@ -22,5 +22,5 @@ struct SiteSearchBarView: View {
 }
 
 #Preview {
-    SiteSearchBarView()
+    AccountSearchBarView()
 }

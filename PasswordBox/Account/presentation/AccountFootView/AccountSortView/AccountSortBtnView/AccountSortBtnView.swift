@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SiteSortBtnView<T: SortOption>: View {
-    @ObservedObject var viewModel: SiteSortBtnViewModel<T>
+struct AccountSortBtnView<T: AccountOption>: View {
+    @ObservedObject var viewModel: AccountSortBtnViewModel<T>
             
     var body: some View {
         Button {

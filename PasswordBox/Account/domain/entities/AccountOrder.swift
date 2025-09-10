@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-protocol SortOption {
+protocol AccountOption {
     var text: LocalizedStringKey { get }
     var image: String { get }
 }
 
-enum SiteOrderBy: String, CaseIterable, SortOption {
+enum AccountOrderBy: String, CaseIterable, AccountOption {
     case updateDate, createDate, title
     
     var text: LocalizedStringKey {
@@ -33,7 +33,7 @@ enum SiteOrderBy: String, CaseIterable, SortOption {
     }
 }
 
-enum SiteOrder: String, CaseIterable, SortOption {
+enum AccountOrder: String, CaseIterable, AccountOption {
     case descending, ascending
     
     var text: LocalizedStringKey {

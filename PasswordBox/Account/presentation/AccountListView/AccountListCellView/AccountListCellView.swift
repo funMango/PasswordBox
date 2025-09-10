@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct SiteListCellView: View {
-    @StateObject var viewModel: SiteListCellViewModel
+struct AccountListCellView: View {
+    @StateObject var viewModel: AccountListCellViewModel
     
-    init(viewModel: SiteListCellViewModel) {
+    init(viewModel: AccountListCellViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text(viewModel.site.sitename)
+                Text(viewModel.account.sitename)
                     .fontWeight(.regular)
                 
                 Text(verbatim: "example@example.com")
@@ -32,9 +32,9 @@ struct SiteListCellView: View {
 }
 
 #Preview {
-    SiteListCellView(
-        viewModel: SiteListCellViewModel(
-            site: Account(sitename: "Amazone")
+    AccountListCellView(
+        viewModel: AccountListCellViewModel(
+            site: Account(sitename: "Amazone", username: "", password: "")
         )
     )
 }

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SiteAddBtnView: View {
-    @StateObject var viewModel = SiteAddBtnViewModel()
+struct AccountAddBtnView: View {
+    @StateObject var viewModel = AccountAddBtnViewModel()
     
     var body: some View {
         if viewModel.isSearchBarActive {
@@ -28,5 +28,5 @@ struct SiteAddBtnView: View {
 }
 
 #Preview {
-    SiteAddBtnView()
+    AccountAddBtnView()
 }

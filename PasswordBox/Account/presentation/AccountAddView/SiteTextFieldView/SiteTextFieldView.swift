@@ -17,6 +17,7 @@ struct SiteTextFieldView: View {
                 String(localized: "siteName"),
                 text: $viewModel.siteName
             )
+            .textFieldOptions()
             .focused($focusedField)
             .onChange(of: focusedField) { _ , newValue in
                 if newValue {

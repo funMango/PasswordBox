@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
+
 
 struct AccountAddView: View {
     @StateObject var viewModel = AccountAddViewModel()
@@ -18,7 +20,9 @@ struct AccountAddView: View {
                     SiteTextFieldView()
                     AccountCredentialsAddView()
                 }
+                .scrollDismissesKeyboard(.immediately)
             }
+            // .hideKeyboardOnTap()
             .sheet(isPresented: $viewModel.isSiteSearchActive) {
                 SiteAddView()
             }

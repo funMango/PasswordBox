@@ -30,6 +30,11 @@ class SiteAddViewModel: ObservableObject {
         fetchAllAccounts()
     }
     
+    func setSite(from sitename: String) {
+        self.text = sitename
+        updateSite()
+    }
+    
     func updateSite() {
         accountSubject.send(.updateSitename(text))
     }

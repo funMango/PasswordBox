@@ -17,6 +17,7 @@ struct SiteAddView: View {
                     String(localized: "searchOrCreateSite"),
                     text: $viewModel.text
                 )
+                .textFieldOptions()
                 .onAppear {
                     UITextField.appearance().clearButtonMode = .whileEditing
                 }
@@ -35,7 +36,7 @@ struct SiteAddView: View {
                 Section {
                     ForEach(viewModel.filteredAccounts, id: \.self) { account in
                         Button {
-                            
+                            viewModel.setSite(from: account.sitename)
                         } label: {
                             Text(account.sitename)
                         }
@@ -43,6 +44,7 @@ struct SiteAddView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.immediately)        
     }
 }
 

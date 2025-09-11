@@ -10,22 +10,30 @@ import SwiftUI
 struct AccountCredentialsAddView: View {
     @StateObject var viewModel = AccountCredentialsAddViewModel()
     
-    var body: some View {
+    var body: some View {        
         Section {
-            TextField(String(localized: "username"), text: $viewModel.credentials.username)
-            TextField(String(localized: "password"), text: $viewModel.credentials.password)
+            TextField(
+                String(localized: "username"),
+                text: $viewModel.credentials.username
+            )
+            .textFieldOptions()
+            
+            PasswordField(password: $viewModel.credentials.password)
         }
         
         Section {
-            TextField(String(localized: "pin"), text: $viewModel.credentials.pin.bound)
+            PasswordField(password: $viewModel.credentials.pin.bound, type: .pin)
         }
-                
-        TextField(
-            String(localized: "memo"),
-            text: $viewModel.credentials.memo.bound,
-            axis: .vertical
-        )
-        .lineLimit(5, reservesSpace: true)
+            
+        Section {
+            TextField(
+                String(localized: "memo"),
+                text: $viewModel.credentials.memo.bound,
+                axis: .vertical
+            )
+            .textFieldOptions()
+            .lineLimit(5, reservesSpace: true)
+        }
     }
 }
 

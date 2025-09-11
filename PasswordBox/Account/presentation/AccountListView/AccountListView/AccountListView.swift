@@ -27,6 +27,7 @@ struct AccountListView: View {
             }
             .onDelete(perform: viewModel.deleteAccount)
         }
+        .scrollDismissesKeyboard(.immediately)
         .safeAreaInset(edge: .bottom) {
             AccountFootView()
         }

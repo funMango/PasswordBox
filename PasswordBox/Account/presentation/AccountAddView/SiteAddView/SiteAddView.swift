@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SiteAddView: View {
     @StateObject var viewModel = SiteAddViewModel()
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         List {
@@ -18,8 +19,13 @@ struct SiteAddView: View {
                     text: $viewModel.text
                 )
                 .textFieldOptions()
+                .focused($isFocused)
                 .onAppear {
                     UITextField.appearance().clearButtonMode = .whileEditing
+                    isFocused = true                    
+                }
+                .onSubmit {
+                    viewModel.updateSite()
                 }
             }
                         

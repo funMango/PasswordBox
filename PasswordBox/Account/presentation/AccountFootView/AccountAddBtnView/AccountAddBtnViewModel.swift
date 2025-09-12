@@ -24,7 +24,7 @@ class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
     }
     
     func changeSearchBarActive() {
-        withAnimation(.easeInOut(duration: 0.5)) {
+        withAnimation(.easeInOut(duration: 0.1)) {
             self.isSearchBarActive.toggle()
         }
     }

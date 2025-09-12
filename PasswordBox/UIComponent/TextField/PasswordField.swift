@@ -39,14 +39,15 @@ struct PasswordField: View {
                 TextField(type.localized, text: $password)
                     .keyboardType(type.getKeyboardType())
             }
-
+            
             Button(action: {
                 isSecured.toggle()
             }) {
                 Image(systemName: self.isSecured ? "eye" : "eye.slash")
                     .foregroundColor(.gray)
+                    .padding(.leading, 8)
             }
-        }        
+        }
     }
 }
 

@@ -38,6 +38,57 @@
         }
       }
     },
+    "addAccount.method.idPassword" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add with Email/Password"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이디·비밀번호로 추가"
+          }
+        }
+      }
+    },
+    "addAccount.method.social" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Social Account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SNS 계정으로 추가 (애플, 구글 등)"
+          }
+        }
+      }
+    },
+    "addAccount.prompt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which account would you like to add?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어떤 계정을 추가하시겠어요?"
+          }
+        }
+      }
+    },
     "addPassword" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -326,6 +377,9 @@
           }
         }
       }
+    },
+    "Social Account Add View" : {
+
     },
     "title" : {
       "extractionState" : "manual",

@@ -20,6 +20,7 @@ struct IconBgCircleBtnStyle: View {
                 .clipShape(Circle())
             
             Image(systemName: image)
+                .foregroundStyle(.blackWhite)
         }
     }
 }

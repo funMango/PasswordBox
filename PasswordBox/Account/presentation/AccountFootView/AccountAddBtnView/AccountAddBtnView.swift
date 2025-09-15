@@ -9,19 +9,44 @@ import SwiftUI
 
 struct AccountAddBtnView: View {
     @StateObject var viewModel = AccountAddBtnViewModel()
+    @State private var showDialog = false
     
     var body: some View {
         if viewModel.isSearchBarActive {
             Button {
-                hideKeyboard()                
+                hideKeyboard()
             } label: {
                 IconBgCircleBtnStyle(image: "xmark")
             }
         } else {
             Button {
-                viewModel.toggleIsShowingSiteAddSheet()
+                showDialog = true
             } label: {
                 IconBgCircleBtnStyle(image: "plus")
+            }
+            .confirmationDialog(
+                String(localized: "addAccount.prompt"),
+                isPresented: $showDialog,
+                titleVisibility: .visible
+            ) {
+                Button {
+                    viewModel.toggleIsShowingSiteAddSheet()
+                } label: {
+                    Text(String(localized: "addAccount.method.idPassword"))
+                        
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.blue)
+                
+                
+                Button {
+                    
+                } label: {
+                    Text(String(localized: "addAccount.method.social"))
+                        .foregroundStyle(.blue)
+                }
+                                                       
+                Button(String(localized: "cancel"), role: .cancel) {}
             }
         }
     }

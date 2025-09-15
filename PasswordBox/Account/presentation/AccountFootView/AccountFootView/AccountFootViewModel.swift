@@ -20,7 +20,7 @@ class AccountFootViewModel: ObservableObject, ControlMessageBindable {
     }
     
     func changeSearchBarActive() {
-        withAnimation(.easeInOut(duration: 0.5)) {
+        withAnimation(.easeInOut(duration: 0.3)) {
             self.isSearchBarActive.toggle()
         }
     }

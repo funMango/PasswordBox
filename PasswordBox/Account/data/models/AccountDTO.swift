@@ -1,5 +1,5 @@
 //
-//  SiteDTO.swift
+//  AccountDTO.swift
 //  PasswordBox
 //
 //  Created by 이민호 on 8/30/25.
@@ -11,11 +11,11 @@ import SwiftData
 @Model
 class AccountDTO {
     var id: String = ""
-    var sitename: String = ""
-    var username: String = ""
-    var password: String = ""
-    var pin: String? = nil
-    var memo: String? = nil
+    var sitename: String = ""       // 검색/정렬용 → String 유지
+    var username: Data = Data()     // 🔐 암호문
+    var password: Data = Data()     // 🔐 암호문
+    var pin: Data? = nil            // 🔐 암호문 (옵션)
+    var memo: Data? = nil           // 🔐 암호문 (옵션)
     var createDate: Date = Date()
     var updateDate: Date = Date()
     var order: Int = 0
@@ -23,10 +23,10 @@ class AccountDTO {
     init(
         id: String = UUID().uuidString,
         sitename: String,
-        username: String,
-        password: String,
-        pin: String?,
-        memo: String?,
+        username: Data,
+        password: Data,
+        pin: Data?,
+        memo: Data?,
         createDate: Date = Date(),
         updateDate: Date = Date(),
         order: Int = 0
@@ -44,14 +44,14 @@ class AccountDTO {
 }
 
 extension AccountDTO {
-    func toEntity() -> Account {
+    func toEntity(using crypto: CryptoManager) throws -> Account {
         return Account(
             id: self.id,
             sitename: self.sitename,
-            username: self.username,
-            password: self.password,
-            pin: self.pin,
-            memo: self.memo,
+            username: try crypto.decryptString(self.username),
+            password: try crypto.decryptString(self.password),
+            pin: self.pin != nil ? try crypto.decryptString(self.pin!) : nil,
+            memo: self.memo != nil ? try crypto.decryptString(self.memo!) : nil,
             createDate: self.createDate,
             updateDate: self.updateDate
         )

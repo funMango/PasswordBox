@@ -19,9 +19,13 @@ class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
         setupControlMessageBinding()
     }
     
-    func toggleIsShowingSiteAddSheet() {
+    func toggleIsShowingAccountAddSheet() {
         controlSubject.send(.toggleIsShowingAccountAddSheet)
     }
+    
+    func toggleIsShowingSocialAccountAddSheet() {
+        controlSubject.send(.toggleIsShowingSocialAccountSheet)
+    }        
     
     func changeSearchBarActive() {
         withAnimation(.easeInOut(duration: 0.3)) {

@@ -14,7 +14,8 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var userService: UserService
     @Published var isSyncing: Bool = false
-    @Published var isShowingSiteAddSheet = false
+    @Published var isShowingAccountAddSheet = false
+    @Published var isShowingSocialAccountAddSheet: Bool = false
     @Published var user: User? = nil
     var cancellables: Set<AnyCancellable> = []
     
@@ -59,7 +60,9 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
         bindControlMessage { message in
             switch message {
             case .toggleIsShowingAccountAddSheet:                
-                self.isShowingSiteAddSheet.toggle()
+                self.isShowingAccountAddSheet.toggle()
+            case .toggleIsShowingSocialAccountSheet:
+                self.isShowingSocialAccountAddSheet.toggle()
             default:
                 return
             }

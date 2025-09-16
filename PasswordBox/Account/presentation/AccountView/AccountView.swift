@@ -14,8 +14,11 @@ struct AccountView: View {
         NavigationStack {
             AccountListView()
         }
-        .sheet(isPresented: $viewModel.isShowingSiteAddSheet) {
+        .sheet(isPresented: $viewModel.isShowingAccountAddSheet) {
             AccountAddView()
+        }
+        .sheet(isPresented: $viewModel.isShowingSocialAccountAddSheet) {
+            SocialAccountAddView()
         }
     }
 }

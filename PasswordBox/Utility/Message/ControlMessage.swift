@@ -9,7 +9,8 @@ import Foundation
 import Combine
 
 enum ControlMessage{
-    case toggleIsShowingAccountAddSheet   
+    case toggleIsShowingAccountAddSheet
+    case toggleIsShowingSocialAccountSheet
     case changeSearchBarState
     case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField

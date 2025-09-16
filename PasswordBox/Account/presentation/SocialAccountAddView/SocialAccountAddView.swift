@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SocialAccountAddView: View {
     var body: some View {
-        Text("Social Account Add View")
+        
     }
 }
 

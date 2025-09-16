@@ -30,7 +30,7 @@ struct AccountAddBtnView: View {
                 titleVisibility: .visible
             ) {
                 Button {
-                    viewModel.toggleIsShowingSiteAddSheet()
+                    viewModel.toggleIsShowingAccountAddSheet()
                 } label: {
                     Text(String(localized: "addAccount.method.idPassword"))
                         
@@ -40,7 +40,7 @@ struct AccountAddBtnView: View {
                 
                 
                 Button {
-                    
+                    viewModel.toggleIsShowingSocialAccountAddSheet()
                 } label: {
                     Text(String(localized: "addAccount.method.social"))
                         .foregroundStyle(.blue)

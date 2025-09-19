@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct AccountListCellView: View {
-    @StateObject var viewModel: AccountListCellViewModel
+    var sitename: String
+    var username: String
     
-    init(viewModel: AccountListCellViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+    
+    init(sitename: String, username: String) {
+        self.sitename = sitename
+        self.username = username
     }
     
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text(viewModel.account.sitename)
+                Text(sitename)
                     .fontWeight(.regular)
                 
-                Text(verbatim: "example@example.com")
+                Text(verbatim: username)
                     .foregroundStyle(Color.gray)
                     .font(.caption)
             }
@@ -33,8 +36,6 @@ struct AccountListCellView: View {
 
 #Preview {
     AccountListCellView(
-        viewModel: AccountListCellViewModel(
-            site: Account(sitename: "Amazone", username: "", password: "")
-        )
+        sitename: "Apple", username: "bluemango@apple.com"
     )
 }

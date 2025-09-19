@@ -13,42 +13,31 @@ struct SiteAddView: View {
     
     var body: some View {
         List {
-            Section {
-                TextField(
-                    String(localized: "searchOrCreateSite"),
-                    text: $viewModel.text
-                )
-                .textFieldOptions()
-                .focused($isFocused)
-                .onAppear {
-                    UITextField.appearance().clearButtonMode = .whileEditing
-                    isFocused = true                    
-                }
-                .onSubmit {
+            SearchSectionView(
+                placeholder: "searchOrCreateSite",
+                textBinding: Binding(
+                    get: { viewModel.text },
+                    set: { newValue in
+                        viewModel.text = newValue
+                        viewModel.objectWillChange.send()
+                    }
+                ),
+                onSubmit: {
                     viewModel.updateSite()
                 }
-            }
-                        
-            if viewModel.filteredAccounts.isEmpty && !viewModel.text.isEmpty {
-                Section {
-                    Button {
-                        viewModel.updateSite()
-                    } label: {
-                        let fmt = NSLocalizedString("createSite", comment: "Create {site}")
-                        Text(String(format: fmt, locale: .current, viewModel.text))
-                    }
+            )
+            
+            AccountFilteredSectionView(
+                filteredAccounts: viewModel.filteredAccounts,
+                text: viewModel.text,
+                updateItem: viewModel.updateSite,
+                setItem: { account in
+                    viewModel.setSite(from: account.sitename)
+                },
+                cellView: { account in
+                    Text(account.sitename)
                 }
-            } else {
-                Section {
-                    ForEach(viewModel.filteredAccounts, id: \.self) { account in
-                        Button {
-                            viewModel.setSite(from: account.sitename)
-                        } label: {
-                            Text(account.sitename)
-                        }
-                    }
-                }
-            }
+            )
         }
         .scrollDismissesKeyboard(.immediately)        
     }

@@ -9,9 +9,10 @@ import Foundation
 import Resolver
 import Combine
 
-class AccountListViewModel: ObservableObject, AccountMessageBindable {
+class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Published var accounts: [Account] = []
     @Published var searchText: String = ""
     var cancellables: Set<AnyCancellable> = []
@@ -28,9 +29,11 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable {
     
     init() {
         setupAccountMessageBinding()
+        setupControlMessageBinding()
     }
     
     func fetchAccounts() {
+        print("🏁 Account fetch를 시작합니다.")
         self.accounts = accountService.fetchAll()
     }
                     
@@ -40,14 +43,28 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable {
             accountService.delete(siteIdToDelete)
         }
     }
-    
+}
+
+// MARK: - Combine binding
+extension AccountListViewModel {
     func setupAccountMessageBinding() {
-        bindAccountMessage{ message in
+        bindAccountMessage{ [weak self] message in
             switch message {
             case .changeSearchText(let newText):
                 DispatchQueue.main.async {
-                    self.searchText = newText
+                    self?.searchText = newText
                 }
+            default:
+                return
+            }
+        }
+    }
+    
+    func setupControlMessageBinding() {
+        bindControlMessage{ [weak self] message in
+            switch message {
+            case .syncIcloud:
+                self?.fetchAccounts()
             default:
                 return
             }

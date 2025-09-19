@@ -21,7 +21,8 @@ struct AccountListView: View {
                     )
                 } label: {
                     AccountListCellView(
-                        viewModel: AccountListCellViewModel(site: account)
+                        sitename: account.sitename,
+                        username: account.username
                     )
                 }
             }
@@ -32,10 +33,7 @@ struct AccountListView: View {
             AccountFootView()
         }
         .listStyle(.plain)
-        .navigationTitle(String(localized: "account"))
-        .onAppear() {
-            viewModel.fetchAccounts()
-        }
+        .navigationTitle(String(localized: "account"))        
         .onChange(of: accounts) { _, _ in
             viewModel.fetchAccounts()
         }

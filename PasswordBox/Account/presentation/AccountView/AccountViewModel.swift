@@ -41,6 +41,8 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
                 } else {
                     self?.isSyncing = false
                     if event.type == .import {
+                        print("☁️ icloud 동기화 완료")
+                        self?.controlSubject.send(.syncIcloud)
                         self?.setupUser()
                     }
                 }

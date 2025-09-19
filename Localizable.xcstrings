@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld" : {
-
-    },
     "account" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -85,6 +82,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "어떤 계정을 추가하시겠어요?"
+          }
+        }
+      }
+    },
+    "addAccount.social.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Social Account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SNS 계정으로 추가"
           }
         }
       }
@@ -330,9 +344,6 @@
         }
       }
     },
-    "Search" : {
-
-    },
     "searchOrCreateSite" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -346,6 +357,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사이트 검색 또는 생성"
+          }
+        }
+      }
+    },
+    "selectedAccount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택된 계정"
+          }
+        }
+      }
+    },
+    "selectedSite" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected Site"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택된 사이트"
           }
         }
       }
@@ -377,9 +422,6 @@
           }
         }
       }
-    },
-    "Social Account Add View" : {
-
     },
     "title" : {
       "extractionState" : "manual",
@@ -459,5 +501,5 @@
 
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

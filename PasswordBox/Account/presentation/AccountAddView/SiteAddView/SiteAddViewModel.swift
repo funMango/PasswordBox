@@ -9,26 +9,17 @@ import Foundation
 import Resolver
 import Combine
 
+@MainActor
 class SiteAddViewModel: ObservableObject {
-    @Injected var accountService: AccountService
-    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Published var text: String = ""
-    @Published var allAccounts: [Account] = []
-    
-    var filteredAccounts: [Account] {
-        guard !text.isEmpty else {
-            return allAccounts
-        }
-        
-        return allAccounts.filter { account in
-            account.sitename.localizedCaseInsensitiveContains(text)
-        }
+    @Published private(set) var controller = AccountListController()
+
+    var text: String {
+        get { controller.text }
+        set { controller.text = newValue }
     }
     
-    init () {
-        fetchAllAccounts()
-    }
+    var filteredAccounts: [Account] { controller.filteredAccounts }
     
     func setSite(from sitename: String) {
         self.text = sitename
@@ -38,9 +29,4 @@ class SiteAddViewModel: ObservableObject {
     func updateSite() {
         accountSubject.send(.updateSitename(text))
     }
-    
-    func fetchAllAccounts() {
-        self.allAccounts = accountService.fetchAll()
-    }
-    
 }

@@ -12,6 +12,9 @@ enum AccountMessage {
     case changeSearchText(String)
     case updateAccountCredentials(AccountCredentials)
     case updateSitename(String)
+    
+    case selectAccount(Account)
+    case selectSite(String)
 }
 
 protocol AccountMessageBindable: AnyObject {

@@ -19,6 +19,7 @@ struct KeychainDEKStore {
         if let existing = try? fetch() {
             return existing
         }
+                
         // 32바이트 랜덤 키 생성
         var keyBytes = [UInt8](repeating: 0, count: 32)
         let status = SecRandomCopyBytes(kSecRandomDefault, keyBytes.count, &keyBytes)
@@ -60,5 +61,24 @@ struct KeychainDEKStore {
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status != errSecDuplicateItem else { throw KeychainError.duplicate }
         guard status == errSecSuccess else { throw KeychainError.unexpectedStatus(status) }
+    }
+    
+    /// iCloud 동기화 포함하여 DEK 삭제
+    func delete() throws {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+            // 동기화 항목까지 포함해 매칭
+            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        switch status {
+        case errSecSuccess, errSecItemNotFound:
+            print("🗑️ keychain deleted")
+            return
+        default:
+            throw KeychainError.unexpectedStatus(status)
+        }
     }
 }

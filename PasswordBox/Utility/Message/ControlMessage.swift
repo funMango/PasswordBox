@@ -16,6 +16,7 @@ enum ControlMessage{
     case activateSiteTextField
     case updateSitename(String)
     case changeAccountInfoState(Bool)
+    case syncIcloud
 }
 
 protocol ControlMessageBindable: AnyObject {

@@ -12,7 +12,13 @@ struct CryptoManager {
     private let crypto = CryptoService()
     
     private var dek: Data {
-        (try? keyStore.createAndStoreIfNeeded()) ?? Data()
+        do {
+            let key = try keyStore.createAndStoreIfNeeded()
+            return key
+        } catch {
+            
+        }
+        return Data()
     }
     
     func encryptString(_ value: String) throws -> Data {

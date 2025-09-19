@@ -18,3 +18,9 @@ struct Account: Hashable, Equatable {
     var createDate: Date = Date()
     var updateDate: Date = Date()
 }
+
+extension Account: Searchable {
+    func matches(_ query: String) -> Bool {
+        sitename.localizedCaseInsensitiveContains(query)
+    }
+}

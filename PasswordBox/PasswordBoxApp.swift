@@ -12,9 +12,12 @@ import SwiftData
 @main
 struct PasswordBoxApp: App {
     @Injected var container: ModelContainer
+    var dek = KeychainDEKStore()
+    
     
     init() {
         Resolver.registerAllServices()
+        // try? dek.delete()
     }
     
     var body: some Scene {

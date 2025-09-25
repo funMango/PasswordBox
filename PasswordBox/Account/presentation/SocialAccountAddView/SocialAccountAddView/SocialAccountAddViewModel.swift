@@ -9,29 +9,57 @@ import SwiftUI
 import Resolver
 import Combine
 
-@MainActor
-final class SocialAccountAddViewModel: ObservableObject {
+
+final class SocialAccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    
-    @Published private(set) var controller = AccountListController()
-    
-    var filteredAccounts: [Account] { controller.filteredAccounts }
-    var cancellables: Set<AnyCancellable> = []
-    
-    var text: String {
-        get { controller.text }
-        set { controller.text = newValue }
-    }
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
         
-    func updateSite() {
-        withAnimation(.easeInOut) {
-            accountSubject.send(.selectSite(text))
+    @Published var isSiteSearchActive: Bool = false
+    @Published var isSocialSearchActive: Bool = false
+    
+    private var sitename: String = ""
+    private var socialSiteName: String = ""
+    private var socialAccount: Account?
+    var cancellables: Set<AnyCancellable> = []
+            
+    init() {
+        controlMessageBinding()
+        accountMessageBinding()
+    }
+}
+
+// MARK: - Message Binding
+extension SocialAccountAddViewModel {
+    func controlMessageBinding() {
+        bindControlMessage { [weak self] message in
+            switch message {
+            case .activateSiteTextField:
+                self?.isSiteSearchActive.toggle()
+            case .activateSocialTextField:                
+                self?.isSocialSearchActive.toggle()
+            default:
+                break
+            }
         }
     }
     
-    func updateAccount(from account: Account){
-        withAnimation(.easeInOut) {
-            accountSubject.send(.selectAccount(account))
+    func accountMessageBinding() {
+        bindAccountMessage { [weak self] message in
+            guard let self else { return }
+
+            switch message {
+            case .updateSitename(let sitename):
+                self.sitename = sitename
+                self.isSiteSearchActive.toggle()
+            case .selectSite(let sitename):
+                self.socialSiteName = sitename
+                self.isSocialSearchActive.toggle()
+            case .selectAccount(let account):
+                self.socialAccount = account
+                self.isSocialSearchActive.toggle()
+            default:
+                break
+            }
         }
     }
 }

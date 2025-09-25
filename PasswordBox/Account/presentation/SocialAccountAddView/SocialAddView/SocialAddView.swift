@@ -1,19 +1,19 @@
 //
-//  SiteAddView.swift
+//  SocialAddView.swift
 //  PasswordBox
 //
-//  Created by 이민호 on 9/8/25.
+//  Created by 이민호 on 9/20/25.
 //
 
 import SwiftUI
 
-struct SiteAddView: View {
-    @StateObject var viewModel = SiteAddViewModel()    
+struct SocialAddView: View {
+    @StateObject var viewModel = SocialAddViewModel()
     
     var body: some View {
         List {
             SearchSectionView(
-                placeholder: "searchOrCreateSite",
+                placeholder: "searchSiteOrAccount",
                 textBinding: Binding(
                     get: { viewModel.text },
                     set: { newValue in
@@ -31,17 +31,20 @@ struct SiteAddView: View {
                 text: viewModel.text,
                 updateItem: viewModel.updateSite,
                 setItem: { account in
-                    viewModel.setSite(from: account.sitename)
+                    viewModel.updateAccount(account)
                 },
                 cellView: { account in
-                    Text(account.sitename)
+                    AccountListCellView(
+                        sitename: account.sitename,
+                        username: account.username
+                    )
                 }
             )
         }
-        .scrollDismissesKeyboard(.immediately)        
-    }
+        .scrollDismissesKeyboard(.immediately)
+    }        
 }
 
 #Preview {
-    SiteAddView()
+    SocialAddView()
 }

@@ -14,35 +14,19 @@ struct SocialAccountAddView: View {
     var body: some View {
         NavigationStack {
             List {
-                SearchSectionView(
-                    placeholder: "searchOrCreateSite",
-                    textBinding: Binding(
-                        get: { viewModel.text },
-                        set: { newValue in
-                            viewModel.text = newValue
-                            viewModel.objectWillChange.send()
-                        }
-                    )
-                )
+                Section(String(localized: "siteName")) {
+                    SiteTextFieldView()
+                }
                 
-                SocialAccountSelectedView()
-                
-                AccountFilteredSectionView(
-                    filteredAccounts: viewModel.filteredAccounts,
-                    text: viewModel.text,
-                    updateItem: {
-                        viewModel.updateSite()
-                    },
-                    setItem: { account in
-                        viewModel.updateAccount(from: account)
-                    },
-                    cellView: { account in
-                        AccountListCellView(
-                            sitename: account.sitename,
-                            username: account.username
-                        )
-                    }
-                )
+                Section(String(localized: "linkedAccount")) {
+                    SocialTextFieldView()
+                }
+            }
+            .sheet(isPresented: $viewModel.isSiteSearchActive) {
+                SiteAddView()
+            }
+            .sheet(isPresented: $viewModel.isSocialSearchActive) {
+                SocialAddView()
             }
             .navigationTitle(String(localized: "addAccount.social.title"))
             .navigationBarTitleDisplayMode(.inline)

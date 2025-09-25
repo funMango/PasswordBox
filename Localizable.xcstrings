@@ -242,6 +242,23 @@
     "Key" : {
       "extractionState" : "manual"
     },
+    "linkedAccount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linked account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결 계정"
+          }
+        }
+      }
+    },
     "memo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -357,6 +374,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사이트 검색 또는 생성"
+          }
+        }
+      }
+    },
+    "searchSiteOrAccount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search by site or account"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사이트 또는 계정으로 검색"
           }
         }
       }

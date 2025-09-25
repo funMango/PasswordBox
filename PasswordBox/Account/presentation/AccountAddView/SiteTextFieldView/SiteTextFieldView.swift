@@ -12,20 +12,15 @@ struct SiteTextFieldView: View {
     @StateObject var viewModel = SiteTextFieldViewModel()
         
     var body: some View {
-        Section {
-            TextField(
-                String(localized: "siteName"),
-                text: $viewModel.siteName
-            )
-            .textFieldOptions()
-            .focused($focusedField)
-            .onChange(of: focusedField) { _ , newValue in
-                if newValue {
-                    focusedField = false // 키보드 닫기
+        SearchTextFieldView(
+            text: $viewModel.siteName,
+            placeholder: "siteName",
+            onChange: { focusState in
+                if focusState {
                     viewModel.sendControlMessage()
                 }
             }
-        }
+        )
     }
 }
 

@@ -1,19 +1,20 @@
 //
-//  SiteAddViewModel.swift
+//  SocialAddViewModel.swift
 //  PasswordBox
 //
-//  Created by 이민호 on 9/8/25.
+//  Created by 이민호 on 9/20/25.
 //
+
 
 import Foundation
 import Resolver
 import Combine
 
 @MainActor
-class SiteAddViewModel: ObservableObject {
+class SocialAddViewModel: ObservableObject {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Published private(set) var controller = AccountListController(type: .sitename)
-
+    @Published private(set) var controller = AccountListController(type: .sitenameOrUsername)
+    
     var text: String {
         get { controller.text }
         set { controller.text = newValue }
@@ -21,12 +22,12 @@ class SiteAddViewModel: ObservableObject {
     
     var filteredAccounts: [Account] { controller.filteredAccounts }
     
-    func setSite(from sitename: String) {
-        self.text = sitename
-        updateSite()
+    func updateAccount(_ account: Account) {
+        accountSubject.send(.selectAccount(account))
     }
     
     func updateSite() {
-        accountSubject.send(.updateSitename(text))
+        accountSubject.send(.selectSite(text))
     }
 }
+

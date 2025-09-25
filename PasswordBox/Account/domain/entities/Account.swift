@@ -20,7 +20,17 @@ struct Account: Hashable, Equatable {
 }
 
 extension Account: Searchable {
-    func matches(_ query: String) -> Bool {
-        sitename.localizedCaseInsensitiveContains(query)
+    func matches(by type: AccountFilterType = .sitename, _ query: String) -> Bool {
+        switch type {
+        case .sitename:
+            return sitename.localizedCaseInsensitiveContains(query)
+        case .sitenameOrUsername:
+            return sitename.localizedCaseInsensitiveContains(query) || username.localizedCaseInsensitiveContains(query)
+        }
+        
     }
+    
+//    func matches(by type: AccountFilterType, query: String) -> Bool {
+//        return sitename.localizedCaseInsensitiveContains(query) || username.localizedCaseInsensitiveContains(query)
+//    }
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol Searchable {
-    func matches(_ query: String) -> Bool
+    func matches(by type: AccountFilterType, _ query: String) -> Bool
 }

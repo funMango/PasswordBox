@@ -8,8 +8,8 @@
 import Foundation
 
 extension Collection where Element: Searchable {
-    func filtered(by query: String) -> [Element] {
+    func filtered(type: AccountFilterType = .sitename, query: String) -> [Element] {
         guard !query.isEmpty else { return Array(self) }
-        return filter { $0.matches(query) }
+        return filter { $0.matches(by: type, query) }
     }
 }

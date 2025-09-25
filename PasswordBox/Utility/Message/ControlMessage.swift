@@ -14,6 +14,7 @@ enum ControlMessage{
     case changeSearchBarState
     case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField
+    case activateSocialTextField
     case updateSitename(String)
     case changeAccountInfoState(Bool)
     case syncIcloud

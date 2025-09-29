@@ -31,6 +31,19 @@ struct SocialAccountAddView: View {
             .navigationTitle(String(localized: "addAccount.social.title"))
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.immediately)
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        viewModel.save()
+                    } label: {
+                        Text(String(localized: "save"))
+                    }
+                    .disabled(!viewModel.canSave)
+                }
+            }
+            .onChange(of: viewModel.canSave) { _, newValue in
+                print("canSave: \(newValue)")
+            }
         }
     }
 }
@@ -38,3 +51,4 @@ struct SocialAccountAddView: View {
 #Preview {
     SocialAccountAddView()
 }
+    

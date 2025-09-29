@@ -13,18 +13,37 @@ import Combine
 final class SocialAccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
+    @Injected var socialAccountService: SocialAccountService
         
     @Published var isSiteSearchActive: Bool = false
     @Published var isSocialSearchActive: Bool = false
     
-    private var sitename: String = ""
-    private var socialSiteName: String = ""
+    @Published private var sitename: String = ""
+    @Published private var socialSiteName: String = ""
     private var socialAccount: Account?
     var cancellables: Set<AnyCancellable> = []
+    
+    var canSave: Bool {
+        return (!sitename.isEmpty && !socialSiteName.isEmpty) || (!sitename.isEmpty && socialAccount != nil)
+    }
             
     init() {
         controlMessageBinding()
         accountMessageBinding()
+    }
+    
+    func save() {
+        let request = CreateSocialAccountRequest(
+            sitename: sitename,
+            socialSitename: socialSiteName,
+            username: socialAccount?.username,
+            accountId: socialAccount?.id
+        )
+        
+        socialAccountService.save(request)
+        DispatchQueue.main.async { [weak self] in
+            self?.controlSubject.send(.toggleIsShowingSocialAccountSheet)
+        }
     }
 }
 
@@ -56,7 +75,7 @@ extension SocialAccountAddViewModel {
                 self.isSocialSearchActive.toggle()
             case .selectAccount(let account):
                 self.socialAccount = account
-                self.isSocialSearchActive.toggle()
+                self.isSocialSearchActive.toggle()                
             default:
                 break
             }

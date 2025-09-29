@@ -8,7 +8,11 @@
 import Foundation
 
 struct SocialAccount {
-    let id: String
-    let sitename: String
-    let username: String?
+    var id: String = UUID().uuidString
+    var sitename: String
+    var socialSitename: String
+    var username: String? = nil
+    var accountId: String? = nil
+    var createDate: Date = Date()
+    var updateDate: Date = Date()
 }

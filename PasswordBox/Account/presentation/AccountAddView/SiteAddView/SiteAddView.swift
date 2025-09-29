@@ -8,26 +8,20 @@
 import SwiftUI
 
 struct SiteAddView: View {
-    @StateObject var viewModel = SiteAddViewModel()    
+    @StateObject var viewModel = SiteAddViewModel(filter: DefalutAccountFilter())    
     
     var body: some View {
         List {
             SearchSectionView(
                 placeholder: "searchOrCreateSite",
-                textBinding: Binding(
-                    get: { viewModel.text },
-                    set: { newValue in
-                        viewModel.text = newValue
-                        viewModel.objectWillChange.send()
-                    }
-                ),
+                textBinding: $viewModel.text,
                 onSubmit: {
                     viewModel.updateSite()
                 }
             )
             
             AccountFilteredSectionView(
-                filteredAccounts: viewModel.filteredAccounts,
+                filteredAccounts: $viewModel.filteredAccounts,
                 text: viewModel.text,
                 updateItem: viewModel.updateSite,
                 setItem: { account in

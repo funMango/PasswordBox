@@ -13,7 +13,6 @@ struct SearchTextFieldView: View {
     var placeholder: LocalizedStringKey
     var onChange: (Bool) -> ()
     
-    
     var body: some View {
         Section {
             TextField(

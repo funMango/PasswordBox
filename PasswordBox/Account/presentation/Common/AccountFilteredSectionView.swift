@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountFilteredSectionView<Cell: View>: View {
-    var filteredAccounts: [Account]
+    @Binding var filteredAccounts: [Account]
     var text: String
     var updateItem: () -> Void
     var setItem: (Account) -> Void

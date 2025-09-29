@@ -18,19 +18,3 @@ struct Account: Hashable, Equatable {
     var createDate: Date = Date()
     var updateDate: Date = Date()
 }
-
-extension Account: Searchable {
-    func matches(by type: AccountFilterType = .sitename, _ query: String) -> Bool {
-        switch type {
-        case .sitename:
-            return sitename.localizedCaseInsensitiveContains(query)
-        case .sitenameOrUsername:
-            return sitename.localizedCaseInsensitiveContains(query) || username.localizedCaseInsensitiveContains(query)
-        }
-        
-    }
-    
-//    func matches(by type: AccountFilterType, query: String) -> Bool {
-//        return sitename.localizedCaseInsensitiveContains(query) || username.localizedCaseInsensitiveContains(query)
-//    }
-}

@@ -8,26 +8,20 @@
 import SwiftUI
 
 struct SocialAddView: View {
-    @StateObject var viewModel = SocialAddViewModel()
+    @StateObject var viewModel = SocialAddViewModel(filter: SocialAccountFilter())
     
     var body: some View {
         List {
             SearchSectionView(
                 placeholder: "searchSiteOrAccount",
-                textBinding: Binding(
-                    get: { viewModel.text },
-                    set: { newValue in
-                        viewModel.text = newValue
-                        viewModel.objectWillChange.send()
-                    }
-                ),
+                textBinding: $viewModel.text,
                 onSubmit: {
                     viewModel.updateSite()
                 }
             )
             
             AccountFilteredSectionView(
-                filteredAccounts: viewModel.filteredAccounts,
+                filteredAccounts: $viewModel.filteredAccounts,
                 text: viewModel.text,
                 updateItem: viewModel.updateSite,
                 setItem: { account in
@@ -42,7 +36,10 @@ struct SocialAddView: View {
             )
         }
         .scrollDismissesKeyboard(.immediately)
-    }        
+        .onDisappear {
+            viewModel.reset()
+        }
+    }
 }
 
 #Preview {

@@ -20,5 +20,10 @@ extension Resolver {
             PassthroughSubject<AccountMessage, Never>()
         }
         .scope(.application)
+        
+        register {
+            CurrentValueSubject<String?, Never>(nil)
+        }
+        .scope( .application)
     }
 }

@@ -15,7 +15,11 @@ extension Resolver {
         }
         
         register{
-            DefaultUserRepository() as UserRepository
+            DefaultSocialAccount() as SocialAccountRepository
         }
+        
+        register{
+            DefaultUserRepository() as UserRepository
+        }        
     }
 }

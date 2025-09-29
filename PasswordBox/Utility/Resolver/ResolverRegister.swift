@@ -13,6 +13,6 @@ extension Resolver: @retroactive ResolverRegistering {
         registerSwiftData()
         registerSubjects()
         registerRepositories()
-        registerUsecases()
+        registerUsecases()         
     }
 }

@@ -11,19 +11,15 @@ import SwiftData
 struct AccountListView: View {
     @StateObject var viewModel = AccountListViewModel()
     @Query var accounts: [AccountDTO]
+    @Query var socialAccounts: [SocialAccountDTO]
     
     var body: some View {
         List {
-            ForEach(viewModel.filteredSites, id: \.self) { account in
+            ForEach(viewModel.accountWrappers, id: \.self) { wrappers in
                 NavigationLink {
-                    AccountDetailView(
-                        viewModel: AccountDetailViewModel(account: account)
-                    )
+                    wrappers.destinationView
                 } label: {
-                    AccountListCellView(
-                        sitename: account.sitename,
-                        username: account.username
-                    )
+                    wrappers.cellView
                 }
             }
             .onDelete(perform: viewModel.deleteAccount)
@@ -35,7 +31,10 @@ struct AccountListView: View {
         .listStyle(.plain)
         .navigationTitle(String(localized: "account"))        
         .onChange(of: accounts) { _, _ in
-            viewModel.fetchAccounts()
+            viewModel.fetchAccountWrappers()
+        }
+        .onChange(of: socialAccounts) { _, _ in            
+            viewModel.fetchAccountWrappers()
         }
     }
 }

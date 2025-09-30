@@ -14,7 +14,7 @@ struct AccountListCellView: View {
     
     init(sitename: String, username: String) {
         self.sitename = sitename
-        self.username = username
+        self.username = username        
     }
     
     var body: some View {

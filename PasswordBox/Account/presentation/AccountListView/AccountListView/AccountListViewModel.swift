@@ -11,30 +11,23 @@ import Combine
 
 class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
     @Injected var accountService: AccountService
+    @Injected var accoutFetcher: AccountFetcher
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
+    
     @Published var accounts: [Account] = []
+    @Published var accountWrappers: [AccountInfoWrapper] = []
     @Published var searchText: String = ""
     var cancellables: Set<AnyCancellable> = []
     
-    var filteredSites: [Account] {
-        guard !searchText.isEmpty else {
-            return accounts
-        }
-        
-        return accounts.filter { site in
-            site.sitename.localizedCaseInsensitiveContains(searchText)
-        }
-    }
-    
     init() {
+        fetchAccountWrappers()
         setupAccountMessageBinding()
         setupControlMessageBinding()
     }
     
-    func fetchAccounts() {
-        print("🏁 Account fetch를 시작합니다.")
-        self.accounts = accountService.fetchAll()
+    func fetchAccountWrappers() {
+        self.accountWrappers = accoutFetcher.fetchAll()
     }
                     
     func deleteAccount(offset: IndexSet) {
@@ -64,7 +57,7 @@ extension AccountListViewModel {
         bindControlMessage{ [weak self] message in
             switch message {
             case .syncIcloud:
-                self?.fetchAccounts()
+                self?.fetchAccountWrappers()
             default:
                 return
             }

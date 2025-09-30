@@ -11,8 +11,7 @@ import Resolver
 protocol AccountService {
     func save(_ request: CreateAccountRequest)
     func fetchAll() -> [Account] 
-    func delete(_ siteId: String)
-    func fetchAllAsync() async -> [Account]
+    func delete(_ siteId: String)    
 }
 
 class DefaultAccountService: AccountService {
@@ -32,12 +31,6 @@ class DefaultAccountService: AccountService {
     
     func fetchAll() -> [Account] {
         repository.fetch()
-    }
-    
-    func fetchAllAsync() async -> [Account] {        
-        return await Task(priority: .userInitiated) { [repository] in
-            repository.fetch()
-        }.value
     }
     
     func delete(_ siteId: String) {

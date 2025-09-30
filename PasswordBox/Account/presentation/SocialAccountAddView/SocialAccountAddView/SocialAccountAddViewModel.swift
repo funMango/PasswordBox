@@ -35,7 +35,7 @@ final class SocialAccountAddViewModel: ObservableObject, ControlMessageBindable,
     func save() {
         let request = CreateSocialAccountRequest(
             sitename: sitename,
-            socialSitename: socialSiteName,
+            socialSitename: socialAccount?.sitename ?? socialSiteName,
             username: socialAccount?.username,
             accountId: socialAccount?.id
         )

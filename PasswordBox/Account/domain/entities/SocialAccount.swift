@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SocialAccount {
+struct SocialAccount: Equatable, Hashable {
     var id: String = UUID().uuidString
     var sitename: String
     var socialSitename: String

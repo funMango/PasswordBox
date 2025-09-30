@@ -10,6 +10,7 @@ import Resolver
 
 protocol SocialAccountService {
     func save(_ request: CreateSocialAccountRequest)
+    func fetchAll() -> [SocialAccount]
 }
 
 class DefaultSocialAccountService: SocialAccountService {
@@ -24,5 +25,9 @@ class DefaultSocialAccountService: SocialAccountService {
         )
         
         repository.save(socialAccount)
+    }
+    
+    func fetchAll() -> [SocialAccount] {
+        repository.fetch()
     }
 }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AccountFilteredSectionView<Cell: View>: View {
-    @Binding var filteredAccounts: [Account]
+    @Binding var filteredAccounts: [AccountInfoWrapper]
     var text: String
     var updateItem: () -> Void
-    var setItem: (Account) -> Void
-    @ViewBuilder var cellView: (Account) -> Cell
+    var setItem: (AccountInfoWrapper) -> Void
+    @ViewBuilder var cellView: (AccountInfoWrapper) -> Cell
     
     var body: some View {
         if filteredAccounts.isEmpty && !text.isEmpty {

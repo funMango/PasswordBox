@@ -12,19 +12,20 @@ import Combine
 @MainActor
 class SiteAddViewModel: ObservableObject {
     @Injected var accountService: AccountService
+    @Injected var accountFetcher: AccountFetcher
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var sitenameSubject: CurrentValueSubject<String?, Never>
-    
+        
     @Published var text: String = ""
-    @Published var allAccounts: [Account] = []
-    @Published var filteredAccounts: [Account] = []
+    @Published var allAccountInfo: [AccountInfoWrapper] = []
+    @Published var filteredAccounts: [AccountInfoWrapper] = []
     
-    var filter: AccountFilter
+    var filter: AccountFilterable
     
-    init(filter: AccountFilter) {
+    init(filter: AccountFilterable) {
         self.filter = filter
         
-        setupAccounts()
+        setupAllAccounts()        
         setupTextBindings()
     }
     
@@ -40,19 +41,20 @@ class SiteAddViewModel: ObservableObject {
 }
 
 extension SiteAddViewModel {
-    func setupAccounts() {
-        self.allAccounts = accountService.fetchAll()
+    func setupAllAccounts() {
+        self.allAccountInfo = accountFetcher.fetchAll()
     }
     
     func setupTextBindings() {
         $text
             .compactMap { $0 }
             .removeDuplicates()
-            .combineLatest($allAccounts)
+            .combineLatest($allAccountInfo)
             .map { [weak self] query, accounts in
                 self?.filter.filtering(
                     accounts: accounts,
-                    query: query, excluded: nil
+                    query: query,
+                    excluded: nil
                 ) ?? []
             }
             .assign(to: &$filteredAccounts)

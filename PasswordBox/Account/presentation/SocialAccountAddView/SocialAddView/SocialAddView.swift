@@ -20,20 +20,20 @@ struct SocialAddView: View {
                 }
             )
             
-            AccountFilteredSectionView(
-                filteredAccounts: $viewModel.filteredAccounts,
-                text: viewModel.text,
-                updateItem: viewModel.updateSite,
-                setItem: { account in
-                    viewModel.updateAccount(account)
-                },
-                cellView: { account in
-                    AccountListCellView(
-                        sitename: account.sitename,
-                        username: account.username
-                    )
-                }
-            )
+//            AccountFilteredSectionView(
+//                filteredAccounts: $viewModel.filteredAccounts,
+//                text: viewModel.text,
+//                updateItem: viewModel.updateSite,
+//                setItem: { account in
+//                    viewModel.updateAccount(account)
+//                },
+//                cellView: { account in
+//                    AccountListCellView(
+//                        sitename: account.sitename,
+//                        username: account.username
+//                    )
+//                }
+//            )
         }
         .scrollDismissesKeyboard(.immediately)
         .onDisappear {

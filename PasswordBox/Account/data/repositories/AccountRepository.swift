@@ -12,7 +12,7 @@ import SwiftData
 protocol AccountRepository {
     func save(_ account: Account)
     func fetch() -> [Account]
-    func delete(siteId: String)
+    func delete(id: String)
 }
 
 class DefaultAccountRepository: AccountRepository {
@@ -56,13 +56,13 @@ class DefaultAccountRepository: AccountRepository {
         }
     }
     
-    func delete(siteId: String) {
+    func delete(id: String) {
         do {
             let fetchedSites = fetchDTO()
-            if let accountToDelete = fetchedSites.first(where: { $0.id == siteId }) {
+            if let accountToDelete = fetchedSites.first(where: { $0.id == id }) {
                 modelContext.delete(accountToDelete)
                 try modelContext.save()
-                print("🗑️ Site 삭제완료 (id: \(accountToDelete.id), title: \(accountToDelete.sitename)")
+                print("🗑️ Account 삭제완료 (id: \(accountToDelete.id), title: \(accountToDelete.sitename)")
             }
         } catch {
             print("⚠️ Site 삭제실패: \(error)")

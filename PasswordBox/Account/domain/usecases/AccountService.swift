@@ -34,6 +34,6 @@ class DefaultAccountService: AccountService {
     }
     
     func delete(_ siteId: String) {
-        repository.delete(siteId: siteId)
+        repository.delete(id: siteId)
     }
 }

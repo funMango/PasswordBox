@@ -12,6 +12,7 @@ import Combine
 class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accoutFetcher: AccountFetcher
+    @Injected var socialAccountService: SocialAccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     
@@ -32,8 +33,12 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
                     
     func deleteAccount(offset: IndexSet) {
         for index in offset {
-            let siteIdToDelete = accounts[index].id
-            accountService.delete(siteIdToDelete)
+            switch accountWrappers[index] {
+            case .account(let acc):
+                accountService.delete(acc.id)
+            case .social(let soc):
+                socialAccountService.delete(id: soc.id)
+            }
         }
     }
 }

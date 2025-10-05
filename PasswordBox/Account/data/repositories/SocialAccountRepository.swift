@@ -12,6 +12,7 @@ import SwiftData
 protocol SocialAccountRepository {
     func save(_ socialAccount: SocialAccount)
     func fetch() -> [SocialAccount]
+    func delete(id: String)
 }
 
 class DefaultSocialAccount: SocialAccountRepository {
@@ -52,8 +53,21 @@ class DefaultSocialAccount: SocialAccountRepository {
         do {
             return try modelContext.fetch(descriptor)
         } catch {
-            print("⚠️ SiteDTO 가져오기 실패: \(error)")
+            print("⚠️ SocialAccountDTO 가져오기 실패: \(error)")
             return []
+        }
+    }
+    
+    func delete(id: String) {
+        do {
+            let fetchedSites = fetchDTO()
+            if let accountToDelete = fetchedSites.first(where: { $0.id == id }) {
+                modelContext.delete(accountToDelete)
+                try modelContext.save()
+                print("🗑️ SocialAccount 삭제완료 (id: \(accountToDelete.id), title: \(accountToDelete.sitename)")
+            }
+        } catch {
+            print("⚠️ SocialAccount 삭제실패: \(error)")
         }
     }
 }

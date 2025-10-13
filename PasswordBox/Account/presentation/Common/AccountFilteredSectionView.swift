@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct AccountFilteredSectionView<Cell: View>: View {
-    @Binding var filteredAccounts: [AccountInfoWrapper]
+struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
+    @Binding var filteredItems: [Item]
     var text: String
     var updateItem: () -> Void
-    var setItem: (AccountInfoWrapper) -> Void
-    @ViewBuilder var cellView: (AccountInfoWrapper) -> Cell
+    var setItem: (Item) -> Void
+    @ViewBuilder var cellView: (Item) -> Cell
     
     var body: some View {
-        if filteredAccounts.isEmpty && !text.isEmpty {
+        if filteredItems.isEmpty && !text.isEmpty {
             Section {
                 Button {
                     updateItem()
@@ -26,14 +26,30 @@ struct AccountFilteredSectionView<Cell: View>: View {
             }
         } else {
             Section {
-                ForEach(filteredAccounts, id: \.id) { account in
+                ForEach(filteredItems, id: \.self) { item in
                     Button {
-                        setItem(account)
+                        setItem(item)
                     } label: {
-                        cellView(account)
+                        cellView(item)
                     }
                 }
             }
         }
+    }
+}
+
+extension AccountFilteredSectionView where Item == AccountInfoWrapper {
+    init(
+        filteredAccounts: Binding<[AccountInfoWrapper]>,
+        text: String,
+        updateItem: @escaping () -> Void,
+        setItem: @escaping (AccountInfoWrapper) -> Void,
+        cellView: @escaping (AccountInfoWrapper) -> Cell
+    ) {
+        self._filteredItems = filteredAccounts
+        self.text = text
+        self.updateItem = updateItem
+        self.setItem = setItem
+        self.cellView = cellView
     }
 }

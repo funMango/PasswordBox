@@ -10,4 +10,3 @@ import Foundation
 protocol AccountFilter {
     func filtering(accounts: [Account], query: String, excluded: String?) -> [Account]
 }
-

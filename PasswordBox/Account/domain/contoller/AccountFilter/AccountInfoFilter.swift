@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol AccountFilterable {
+protocol AccountInfoFilter {
     func filtering(accounts: [AccountInfoWrapper], query: String, excluded: String?) -> [AccountInfoWrapper]
 }

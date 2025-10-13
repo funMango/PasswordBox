@@ -34,12 +34,4 @@ extension Spec where T == AccountInfoWrapper {
         // 마찬가지로 Optional 비교. 명시적으로 하려면: !(($0.username?.elementsEqual(value)) ?? false)
         Spec { $0.username != value }
     }
-
-//    // 다중 제외
-//    static func username(notIn values: [String]) -> Spec {
-//        Spec {
-//            guard let u = $0.username else { return true } // username이 없으면 "제외 대상이 아니다"로 간주
-//            return !values.contains(u)
-//        }
-//    }
 }

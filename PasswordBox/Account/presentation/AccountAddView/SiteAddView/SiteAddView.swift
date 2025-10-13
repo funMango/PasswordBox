@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SiteAddView: View {
-    @StateObject var viewModel = SiteAddViewModel(filter: DefalutAccountFilter())    
+    @StateObject var viewModel = SiteAddViewModel(filter: DefalutAccountInfoFilter())    
     
     var body: some View {
         List {

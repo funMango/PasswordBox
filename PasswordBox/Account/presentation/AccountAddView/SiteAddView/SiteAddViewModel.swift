@@ -20,9 +20,9 @@ class SiteAddViewModel: ObservableObject {
     @Published var allAccountInfo: [AccountInfoWrapper] = []
     @Published var filteredAccounts: [AccountInfoWrapper] = []
     
-    var filter: AccountFilterable
+    var filter: AccountInfoFilter
     
-    init(filter: AccountFilterable) {
+    init(filter: AccountInfoFilter) {
         self.filter = filter
         
         setupAllAccounts()        

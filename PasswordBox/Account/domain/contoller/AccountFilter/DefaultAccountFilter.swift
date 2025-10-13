@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DefalutAccountFilter: AccountFilterable {
+final class DefalutAccountInfoFilter: AccountInfoFilter {
     func filtering(accounts: [AccountInfoWrapper], query: String, excluded: String?) -> [AccountInfoWrapper] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         let uniqueAccounts = removeDuplicates(accounts)
@@ -42,15 +42,3 @@ final class DefalutAccountFilter: AccountFilterable {
     }
 
 }
-
-
-
-
-
-//    func filtering(accounts: [Account], query: String, excluded: String? = nil) -> [Account] {
-//        guard !query.isEmpty else { return accounts }
-//
-//        let filterBySitenmae = Spec.sitename(containsCI: query)
-//        return accounts.filter { filterBySitenmae.isSatisfied($0) }
-//    }
-

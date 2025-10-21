@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct AccountSortView: View {
+    @StateObject var viewModel = AccountSortViewModel()    
+    
     var body: some View {
         Menu {
             Section {
-                ForEach(AccountOrderBy.allCases, id: \.self) { option in
-                    AccountSortBtnView(
-                        viewModel: AccountSortBtnViewModel(type: option)
-                    )
+                Picker("Sort by", selection: $viewModel.orderBy) {
+                    ForEach(AccountOrderBy.allCases, id: \.self) { option in
+                        AccountSortBtnView(option: option)
+                    }
                 }
             }
             
             Section {
-                ForEach(AccountOrder.allCases, id: \.self) { option in
-                    AccountSortBtnView(
-                        viewModel: AccountSortBtnViewModel(type: option)
-                    )
+                Picker("Order", selection: $viewModel.order) {
+                    ForEach(AccountOrder.allCases, id: \.self) { option in
+                        AccountSortBtnView(option: option)
+                    }
                 }
             }            
         } label: {

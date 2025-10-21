@@ -11,6 +11,7 @@ import Resolver
 protocol SocialAccountService {
     func save(_ request: CreateSocialAccountRequest)
     func fetchAll() -> [SocialAccount]
+    func delete(id: String)
 }
 
 class DefaultSocialAccountService: SocialAccountService {
@@ -29,5 +30,9 @@ class DefaultSocialAccountService: SocialAccountService {
     
     func fetchAll() -> [SocialAccount] {
         repository.fetch()
+    }
+    
+    func delete(id: String) {
+        repository.delete(id: id)
     }
 }

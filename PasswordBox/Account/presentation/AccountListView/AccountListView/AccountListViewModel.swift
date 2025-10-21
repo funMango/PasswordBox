@@ -52,6 +52,8 @@ extension AccountListViewModel {
                 DispatchQueue.main.async {
                     self?.searchText = newText
                 }
+            case .sortByTitle:
+                print("sortByTitle")
             default:
                 return
             }

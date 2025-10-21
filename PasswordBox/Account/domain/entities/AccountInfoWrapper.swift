@@ -32,6 +32,20 @@ enum AccountInfoWrapper: Equatable, Hashable {
         }
     }
     
+    var createDate: Date {
+        switch self{
+        case .account(let acc): return acc.createDate
+        case .social(let soc): return soc.createDate
+        }
+    }
+    
+    var updateDate: Date {
+        switch self{
+        case .account(let acc): return acc.updateDate
+        case .social(let soc): return soc.updateDate
+        }
+    }
+    
     @ViewBuilder
         var destinationView: some View {
             switch self {

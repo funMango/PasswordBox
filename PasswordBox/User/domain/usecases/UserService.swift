@@ -10,6 +10,7 @@ import Resolver
 
 protocol UserService {
     func fetch() -> User?
+    func update(option: AccountOption) throws
 }
 
 class DefaultUserService: UserService {
@@ -21,5 +22,10 @@ class DefaultUserService: UserService {
         } else {
             return repository.fetch()
         }
+    }
+    
+    func update(option: AccountOption) throws {
+        print("update")
+        try? repository.update(option)
     }
 }

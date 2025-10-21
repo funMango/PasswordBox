@@ -15,6 +15,16 @@ enum AccountMessage {
     
     case selectAccount(Account)
     case selectSite(String)
+    
+    /// sort
+    case sortByDescending
+    case sortByAscending
+    case sortByUpdateDate
+    case sortByCreateDate
+    case sortByTitle
+    
+    case setOrder(AccountOrder)
+    case setOrderBy(AccountOrderBy)
 }
 
 protocol AccountMessageBindable: AnyObject {

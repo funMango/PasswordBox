@@ -12,14 +12,14 @@ import CoreData
 
 class AccountViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
+    @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var userService: UserService
     @Published var isSyncing: Bool = false
     @Published var isShowingAccountAddSheet = false
     @Published var isShowingSocialAccountAddSheet: Bool = false
     @Published var user: User? = nil
     var cancellables: Set<AnyCancellable> = []
-    
-    
+        
     init() {
         setupControlMessageBindng()
         sendControlMessage()
@@ -52,9 +52,10 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
     
     private func setupUser() {
         self.user = userService.fetch()
-        
+                
         if let user = self.user {
-            print(user.id)
+            accountSubject.send(.setOrder(user.siteOrder))
+            accountSubject.send(.setOrderBy(user.siteOrderBy))
         }
     }
     

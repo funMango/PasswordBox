@@ -48,5 +48,5 @@ enum AccountOrder: String, CaseIterable, AccountOption {
         case .descending: return "arrow.up"
         case .ascending: return "arrow.down"
         }
-    }
+    }        
 }

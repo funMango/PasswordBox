@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-struct AccountSortBtnView<T: AccountOption>: View {
-    @ObservedObject var viewModel: AccountSortBtnViewModel<T>
+struct AccountSortBtnView: View {
+    var option: AccountOption
             
     var body: some View {
-        Button {
-            
-        } label: {
-            HStack {
-                Text(viewModel.type.text)
-                Image(systemName: viewModel.type.image)
-            }
+        HStack {
+            Text(option.text)
+            Image(systemName: option.image)
         }
     }
 }

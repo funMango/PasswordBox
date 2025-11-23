@@ -35,6 +35,9 @@ struct SocialAddView: View {
                 }
             )
         }
+        .task {
+            await viewModel.setupAccounts()
+        }
         .scrollDismissesKeyboard(.immediately)
         .onDisappear {
             viewModel.reset()
@@ -45,3 +48,4 @@ struct SocialAddView: View {
 #Preview {
     SocialAddView()
 }
+

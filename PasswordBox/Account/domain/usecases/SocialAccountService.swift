@@ -10,7 +10,7 @@ import Resolver
 
 protocol SocialAccountService {
     func save(_ request: CreateSocialAccountRequest)
-    func fetchAll() -> [SocialAccount]
+    func fetchAll() async -> [SocialAccount]
     func delete(id: String)
 }
 
@@ -28,8 +28,8 @@ class DefaultSocialAccountService: SocialAccountService {
         repository.save(socialAccount)
     }
     
-    func fetchAll() -> [SocialAccount] {
-        repository.fetch()
+    func fetchAll() async -> [SocialAccount] {
+        await repository.fetch()
     }
     
     func delete(id: String) {

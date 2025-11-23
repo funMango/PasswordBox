@@ -25,8 +25,6 @@ class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMess
     
     init(filter: AccountFilter) {
         self.filter = filter
-        
-        setupAccounts()
         setupSitenameMessageBindings()
         setupTextBindings()
     }
@@ -46,8 +44,8 @@ class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMess
 
 // MARK: - Bindings
 extension SocialAddViewModel {
-    func setupAccounts() {
-        self.allAccounts = accountService.fetchAll()
+    func setupAccounts() async {
+        self.allAccounts = await accountService.fetchAll()
     }
     
     func setupSitenameMessageBindings() {
@@ -73,3 +71,4 @@ extension SocialAddViewModel {
             .assign(to: &$filteredAccounts)
     }
 }
+

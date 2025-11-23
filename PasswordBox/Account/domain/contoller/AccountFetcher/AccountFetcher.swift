@@ -9,16 +9,16 @@ import Foundation
 import Resolver
 
 protocol AccountFetcher {
-    func fetchAll() -> [AccountInfoWrapper]
+    func fetchAll() async -> [AccountInfoWrapper]
 }
 
 final class DefaultAccountFetcher: AccountFetcher {
     @Injected var accountService: AccountService
     @Injected var socialAccountService: SocialAccountService
     
-    func fetchAll() -> [AccountInfoWrapper] {
-        let accounts = accountService.fetchAll()
-        let socialAccounts = socialAccountService.fetchAll()
+    func fetchAll() async -> [AccountInfoWrapper] {
+        let accounts = await accountService.fetchAll()
+        let socialAccounts = await socialAccountService.fetchAll()
         
         let merged = accounts.map(AccountInfoWrapper.account)
                  + socialAccounts.map(AccountInfoWrapper.social)

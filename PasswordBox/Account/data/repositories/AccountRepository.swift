@@ -12,6 +12,7 @@ import SwiftData
 protocol AccountRepository {
     func save(_ account: Account)
     func fetch() -> [Account]
+    func fetch() async -> [Account]
     func delete(id: String)
 }
 
@@ -44,6 +45,28 @@ class DefaultAccountRepository: AccountRepository {
         }
         return accounts
     }
+    
+    func fetch() async -> [Account] {
+      let dtos = fetchDTO()
+
+      // 2) CPU 바운드 복호화는 백그라운드에서
+      return await withTaskGroup(of: Account?.self) { [weak self] group in
+          for dto in dtos {
+              group.addTask {
+                  do { return try self?.encryptor.toEntity(dto: dto) }
+                  catch {
+                      print("복호화 실패: \(error)")
+                      return nil
+                  }
+              }
+          }
+          var result: [Account] = []
+          for await account in group {
+              if let account { result.append(account) }
+          }
+          return result
+      }
+  }
     
     func fetchDTO() -> [AccountDTO] {
         let descriptor = FetchDescriptor<AccountDTO>(sortBy: [SortDescriptor(\.updateDate, order: .reverse)])

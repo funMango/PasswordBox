@@ -35,6 +35,7 @@ extension AccountSortViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 try? userService.update(option: newValue)
+                accountSubject.send(.updateSortBy(order, newValue))
             }
             .store(in: &cancellables)
     }
@@ -46,6 +47,7 @@ extension AccountSortViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 try? userService.update(option: newValue)
+                accountSubject.send(.updateSortBy(newValue, orderBy))
             }
             .store(in: &cancellables)
     }

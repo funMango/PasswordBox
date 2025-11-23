@@ -15,26 +15,46 @@ struct AccountListView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.accountWrappers, id: \.self) { wrappers in
-                NavigationLink {
-                    wrappers.destinationView
-                } label: {
-                    wrappers.cellView
-                }
+            AccountListContent(viewModel: viewModel)
+        }
+        .refreshable {
+            Task {
+                await viewModel.fetchAccountWrappers()
             }
-            .onDelete(perform: viewModel.deleteAccount)
         }
         .scrollDismissesKeyboard(.immediately)
         .safeAreaInset(edge: .bottom) {
             AccountFootView()
         }
         .listStyle(.plain)
-        .navigationTitle(String(localized: "account"))        
+        .navigationTitle(String(localized: "account"))
         .onChange(of: accounts) { _, _ in
-            viewModel.fetchAccountWrappers()
+            Task { await viewModel.fetchAccountWrappers() }
         }
-        .onChange(of: socialAccounts) { _, _ in            
-            viewModel.fetchAccountWrappers()
+        .onChange(of: socialAccounts) { _, _ in
+            Task { await viewModel.fetchAccountWrappers() }
+        }
+        
+        .task {
+            await viewModel.fetchAccountWrappers()
+        }
+    }
+}
+
+/// List안에 복잡한 계층으로 인한 오류로 분리
+struct AccountListContent: View {
+    @ObservedObject var viewModel: AccountListViewModel
+
+    var body: some View {
+        ForEach(viewModel.accountWrappers, id: \.self) { wrappers in
+            NavigationLink {
+                wrappers.destinationView
+            } label: {
+                wrappers.cellView
+            }
+        }
+        .onDelete { indexSet in
+            viewModel.deleteAccount(offset: indexSet)
         }
     }
 }

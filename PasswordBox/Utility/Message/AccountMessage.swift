@@ -25,6 +25,9 @@ enum AccountMessage {
     
     case setOrder(AccountOrder)
     case setOrderBy(AccountOrderBy)
+    case updateOrder(AccountOrder)
+    case updateOrderBy(AccountOrderBy)
+    case updateSortBy(AccountOrder, AccountOrderBy)
 }
 
 protocol AccountMessageBindable: AnyObject {

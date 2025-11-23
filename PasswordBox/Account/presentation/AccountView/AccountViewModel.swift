@@ -18,6 +18,7 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
     @Published var isShowingAccountAddSheet = false
     @Published var isShowingSocialAccountAddSheet: Bool = false
     @Published var user: User? = nil
+    
     var cancellables: Set<AnyCancellable> = []
         
     init() {
@@ -35,16 +36,17 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
             guard let event = note.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey] as? NSPersistentCloudKitContainer.Event else { return }
             
             DispatchQueue.main.async {
-                // endDate가 nil → 아직 진행 중
                 if event.endDate == nil {
                     self?.isSyncing = true
-                } else {
-                    self?.isSyncing = false
-                    if event.type == .import {
-                        print("☁️ icloud 동기화 완료")
-                        self?.controlSubject.send(.syncIcloud)
-                        self?.setupUser()
-                    }
+                    return
+                }
+
+                self?.isSyncing = false
+                
+                if event.type == .import {
+                    print("☁️ iCloud import 이벤트 처리")
+                    self?.controlSubject.send(.syncIcloud)
+                    self?.setupUser()
                 }
             }
         }

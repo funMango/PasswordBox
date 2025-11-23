@@ -13,5 +13,9 @@ extension Resolver {
         register {
             DefaultAccountFetcher() as AccountFetcher
         }
+        
+        register {
+            DefaultAccountListSorter() as AccountListSorter
+        }
     }
 }

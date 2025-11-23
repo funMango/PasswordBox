@@ -25,7 +25,7 @@ class SiteAddViewModel: ObservableObject {
     init(filter: AccountInfoFilter) {
         self.filter = filter
         
-        setupAllAccounts()        
+                
         setupTextBindings()
     }
     
@@ -41,8 +41,8 @@ class SiteAddViewModel: ObservableObject {
 }
 
 extension SiteAddViewModel {
-    func setupAllAccounts() {
-        self.allAccountInfo = accountFetcher.fetchAll()
+    func setupAllAccounts() async {
+        self.allAccountInfo = await accountFetcher.fetchAll()
     }
     
     func setupTextBindings() {

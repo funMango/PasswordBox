@@ -12,23 +12,36 @@ import Combine
 class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accoutFetcher: AccountFetcher
+    @Injected var accountListSorter: AccountListSorter
     @Injected var socialAccountService: SocialAccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     
-    @Published var accounts: [Account] = []
     @Published var accountWrappers: [AccountInfoWrapper] = []
     @Published var searchText: String = ""
+    
+    private var currentOrder: AccountOrder = .ascending
+    private var currentOrderBy: AccountOrderBy = .title
     var cancellables: Set<AnyCancellable> = []
     
-    init() {
-        fetchAccountWrappers()
+    init() {        
         setupAccountMessageBinding()
         setupControlMessageBinding()
     }
     
-    func fetchAccountWrappers() {
-        self.accountWrappers = accoutFetcher.fetchAll()
+    func fetchAccountWrappers() async {        
+        // 1) 백그라운드에서 fetch + sort 모두 처리
+        let fetched = await accoutFetcher.fetchAll()
+        let sorted = accountListSorter.sort(
+            wrappers: fetched,
+            orderBy: currentOrderBy,
+            order: currentOrder
+        )
+        
+        // 2) 메인에서는 최종값만 한 번에 반영
+        await MainActor.run {
+            self.accountWrappers = sorted
+        }
     }
                     
     func deleteAccount(offset: IndexSet) {
@@ -52,8 +65,12 @@ extension AccountListViewModel {
                 DispatchQueue.main.async {
                     self?.searchText = newText
                 }
-            case .sortByTitle:
-                print("sortByTitle")
+            case .updateSortBy(let order, let orderBy):
+                self?.currentOrder = order
+                self?.currentOrderBy = orderBy
+                Task { [weak self] in
+                    await self?.fetchAccountWrappers()
+                }
             default:
                 return
             }
@@ -64,11 +81,23 @@ extension AccountListViewModel {
         bindControlMessage{ [weak self] message in
             switch message {
             case .syncIcloud:
-                self?.fetchAccountWrappers()
+                Task { [weak self] in
+                    await self?.fetchAccountWrappers()
+                }
             default:
                 return
             }
-            
+        }
+    }
+    
+    private func applySort(order: AccountOrder, orderBy: AccountOrderBy) {        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.accountWrappers = self.accountListSorter.sort(
+                wrappers: self.accountWrappers,
+                orderBy: orderBy,
+                order: order
+            )
         }
     }
 }

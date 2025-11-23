@@ -12,6 +12,7 @@ import SwiftData
 protocol SocialAccountRepository {
     func save(_ socialAccount: SocialAccount)
     func fetch() -> [SocialAccount]
+    func fetch() async -> [SocialAccount]
     func delete(id: String)
 }
 
@@ -43,6 +44,30 @@ class DefaultSocialAccount: SocialAccountRepository {
             }
         }
         return socialAccounts
+    }
+    
+    func fetch() async -> [SocialAccount] {
+        let accountDTOs: [SocialAccountDTO] = fetchDTO()
+        
+        return await withTaskGroup(of: SocialAccount?.self) { [weak self] group in
+            for dto in accountDTOs {
+                group.addTask {
+                    do {
+                        return try self?.encryptor.toEntity(dto: dto)
+                    } catch {
+                        print("⚠️ 복호화 실패 (id: \(dto.id)): \(error)")
+                        return nil
+                    }
+                }
+            }
+            var result: [SocialAccount] = []
+            for await item in group {
+                if let account = item {
+                    result.append(account)
+                }
+            }
+            return result
+        }
     }
     
     func fetchDTO() -> [SocialAccountDTO] {

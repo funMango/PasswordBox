@@ -15,11 +15,10 @@ struct AccountListView: View {
     
     var body: some View {
         List {
-            AccountListContent(viewModel: viewModel)
-        }
-        .refreshable {
-            Task {
-                await viewModel.fetchAccountWrappers()
+            if viewModel.isLoading {
+                ProgressView()
+            } else {
+                AccountListContent(viewModel: viewModel)
             }
         }
         .scrollDismissesKeyboard(.immediately)
@@ -31,12 +30,16 @@ struct AccountListView: View {
         .onChange(of: accounts) { _, _ in
             Task { await viewModel.fetchAccountWrappers() }
         }
-        .onChange(of: socialAccounts) { _, _ in
+        .onChange(of: socialAccounts) { _, _ in            
             Task { await viewModel.fetchAccountWrappers() }
         }
-        
         .task {
             await viewModel.fetchAccountWrappers()
+        }
+        .refreshable {
+            Task {
+                await viewModel.fetchAccountWrappers()
+            }
         }
     }
 }

@@ -19,28 +19,34 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
     
     @Published var accountWrappers: [AccountInfoWrapper] = []
     @Published var searchText: String = ""
+    @Published var isLoading: Bool = false
     
-    private var currentOrder: AccountOrder = .ascending
-    private var currentOrderBy: AccountOrderBy = .title
+    private var currentOrder: AccountOrder?
+    private var currentOrderBy: AccountOrderBy?
     var cancellables: Set<AnyCancellable> = []
     
-    init() {        
+    init() {
         setupAccountMessageBinding()
         setupControlMessageBinding()
     }
     
-    func fetchAccountWrappers() async {        
-        // 1) 백그라운드에서 fetch + sort 모두 처리
+    @MainActor
+    func fetchAccountWrappers() async {
+        guard let currentOrderBy, let currentOrder else {
+            return
+        }
+                
+        self.isLoading = true                                        
         let fetched = await accoutFetcher.fetchAll()
         let sorted = accountListSorter.sort(
             wrappers: fetched,
             orderBy: currentOrderBy,
             order: currentOrder
         )
-        
-        // 2) 메인에서는 최종값만 한 번에 반영
+                
         await MainActor.run {
             self.accountWrappers = sorted
+            isLoading = false
         }
     }
                     
@@ -101,3 +107,4 @@ extension AccountListViewModel {
         }
     }
 }
+

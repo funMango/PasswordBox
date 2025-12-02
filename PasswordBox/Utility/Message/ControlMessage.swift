@@ -11,13 +11,17 @@ import Combine
 enum ControlMessage{
     case toggleIsShowingAccountAddSheet
     case toggleIsShowingSocialAccountSheet
-    case changeSearchBarState
     case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField
     case activateSocialTextField
     case updateSitename(String)
-    case changeAccountInfoState(Bool)
     case syncIcloud
+    
+    /// searchBar
+    case focusSearchBar
+    case deFocusSearchBar
+    case changeSearchType(SearchType)
+    case selectAllInSearchBar
 }
 
 protocol ControlMessageBindable: AnyObject {

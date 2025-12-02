@@ -18,16 +18,30 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     
     @Published var accountWrappers: [AccountInfoWrapper] = []
+    @Published var searchedWrappers: [AccountInfoWrapper] = []
+    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
+    @Published var router: Router = Resolver.resolve()
     @Published var searchText: String = ""
-    @Published var isLoading: Bool = false
+    @Published var isLoading: Bool = false    
     
     private var currentOrder: AccountOrder?
-    private var currentOrderBy: AccountOrderBy?
+    private var currentOrderBy: AccountOrderBy?    
     var cancellables: Set<AnyCancellable> = []
+    var displayedWrappers: [AccountInfoWrapper] {
+        switch searchTypeManager.type {
+        case .normal:
+            return accountWrappers
+        case .search:
+            return searchedWrappers
+        }
+    }
     
     init() {
+        Task { await fetchAccountWrappers() }
         setupAccountMessageBinding()
         setupControlMessageBinding()
+        setupStateBinding()
+        setupSearchTextBinding()        
     }
     
     @MainActor
@@ -45,7 +59,7 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
         )
                 
         await MainActor.run {
-            self.accountWrappers = sorted
+            self.accountWrappers = sorted            
             isLoading = false
         }
     }
@@ -59,6 +73,10 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
                 socialAccountService.delete(id: soc.id)
             }
         }
+    }
+    
+    func onTapAccountCell() {
+        controlSubject.send(.deFocusSearchBar)
     }
 }
 
@@ -85,7 +103,7 @@ extension AccountListViewModel {
     
     func setupControlMessageBinding() {
         bindControlMessage{ [weak self] message in
-            switch message {
+            switch message {            
             case .syncIcloud:
                 Task { [weak self] in
                     await self?.fetchAccountWrappers()
@@ -96,15 +114,33 @@ extension AccountListViewModel {
         }
     }
     
-    private func applySort(order: AccountOrder, orderBy: AccountOrderBy) {        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.accountWrappers = self.accountListSorter.sort(
-                wrappers: self.accountWrappers,
-                orderBy: orderBy,
-                order: order
-            )
-        }
+    func setupStateBinding() {
+        searchTypeManager.$type
+            .removeDuplicates()
+            .sink { [weak self] state in
+                switch state {
+                case .search:
+                    self?.searchedWrappers = self?.accountWrappers ?? []
+                default:
+                    return
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func setupSearchTextBinding() {
+        $searchText
+            .removeDuplicates()
+            .sink { [weak self] text in
+                guard let self = self else { return }
+                let filtered = self.accountWrappers.filtered(by: text)
+                self.searchedWrappers = self.accountListSorter.sort(
+                    wrappers: filtered,
+                    orderBy: .title,
+                    order: .ascending
+                )
+            }
+            .store(in: &cancellables)
     }
 }
 

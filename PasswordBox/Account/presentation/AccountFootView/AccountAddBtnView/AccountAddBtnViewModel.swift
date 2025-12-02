@@ -12,35 +12,34 @@ import Combine
 
 class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
-    @Published var isSearchBarActive: Bool = false
+    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
+    @Published var searchType: SearchType = .normal    
     var cancellables: Set<AnyCancellable> = []
     
     init() {
-        setupControlMessageBinding()
+        setupSearchTypeBinding()
     }
-    
+        
     func toggleIsShowingAccountAddSheet() {
         controlSubject.send(.toggleIsShowingAccountAddSheet)
     }
     
     func toggleIsShowingSocialAccountAddSheet() {
         controlSubject.send(.toggleIsShowingSocialAccountSheet)
-    }        
-    
-    func changeSearchBarActive() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            self.isSearchBarActive.toggle()
-        }
     }
     
-    func setupControlMessageBinding() {
-        bindControlMessage { [weak self] message in
-            switch message {
-            case .changeSearchBarState:
-                self?.changeSearchBarActive()
-            default:
-                return
+    func tappedCloseButton() {
+        controlSubject.send(.changeSearchType(.normal))
+    }
+    
+    func setupSearchTypeBinding() {
+        searchTypeManager.$type
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                withAnimation {
+                    self?.searchType = newValue
+                }
             }
-        }
+            .store(in: &cancellables)
     }
 }

@@ -32,6 +32,9 @@ struct AccountDetailView: View {
         .sheet(isPresented: $viewModel.isShowingPasswordAddSheet) {
             AccountCredentialsAddView()
         }
+        .onDisappear {
+            viewModel.didSet()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {

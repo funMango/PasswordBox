@@ -15,8 +15,21 @@ struct AccountSearchBarView: View {
         TextField(String(localized: "search"), text: $viewModel.text)
             .searchBarStyle()
             .focused($isSearchBarFocused)
-            .onChange(of: isSearchBarFocused) { _ , isFocused in
-                viewModel.sendFocuseState(by: isFocused)
+            .onChange(of: isSearchBarFocused) { _, focused in
+                if focused { viewModel.searchBarTapped() }
+            }
+            .onReceive(viewModel.controlSubject) { message in
+                switch message {
+                case .focusSearchBar:
+                    withAnimation(.default) {
+                        if viewModel.canfocus() { isSearchBarFocused = true }
+                    }
+                case .deFocusSearchBar:
+                    isSearchBarFocused = false
+                                    
+                default:
+                    break
+                }
             }
     }
 }

@@ -17,7 +17,7 @@ struct PasswordBoxApp: App {
     
     init() {
         Resolver.registerAllServices()
-        // try? dek.delete()
+        headLineOption()
     }
     
     var body: some Scene {
@@ -25,5 +25,19 @@ struct PasswordBoxApp: App {
             AccountView()
         }
         .modelContainer(container)
+    }
+}
+
+extension PasswordBoxApp {
+    /// navigationTitle밑의 라인 제거
+    func headLineOption() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.shadowColor = .clear
+        appearance.shadowImage = UIImage()
+        
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
     }
 }

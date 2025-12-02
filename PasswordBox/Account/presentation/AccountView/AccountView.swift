@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct AccountView: View {
     @StateObject var viewModel = AccountViewModel()
+    @StateObject var router: Router = Resolver.resolve()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.path) {
             AccountListView()
         }
         .sheet(isPresented: $viewModel.isShowingAccountAddSheet) {
@@ -20,6 +22,7 @@ struct AccountView: View {
         .sheet(isPresented: $viewModel.isShowingSocialAccountAddSheet) {
             SocialAccountAddView()
         }
+        
     }
 }
 

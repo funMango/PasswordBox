@@ -12,17 +12,14 @@ struct AccountAddBtnView: View {
     @State private var showDialog = false
     
     var body: some View {
-        if viewModel.isSearchBarActive {
-            Button {
-                hideKeyboard()
-            } label: {
-                IconBgCircleBtnStyle(image: "xmark")
-            }
-        } else {
+        if viewModel.searchTypeManager.type == .normal {
             Button {
                 showDialog = true
             } label: {
                 IconBgCircleBtnStyle(image: "plus")
+            }
+            .onChange(of: viewModel.searchTypeManager.type) { _, type in
+                print("type: \(type)")
             }
             .confirmationDialog(
                 String(localized: "addAccount.prompt"),
@@ -33,23 +30,41 @@ struct AccountAddBtnView: View {
                     viewModel.toggleIsShowingAccountAddSheet()
                 } label: {
                     Text(String(localized: "addAccount.method.idPassword"))
-                        
+                    
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.blue)
                 
-                
+                                
                 Button {
                     viewModel.toggleIsShowingSocialAccountAddSheet()
                 } label: {
                     Text(String(localized: "addAccount.method.social"))
                         .foregroundStyle(.blue)
                 }
-                                                       
+                
                 Button(String(localized: "cancel"), role: .cancel) {}
             }
+        } else {
+            Button {
+                hideKeyboard()
+                viewModel.tappedCloseButton()
+            } label: {
+                IconBgCircleBtnStyle(image: "xmark")
+            }
+            .onChange(of: viewModel.searchTypeManager.type) { _, type in
+                print("type: \(type)")
+            }
         }
+//        switch viewModel.searchTypeManager.type {
+//        case .normal:
+//            
+//        case .search:
+//            
+//        }
+            
     }
+        
 }
 
 #Preview {

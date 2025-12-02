@@ -17,5 +17,14 @@ extension Resolver {
         register {
             DefaultAccountListSorter() as AccountListSorter
         }
+        
+        register {
+            SearchTypeManager()
+        }
+        
+        register {
+            Router()
+        }
+        .scope(.application)
     }
 }

@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct AccountFootView: View {
-    @StateObject var viewModel = AccountFootViewModel()
+    @State var searchTypeManager: SearchTypeManager = Resolver.resolve()
     
     var body: some View {
         HStack(spacing: 10) {
-            if !viewModel.isSearchBarActive {
+            if searchTypeManager.type == .normal {
                 AccountSortView()
             }
                         

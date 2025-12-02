@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Resolver
 import SwiftData
 
 struct AccountListView: View {
@@ -18,28 +19,35 @@ struct AccountListView: View {
             if viewModel.isLoading {
                 ProgressView()
             } else {
-                AccountListContent(viewModel: viewModel)
+                /// tpye 추론이 오래걸려서 AccountListContent에서는 수행하지 못한다.
+                AccountListContent(viewModel: viewModel) { wrapper in
+                    viewModel.router.push(.account(wrapper))
+                }
             }
         }
-        .scrollDismissesKeyboard(.immediately)
+        .navigationDestination(for: Route.self) { route in
+            switch route {
+            case .account(let wrapper):
+                wrapper.destinationView
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             AccountFootView()
         }
+        .scrollDismissesKeyboard(.immediately)
         .listStyle(.plain)
-        .navigationTitle(String(localized: "account"))
+        .navigationTitle(viewModel.searchTypeManager.type == .normal ?
+                         String(localized: "account") :
+                         String(localized: "search") )
+        
         .onChange(of: accounts) { _, _ in
             Task { await viewModel.fetchAccountWrappers() }
         }
-        .onChange(of: socialAccounts) { _, _ in            
+        .onChange(of: socialAccounts) { _, _ in
             Task { await viewModel.fetchAccountWrappers() }
         }
-        .task {
-            await viewModel.fetchAccountWrappers()
-        }
         .refreshable {
-            Task {
-                await viewModel.fetchAccountWrappers()
-            }
+            Task { await viewModel.fetchAccountWrappers() }
         }
     }
 }
@@ -47,21 +55,20 @@ struct AccountListView: View {
 /// List안에 복잡한 계층으로 인한 오류로 분리
 struct AccountListContent: View {
     @ObservedObject var viewModel: AccountListViewModel
+    var onSelect: (AccountInfoWrapper) -> Void
 
     var body: some View {
-        ForEach(viewModel.accountWrappers, id: \.self) { wrappers in
-            NavigationLink {
-                wrappers.destinationView
+        ForEach(viewModel.displayedWrappers, id: \.self) { account in
+            Button {
+                viewModel.onTapAccountCell()
+                onSelect(account)
             } label: {
-                wrappers.cellView
+                account.cellView
             }
+            .buttonStyle(.plain)
         }
         .onDelete { indexSet in
             viewModel.deleteAccount(offset: indexSet)
         }
     }
-}
-
-#Preview {
-    AccountListView()
 }

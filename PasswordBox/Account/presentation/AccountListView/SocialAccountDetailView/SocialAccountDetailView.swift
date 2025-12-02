@@ -11,7 +11,12 @@ struct SocialAccountDetailView: View {
     @StateObject var viewModel: SocialAccountDetailViewModel
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        }
+        .onDisappear {
+            viewModel.didSet()
+        }        
     }
 }
 

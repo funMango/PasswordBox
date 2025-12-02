@@ -44,8 +44,9 @@ class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMess
 
 // MARK: - Bindings
 extension SocialAddViewModel {
+    @MainActor
     func setupAccounts() async {
-        self.allAccounts = await accountService.fetchAll()
+        self.allAccounts = await accountService.fetchAll()        
     }
     
     func setupSitenameMessageBindings() {

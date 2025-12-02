@@ -14,17 +14,17 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var userService: UserService
+    @Published var router: Router = Resolver.resolve()
     @Published var isSyncing: Bool = false
     @Published var isShowingAccountAddSheet = false
     @Published var isShowingSocialAccountAddSheet: Bool = false
     @Published var user: User? = nil
-    
     var cancellables: Set<AnyCancellable> = []
         
     init() {
         setupControlMessageBindng()
         sendControlMessage()
-        syncCloud()
+        syncCloud()        
     }
     
     private func syncCloud() {
@@ -62,12 +62,12 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
     }
     
     private func setupControlMessageBindng() {
-        bindControlMessage { message in
-            switch message {
-            case .toggleIsShowingAccountAddSheet:                
-                self.isShowingAccountAddSheet.toggle()
+        bindControlMessage { [weak self] message in
+            switch message {                            
+            case .toggleIsShowingAccountAddSheet:
+                self?.isShowingAccountAddSheet.toggle()
             case .toggleIsShowingSocialAccountSheet:
-                self.isShowingSocialAccountAddSheet.toggle()
+                self?.isShowingSocialAccountAddSheet.toggle()
             default:
                 return
             }

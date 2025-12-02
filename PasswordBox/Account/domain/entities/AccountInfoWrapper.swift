@@ -32,6 +32,13 @@ enum AccountInfoWrapper: Equatable, Hashable {
         }
     }
     
+    var socialSiteName: String? {
+        switch self {
+        case .account(_): return nil
+        case .social(let soc): return soc.socialSitename
+        }
+    }
+    
     var createDate: Date {
         switch self{
         case .account(let acc): return acc.createDate
@@ -73,5 +80,29 @@ enum AccountInfoWrapper: Equatable, Hashable {
                 username: soc.socialSitename
             )
         }
+    }
+}
+
+extension AccountInfoWrapper {
+    func matches(query: String) -> Bool {
+        // sitename이 매칭되면 true
+        if fuzzySubsequenceMatch(text: self.sitename, query: query) {
+            return true
+        }
+
+        // socialSiteName이 있으면 그것을 우선 사용하고, 없으면 username 사용
+        if let candidate = self.socialSiteName ?? self.username,
+           fuzzySubsequenceMatch(text: candidate, query: query) {
+            return true
+        }
+
+        return false
+    }
+}
+
+extension Array where Element == AccountInfoWrapper {
+    func filtered(by query: String) -> [AccountInfoWrapper] {
+        guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return self }
+        return self.filter { $0.matches(query: query) }
     }
 }

@@ -6,10 +6,14 @@
 //
 
 import Foundation
+import Resolver
+import Combine
 
 class AccountDetailViewModel: ObservableObject {
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Published var account: Account
     @Published var isShowingPasswordAddSheet: Bool = false
+    var cancellables: Set<AnyCancellable> = []
     
     init(account: Account) {
         self.account = account
@@ -17,5 +21,9 @@ class AccountDetailViewModel: ObservableObject {
     
     func toggleSheet() {
         isShowingPasswordAddSheet.toggle()
+    }
+    
+    func didSet() {
+        controlSubject.send(.focusSearchBar)
     }
 }

@@ -10,10 +10,16 @@ import Resolver
 import Combine
 
 class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
+    /// usecase
     @Injected var accountService: AccountService
+    @Injected var socialAccountService: SocialAccountService
+    
+    /// controller
     @Injected var accoutFetcher: AccountFetcher
     @Injected var accountListSorter: AccountListSorter
-    @Injected var socialAccountService: SocialAccountService
+    @Injected var accountFilter: AccountSearchFilter
+    
+    /// subject
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     
@@ -134,11 +140,9 @@ extension AccountListViewModel {
             .removeDuplicates()
             .sink { [weak self] text in
                 guard let self = self else { return }
-                let filtered = self.accountWrappers.filtered(by: text)
-                self.searchedWrappers = self.accountListSorter.sort(
-                    wrappers: filtered,
-                    orderBy: .title,
-                    order: .ascending
+                self.searchedWrappers = self.accountFilter.filter(
+                    accounts: self.accountWrappers,
+                    query: text
                 )
             }
             .store(in: &cancellables)

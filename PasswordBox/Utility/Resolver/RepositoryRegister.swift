@@ -8,6 +8,7 @@
 import Foundation
 import Resolver
 
+@MainActor
 extension Resolver {
     public static func registerRepositories() {
         register{

@@ -13,8 +13,7 @@ import SwiftData
 struct PasswordBoxApp: App {
     @Injected var container: ModelContainer
     var dek = KeychainDEKStore()
-    
-    
+        
     init() {
         Resolver.registerAllServices()
         headLineOption()

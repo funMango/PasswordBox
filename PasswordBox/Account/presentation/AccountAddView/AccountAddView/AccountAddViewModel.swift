@@ -24,7 +24,8 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
         setupControlMessageBinding()
         setupAccountMessageBinding()
     }
-                    
+    
+    @MainActor
     func saveAccount() {
         guard let accountCredentials = accountCredentials else {
             print("saveAccount: ⚠️ accountCredntials is nil")

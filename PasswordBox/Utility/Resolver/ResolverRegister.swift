@@ -8,7 +8,8 @@
 import Foundation
 import Resolver
 
-extension Resolver: @retroactive ResolverRegistering {
+@MainActor
+extension Resolver: @MainActor @retroactive ResolverRegistering {
     public static func registerAllServices() {
         registerSwiftData()
         registerSubjects()

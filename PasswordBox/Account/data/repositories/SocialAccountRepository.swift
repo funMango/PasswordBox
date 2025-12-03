@@ -9,6 +9,7 @@ import Foundation
 import Resolver
 import SwiftData
 
+@MainActor
 protocol SocialAccountRepository {
     func save(_ socialAccount: SocialAccount)
     func fetch() -> [SocialAccount]
@@ -16,6 +17,7 @@ protocol SocialAccountRepository {
     func delete(id: String)
 }
 
+@MainActor
 class DefaultSocialAccount: SocialAccountRepository {
     @Injected var modelContext: ModelContext
     private var encryptor = SocialAccountEncryptor()
@@ -53,7 +55,7 @@ class DefaultSocialAccount: SocialAccountRepository {
             for dto in accountDTOs {
                 group.addTask {
                     do {
-                        return try self?.encryptor.toEntity(dto: dto)
+                        return try await self?.encryptor.toEntity(dto: dto)
                     } catch {
                         print("⚠️ 복호화 실패 (id: \(dto.id)): \(error)")
                         return nil

@@ -52,6 +52,7 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
         }
     }
     
+    @MainActor
     private func setupUser() {
         self.user = userService.fetch()
                 

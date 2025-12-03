@@ -8,11 +8,13 @@
 import Foundation
 import Resolver
 
+@MainActor
 protocol UserService {
     func fetch() -> User?
     func update(option: AccountOption) throws
 }
 
+@MainActor
 class DefaultUserService: UserService {
     @Injected var repository: UserRepository
     

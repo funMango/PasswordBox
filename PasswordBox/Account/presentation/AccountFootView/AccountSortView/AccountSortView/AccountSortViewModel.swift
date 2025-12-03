@@ -9,7 +9,8 @@ import Foundation
 import Resolver
 import Combine
 
-class AccountSortViewModel: ObservableObject, AccountMessageBindable {
+@MainActor
+class AccountSortViewModel: ObservableObject, @MainActor AccountMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var userService: UserService
     @Published var orderBy: AccountOrderBy = .title

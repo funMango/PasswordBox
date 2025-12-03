@@ -63,7 +63,8 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
             isLoading = false
         }
     }
-                    
+    
+    @MainActor
     func deleteAccount(offset: IndexSet) {
         for index in offset {
             switch accountWrappers[index] {

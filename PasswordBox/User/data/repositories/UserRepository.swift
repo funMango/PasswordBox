@@ -23,6 +23,7 @@ enum UserError: LocalizedError {
     }
 }
 
+@MainActor
 protocol UserRepository {
     func create() throws -> User
     func isUserExist() -> Bool
@@ -30,6 +31,7 @@ protocol UserRepository {
     func update<T: AccountOption>(_ option: T) throws
 }
 
+@MainActor
 class DefaultUserRepository: UserRepository {
     @Injected var modelContext: ModelContext
     

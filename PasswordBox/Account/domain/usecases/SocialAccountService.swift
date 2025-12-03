@@ -8,12 +8,14 @@
 import Foundation
 import Resolver
 
+@MainActor
 protocol SocialAccountService {
     func save(_ request: CreateSocialAccountRequest)
     func fetchAll() async -> [SocialAccount]
     func delete(id: String)
 }
 
+@MainActor
 class DefaultSocialAccountService: SocialAccountService {
     @Injected var repository: SocialAccountRepository
     

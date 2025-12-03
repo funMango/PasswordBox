@@ -9,6 +9,7 @@ import Foundation
 import Resolver
 import SwiftData
 
+@MainActor
 protocol AccountRepository {
     func save(_ account: Account)
     func fetch() -> [Account]
@@ -16,6 +17,7 @@ protocol AccountRepository {
     func delete(id: String)
 }
 
+@MainActor
 class DefaultAccountRepository: AccountRepository {
     @Injected var modelContext: ModelContext
     private let encryptor = AccountEncryptor()
@@ -66,8 +68,7 @@ class DefaultAccountRepository: AccountRepository {
           }
           return result
       }
-  }
-    
+    }
     func fetchDTO() -> [AccountDTO] {
         let descriptor = FetchDescriptor<AccountDTO>(sortBy: [SortDescriptor(\.updateDate, order: .reverse)])
         

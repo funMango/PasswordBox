@@ -5,17 +5,24 @@
 //  Created by 이민호 on 8/14/25.
 //
 
-import Foundation
+import SwiftUI
 import Resolver
 import Combine
 
-class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMessageBindable {
+enum AccountListState {
+    case list
+    case search
+    case loading
+    case error
+    case cloudError
+}
+
+@MainActor
+class AccountListViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor ControlMessageBindable {
     /// usecase
     @Injected var accountService: AccountService
     @Injected var socialAccountService: SocialAccountService
-    
-    /// controller
-    @Injected var accoutFetcher: AccountFetcher
+    @Injected var accountFetcher: AccountFetcher
     @Injected var accountListSorter: AccountListSorter
     @Injected var accountFilter: AccountSearchFilter
     
@@ -24,53 +31,53 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     
     @Published var accountWrappers: [AccountInfoWrapper] = []
-    @Published var searchedWrappers: [AccountInfoWrapper] = []
-    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
-    @Published var router: Router = Resolver.resolve()
-    @Published var searchText: String = ""
-    @Published var isLoading: Bool = false    
-    
-    private var currentOrder: AccountOrder?
-    private var currentOrderBy: AccountOrderBy?    
+    @Published var searchedWrappers: [AccountInfoWrapper] = []    
+    @Published var state: AccountListState = .loading
     var cancellables: Set<AnyCancellable> = []
     var displayedWrappers: [AccountInfoWrapper] {
-        switch searchTypeManager.type {
-        case .normal:
+        switch state {
+        case .list:
             return accountWrappers
         case .search:
             return searchedWrappers
+        default:
+            return []
         }
     }
     
     init() {
-        Task { await fetchAccountWrappers() }
         setupAccountMessageBinding()
         setupControlMessageBinding()
-        setupStateBinding()
-        setupSearchTextBinding()        
+        setupCloudMessageBinding()
     }
-    
-    @MainActor
-    func fetchAccountWrappers() async {
-        guard let currentOrderBy, let currentOrder else {
-            return
-        }
-                
-        self.isLoading = true                                        
-        let fetched = await accoutFetcher.fetchAll()
-        let sorted = accountListSorter.sort(
-            wrappers: fetched,
-            orderBy: currentOrderBy,
-            order: currentOrder
-        )
-                
-        await MainActor.run {
-            self.accountWrappers = sorted            
-            isLoading = false
+        
+    func fetchAccountWrappers() {
+        self.state = .loading
+        
+        Task {
+            do {
+                let wrappers = try await accountFetcher.fetchAll()
+                let sorted = try await accountListSorter.sort(wrappers: wrappers)
+                self.accountWrappers = sorted
+                self.state = .list
+            } catch {
+                self.state = .error
+            }
         }
     }
     
-    @MainActor
+    
+    func sortAccountWrappers() {
+        Task {
+            do {
+                let sorted = try await accountListSorter.sort(wrappers: self.accountWrappers)
+                self.accountWrappers = sorted
+            } catch {
+                self.state = .error
+            }
+        }
+    }
+        
     func deleteAccount(offset: IndexSet) {
         for index in offset {
             switch accountWrappers[index] {
@@ -89,63 +96,64 @@ class AccountListViewModel: ObservableObject, AccountMessageBindable, ControlMes
 
 // MARK: - Combine binding
 extension AccountListViewModel {
+    func setupCloudMessageBinding() {
+        bindControlMessage { [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .connectingCloud:
+                self.state = .loading
+            case .cloudConnected:
+                self.fetchAccountWrappers()
+            case .cloudConnectionFailed:
+                self.state = .cloudError
+            default:
+                break
+            }            
+        }
+    }
+        
     func setupAccountMessageBinding() {
         bindAccountMessage{ [weak self] message in
             switch message {
             case .changeSearchText(let newText):
+                guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self?.searchText = newText
-                }
-            case .updateSortBy(let order, let orderBy):
-                self?.currentOrder = order
-                self?.currentOrderBy = orderBy
-                Task { [weak self] in
-                    await self?.fetchAccountWrappers()
+                    self.searchedWrappers = self.accountFilter.filter(
+                        accounts: self.accountWrappers,
+                        query: newText
+                    )
                 }
             default:
                 return
             }
         }
     }
-    
+        
     func setupControlMessageBinding() {
         bindControlMessage{ [weak self] message in
-            switch message {            
-            case .syncIcloud:
-                Task { [weak self] in
-                    await self?.fetchAccountWrappers()
-                }
+            guard let self else { return }
+            switch message {
+            case .updateSortInfo:
+                self.sortAccountWrappers()
+            case .changeSearchType(let type):
+                self.changeState(type)
             default:
                 return
             }
         }
     }
     
-    func setupStateBinding() {
-        searchTypeManager.$type
-            .removeDuplicates()
-            .sink { [weak self] state in
-                switch state {
-                case .search:
-                    self?.searchedWrappers = self?.accountWrappers ?? []
-                default:
-                    return
-                }
+    private func changeState(_ type: SearchType) {
+        switch type {
+        case .normal:
+            withAnimation(.easeInOut(duration: 0.3)) {
+                self.state = .list
             }
-            .store(in: &cancellables)
-    }
-    
-    func setupSearchTextBinding() {
-        $searchText
-            .removeDuplicates()
-            .sink { [weak self] text in
-                guard let self = self else { return }
-                self.searchedWrappers = self.accountFilter.filter(
-                    accounts: self.accountWrappers,
-                    query: text
-                )
+        case .search:
+            withAnimation(.easeInOut(duration: 0.3)) {
+                self.state = .search
             }
-            .store(in: &cancellables)
+        }
     }
 }
 

@@ -11,20 +11,55 @@ import SwiftData
 
 struct AccountListView: View {
     @StateObject var viewModel = AccountListViewModel()
+    
+    var body: some View {
+        switch viewModel.state {
+        case .loading:
+            ProgressView()
+        case .list, .search:
+            AccountListOrSearchView(viewModel: viewModel)
+        case .error, .cloudError:
+            Text("⚠️ Error")
+        }
+    }
+}
+
+struct AccountListOrSearchView: View {
+    @ObservedObject var viewModel: AccountListViewModel
+    @StateObject var router: Router = Resolver.resolve()
+    @State var showToolbarTitle: Bool = false
     @Query var accounts: [AccountDTO]
     @Query var socialAccounts: [SocialAccountDTO]
     
     var body: some View {
         List {
-            if viewModel.isLoading {
-                ProgressView()
-            } else {
-                /// tpye 추론이 오래걸려서 AccountListContent에서는 수행하지 못한다.
-                AccountListContent(viewModel: viewModel) { wrapper in
-                    viewModel.router.push(.account(wrapper))
-                }
+            if viewModel.state == .list {
+                AccountListTitleView(showToolbarTitle: $showToolbarTitle)
+            }
+            
+            AccountListContent(viewModel: viewModel) { wrapper in
+                router.push(.account(wrapper))
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "line.3.horizontal")
+                }
+            }
+            
+            ToolbarItem(placement: .principal) {
+                Text(String(localized: "account"))
+                    .font(.headline)
+                    .opacity(showToolbarTitle && viewModel.state == .list ? 1 : 0)
+                    .offset(y: showToolbarTitle && viewModel.state == .list ? 0 : -4)
+                    .animation(.easeInOut(duration: 0.25), value: showToolbarTitle)
+            }
+        }
+        .toolbarBackground(.clear, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: Route.self) { route in
             switch route {
             case .account(let wrapper):
@@ -36,18 +71,14 @@ struct AccountListView: View {
         }
         .scrollDismissesKeyboard(.immediately)
         .listStyle(.plain)
-        .navigationTitle(viewModel.searchTypeManager.type == .normal ?
-                         String(localized: "account") :
-                         String(localized: "search") )
-        
         .onChange(of: accounts) { _, _ in
-            Task { await viewModel.fetchAccountWrappers() }
+            viewModel.fetchAccountWrappers()
         }
         .onChange(of: socialAccounts) { _, _ in
-            Task { await viewModel.fetchAccountWrappers() }
+            viewModel.fetchAccountWrappers()
         }
         .refreshable {
-            Task { await viewModel.fetchAccountWrappers() }
+            viewModel.fetchAccountWrappers()
         }
     }
 }
@@ -56,13 +87,13 @@ struct AccountListView: View {
 struct AccountListContent: View {
     @ObservedObject var viewModel: AccountListViewModel
     var onSelect: (AccountInfoWrapper) -> Void
-
+    
     var body: some View {
         ForEach(viewModel.displayedWrappers, id: \.self) { account in
-            Button {
+            Button(action: {
                 viewModel.onTapAccountCell()
                 onSelect(account)
-            } label: {
+            }) {
                 account.cellView
             }
             .buttonStyle(.plain)
@@ -72,3 +103,4 @@ struct AccountListContent: View {
         }
     }
 }
+

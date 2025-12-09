@@ -12,8 +12,7 @@ import SwiftData
 @MainActor
 protocol SocialAccountRepository {
     func save(_ socialAccount: SocialAccount)
-    func fetch() -> [SocialAccount]
-    func fetch() async -> [SocialAccount]
+    func fetch() async throws -> [SocialAccount]
     func delete(id: String)
 }
 
@@ -33,23 +32,8 @@ class DefaultSocialAccount: SocialAccountRepository {
         }
     }
     
-    func fetch() -> [SocialAccount] {
-        let accountDTOs: [SocialAccountDTO] = fetchDTO()
-        var socialAccounts: [SocialAccount] = []
-        
-        for dto in accountDTOs {
-            do {
-                let socialAccount = try encryptor.toEntity(dto: dto)
-                socialAccounts.append(socialAccount)
-            } catch {
-                print("⚠️ 복호화 실패 (id: \(dto.id)): \(error)")
-            }
-        }
-        return socialAccounts
-    }
-    
-    func fetch() async -> [SocialAccount] {
-        let accountDTOs: [SocialAccountDTO] = fetchDTO()
+    func fetch() async throws -> [SocialAccount] {
+        let accountDTOs: [SocialAccountDTO] = try await fetchDTO()
         
         return await withTaskGroup(of: SocialAccount?.self) { [weak self] group in
             for dto in accountDTOs {
@@ -72,29 +56,25 @@ class DefaultSocialAccount: SocialAccountRepository {
         }
     }
     
-    func fetchDTO() -> [SocialAccountDTO] {
+    func fetchDTO() async throws -> [SocialAccountDTO] {
         let descriptor = FetchDescriptor<SocialAccountDTO>(
             sortBy: [SortDescriptor(\.updateDate, order: .reverse)]
         )
-        
-        do {
-            return try modelContext.fetch(descriptor)
-        } catch {
-            print("⚠️ SocialAccountDTO 가져오기 실패: \(error)")
-            return []
-        }
+        return try modelContext.fetch(descriptor)
     }
     
     func delete(id: String) {
-        do {
-            let fetchedSites = fetchDTO()
-            if let accountToDelete = fetchedSites.first(where: { $0.id == id }) {
-                modelContext.delete(accountToDelete)
-                try modelContext.save()
-                print("🗑️ SocialAccount 삭제완료 (id: \(accountToDelete.id), title: \(accountToDelete.sitename)")
+        Task {
+            do {
+                let fetchedSites = try await fetchDTO()
+                if let accountToDelete = fetchedSites.first(where: { $0.id == id }) {
+                    modelContext.delete(accountToDelete)
+                    try modelContext.save()
+                    print("🗑️ SocialAccount 삭제완료 (id: \(accountToDelete.id), title: \(accountToDelete.sitename)")
+                }
+            } catch {
+                print("⚠️ SocialAccount 삭제실패: \(error)")
             }
-        } catch {
-            print("⚠️ SocialAccount 삭제실패: \(error)")
         }
     }
 }

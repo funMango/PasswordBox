@@ -10,7 +10,8 @@ import Foundation
 import Resolver
 import Combine
 
-class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMessageBindable {
+@MainActor
+class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor SitenameMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var sitenameSubject: CurrentValueSubject<String?, Never>
@@ -25,6 +26,7 @@ class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMess
     
     init(filter: AccountFilter) {
         self.filter = filter
+        setupAccounts()
         setupSitenameMessageBindings()
         setupTextBindings()
     }
@@ -45,8 +47,14 @@ class SocialAddViewModel: ObservableObject, AccountMessageBindable, SitenameMess
 // MARK: - Bindings
 extension SocialAddViewModel {
     @MainActor
-    func setupAccounts() async {
-        self.allAccounts = await accountService.fetchAll()        
+    func setupAccounts() {
+        Task {
+            do {
+                self.allAccounts = try await accountService.fetchAll()
+            } catch(let error) {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func setupSitenameMessageBindings() {

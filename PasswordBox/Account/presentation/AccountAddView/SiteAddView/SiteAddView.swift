@@ -32,10 +32,7 @@ struct SiteAddView: View {
                 }
             )
         }
-        .scrollDismissesKeyboard(.immediately)
-        .task {
-            await viewModel.setupAllAccounts()
-        }
+        .scrollDismissesKeyboard(.immediately)        
     }
 }
 

@@ -22,5 +22,9 @@ extension Resolver {
         register {
             DefaultUserService() as UserService
         }
+        
+        register {
+            DefaultCloudManager() as CloudManager
+        }
     }
 }

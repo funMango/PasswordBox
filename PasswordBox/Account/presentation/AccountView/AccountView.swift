@@ -22,6 +22,9 @@ struct AccountView: View {
         .sheet(isPresented: $viewModel.isShowingSocialAccountAddSheet) {
             SocialAccountAddView()
         }
+        .onAppear() {
+            viewModel.triggerCloudSync()
+        }
         
     }
 }

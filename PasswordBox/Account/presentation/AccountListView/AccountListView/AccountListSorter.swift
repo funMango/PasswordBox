@@ -6,14 +6,19 @@
 //
 
 import Foundation
+import Resolver
 import Combine
 
 protocol AccountListSorter {
-    func sort(wrappers: [AccountInfoWrapper], orderBy: AccountOrderBy, order: AccountOrder) -> [AccountInfoWrapper]
+    func sort(wrappers: [AccountInfoWrapper]) async throws -> [AccountInfoWrapper]
 }
 
 class DefaultAccountListSorter: AccountListSorter {
-    func sort(wrappers: [AccountInfoWrapper], orderBy: AccountOrderBy, order: AccountOrder) -> [AccountInfoWrapper] {
+    @Injected var userService: UserService
+    
+    func sort(wrappers: [AccountInfoWrapper]) async throws -> [AccountInfoWrapper] {
+        let (order, orderBy) = try await userService.getOrderAndOrderBy()        
+        
         switch orderBy {
         case .title:
             switch order {

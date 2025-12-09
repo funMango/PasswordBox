@@ -11,7 +11,7 @@ import Resolver
 @MainActor
 protocol SocialAccountService {
     func save(_ request: CreateSocialAccountRequest)
-    func fetchAll() async -> [SocialAccount]
+    func fetchAll() async throws -> [SocialAccount]
     func delete(id: String)
 }
 
@@ -30,8 +30,8 @@ class DefaultSocialAccountService: SocialAccountService {
         repository.save(socialAccount)
     }
     
-    func fetchAll() async -> [SocialAccount] {
-        await repository.fetch()
+    func fetchAll() async throws -> [SocialAccount] {
+        try await repository.fetch()
     }
     
     func delete(id: String) {

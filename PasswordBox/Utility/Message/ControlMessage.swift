@@ -22,6 +22,14 @@ enum ControlMessage{
     case deFocusSearchBar
     case changeSearchType(SearchType)
     case selectAllInSearchBar
+    
+    /// Cloud
+    case connectingCloud
+    case cloudConnected
+    case cloudConnectionFailed
+    
+    /// Sort
+    case updateSortInfo
 }
 
 protocol ControlMessageBindable: AnyObject {

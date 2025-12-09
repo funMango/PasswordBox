@@ -10,55 +10,36 @@ import Resolver
 import Combine
 import CoreData
 
-class AccountViewModel: ObservableObject, ControlMessageBindable {
+@MainActor
+class AccountViewModel: ObservableObject, @MainActor ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
-    @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Injected var userService: UserService
-    @Published var router: Router = Resolver.resolve()
-    @Published var isSyncing: Bool = false
+    @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>    
+    @Injected var cloudManager: CloudManager
+        
     @Published var isShowingAccountAddSheet = false
     @Published var isShowingSocialAccountAddSheet: Bool = false
-    @Published var user: User? = nil
     var cancellables: Set<AnyCancellable> = []
         
-    init() {
+    init() {        
         setupControlMessageBindng()
-        sendControlMessage()
-        syncCloud()        
     }
     
-    private func syncCloud() {
-        NotificationCenter.default.addObserver(
-            forName: NSPersistentCloudKitContainer.eventChangedNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] note in
-            guard let event = note.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey] as? NSPersistentCloudKitContainer.Event else { return }
+    func triggerCloudSync() {
+        controlSubject.send(.connectingCloud)
+        
+        Task { [weak self] in
+            guard let self else { return }
+            let result = await cloudManager.awaitSyncCycle(maxWait: 10)
             
-            DispatchQueue.main.async {
-                if event.endDate == nil {
-                    self?.isSyncing = true
-                    return
-                }
-
-                self?.isSyncing = false
+            switch result {
+            case .success:
+                print("☁️ Cloud연결 성공")
+                controlSubject.send(.cloudConnected)
                 
-                if event.type == .import {
-                    print("☁️ iCloud import 이벤트 처리")
-                    self?.controlSubject.send(.syncIcloud)
-                    self?.setupUser()
-                }
+            case .failure(let error):
+                print("⚠️ Cloud연결 실패: \(error.localizedDescription)")
+                controlSubject.send(.cloudConnectionFailed)
             }
-        }
-    }
-    
-    @MainActor
-    private func setupUser() {
-        self.user = userService.fetch()
-                
-        if let user = self.user {
-            accountSubject.send(.setOrder(user.siteOrder))
-            accountSubject.send(.setOrderBy(user.siteOrderBy))
         }
     }
     
@@ -73,15 +54,5 @@ class AccountViewModel: ObservableObject, ControlMessageBindable {
                 return
             }
         }
-    }
-    
-    func sendControlMessage() {
-        $user
-            .compactMap{ $0 }
-            .sink { [weak self] user in
-                print("😆 User Load Complete | user ID: \(user.id)")
-                self?.controlSubject.send(.setupSiteOrder(user.siteOrder, user.siteOrderBy))
-            }
-            .store(in: &cancellables)
     }
 }

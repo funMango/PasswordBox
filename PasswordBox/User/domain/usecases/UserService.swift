@@ -10,24 +10,26 @@ import Resolver
 
 @MainActor
 protocol UserService {
-    func fetch() -> User?
-    func update(option: AccountOption) throws
+    func getOrderAndOrderBy() async throws -> (order: AccountOrder, orderBy: AccountOrderBy)
+    func update(option: AccountOption) async throws
 }
 
 @MainActor
 class DefaultUserService: UserService {
     @Injected var repository: UserRepository
-    
-    func fetch() -> User? {
-        if !repository.isUserExist() {
-            return try? repository.create()
-        } else {
-            return repository.fetch()
-        }
+            
+    func getOrderAndOrderBy() async throws -> (order: AccountOrder, orderBy: AccountOrderBy) {
+        let fetched = try await fetch()
+        return (order: fetched.siteOrder, orderBy: fetched.siteOrderBy)
     }
     
-    func update(option: AccountOption) throws {
-        print("update")
-        try? repository.update(option)
+    func update(option: AccountOption) async throws {
+        try await repository.update(option)
     }
+    
+    private func fetch() async throws -> User {
+        try await repository.fetch()
+    }
+    
+    
 }

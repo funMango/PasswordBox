@@ -89,7 +89,9 @@ struct AccountListContent: View {
     var onSelect: (AccountInfoWrapper) -> Void
     
     var body: some View {
-        ForEach(viewModel.displayedWrappers, id: \.self) { account in
+        ForEach(viewModel.displayedWrappers.indices, id: \.self) { index in
+            let account = viewModel.displayedWrappers[index]
+
             Button(action: {
                 viewModel.onTapAccountCell()
                 onSelect(account)
@@ -97,6 +99,7 @@ struct AccountListContent: View {
                 account.cellView
             }
             .buttonStyle(.plain)
+            .listRowSeparator(index == 0 ? .hidden : .visible, edges: .top)
         }
         .onDelete { indexSet in
             viewModel.deleteAccount(offset: indexSet)

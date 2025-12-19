@@ -15,6 +15,10 @@ enum AccountMessage {
     
     case selectAccount(Account)
     case selectSite(String)
+    
+    case fetchAccounts
+    case fetchWrappers([AccountInfoWrapper])
+    case onRefresh
 }
 
 protocol AccountMessageBindable: AnyObject {

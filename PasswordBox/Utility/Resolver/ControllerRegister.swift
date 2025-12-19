@@ -21,10 +21,6 @@ extension Resolver {
         register {
             DefaultAccountSearchFilter() as AccountSearchFilter
         }
-        
-        register {
-            SearchTypeManager()
-        }
                         
         register {
             Router()

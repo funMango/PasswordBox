@@ -6,16 +6,31 @@
 //
 
 import SwiftUI
-import Foundation
 import Resolver
 import Combine
 
-class AccountFootViewModel: ObservableObject {
-    
-    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
+@MainActor
+class AccountFootViewModel: ObservableObject, @MainActor ControlMessageBindable {
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
+    @Published var type: SearchType = .normal
     var cancellables: Set<AnyCancellable> = []
     
-    
-        
+    init() {
+        setupControlMessageBinding()
+    }
 }
 
+extension AccountFootViewModel {
+    func setupControlMessageBinding() {
+        bindControlMessage() { [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .changeSearchType(let type):
+                withAnimation {                    
+                    self.type = type
+                }
+            default: break
+            }
+        }
+    }
+}

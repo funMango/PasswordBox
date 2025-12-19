@@ -9,10 +9,11 @@ import Foundation
 import Resolver
 import Combine
 
-class AccountSearchBarViewModel: ObservableObject, ControlMessageBindable {
+@MainActor
+class AccountSearchBarViewModel: ObservableObject, @MainActor ControlMessageBindable {
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
+    @Published var type: SearchType = .normal    
     @Published var text: String = ""
     var cancellables = Set<AnyCancellable>()
     
@@ -34,7 +35,7 @@ class AccountSearchBarViewModel: ObservableObject, ControlMessageBindable {
     }
     
     func canfocus() -> Bool {
-        return searchTypeManager.type == .search
+        return self.type == .search
     }
     
     func setupControlMessageBindings() {
@@ -42,6 +43,7 @@ class AccountSearchBarViewModel: ObservableObject, ControlMessageBindable {
             guard let self else { return }
             switch message {
             case .changeSearchType(let type):
+                self.type = type
                 if type == .normal { self.text = "" }
             default:
                 return

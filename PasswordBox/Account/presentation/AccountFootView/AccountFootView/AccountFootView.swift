@@ -9,11 +9,11 @@ import SwiftUI
 import Resolver
 
 struct AccountFootView: View {
-    @State var searchTypeManager: SearchTypeManager = Resolver.resolve()
+    @StateObject var viewModel = AccountFootViewModel()
     
     var body: some View {
         HStack(spacing: 10) {
-            if searchTypeManager.type == .normal {
+            if viewModel.type == .normal {
                 AccountSortView()
             }
                         

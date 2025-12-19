@@ -13,6 +13,7 @@ extension Resolver: @MainActor @retroactive ResolverRegistering {
     public static func registerAllServices() {
         registerSwiftData()
         registerSubjects()
+        registerDTOSubjects()
         registerRepositories()
         registerUsecases()
         registerController()

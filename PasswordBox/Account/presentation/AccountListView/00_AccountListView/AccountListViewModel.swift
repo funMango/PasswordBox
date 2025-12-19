@@ -21,9 +21,7 @@ enum AccountListState {
 class AccountListViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor ControlMessageBindable {
     /// usecase
     @Injected var accountService: AccountService
-    @Injected var socialAccountService: SocialAccountService
-    @Injected var accountFetcher: AccountFetcher
-    @Injected var accountListSorter: AccountListSorter
+    @Injected var socialAccountService: SocialAccountService    
     @Injected var accountFilter: AccountSearchFilter
     
     /// subject
@@ -32,7 +30,7 @@ class AccountListViewModel: ObservableObject, @MainActor AccountMessageBindable,
     
     @Published var accountWrappers: [AccountInfoWrapper] = []
     @Published var searchedWrappers: [AccountInfoWrapper] = []    
-    @Published var state: AccountListState = .loading
+    @Published var state: AccountListState = .list
     var cancellables: Set<AnyCancellable> = []
     var displayedWrappers: [AccountInfoWrapper] {
         switch state {
@@ -47,48 +45,13 @@ class AccountListViewModel: ObservableObject, @MainActor AccountMessageBindable,
     
     init() {
         setupAccountMessageBinding()
-        setupControlMessageBinding()
-        setupCloudMessageBinding()
-    }
-        
-    func fetchAccountWrappers() {
-        self.state = .loading
-        
-        Task {
-            do {
-                let wrappers = try await accountFetcher.fetchAll()
-                let sorted = try await accountListSorter.sort(wrappers: wrappers)
-                self.accountWrappers = sorted
-                self.state = .list
-            } catch {
-                self.state = .error
-            }
-        }
+        setupControlMessageBinding()        
     }
     
-    
-    func sortAccountWrappers() {
-        Task {
-            do {
-                let sorted = try await accountListSorter.sort(wrappers: self.accountWrappers)
-                self.accountWrappers = sorted
-            } catch {
-                self.state = .error
-            }
-        }
+    func onRefresh() {
+        accountSubject.send(.onRefresh)
     }
-        
-    func deleteAccount(offset: IndexSet) {
-        for index in offset {
-            switch accountWrappers[index] {
-            case .account(let acc):
-                accountService.delete(acc.id)
-            case .social(let soc):
-                socialAccountService.delete(id: soc.id)
-            }
-        }
-    }
-    
+                
     func onTapAccountCell() {
         controlSubject.send(.deFocusSearchBar)
     }
@@ -96,22 +59,6 @@ class AccountListViewModel: ObservableObject, @MainActor AccountMessageBindable,
 
 // MARK: - Combine binding
 extension AccountListViewModel {
-    func setupCloudMessageBinding() {
-        bindControlMessage { [weak self] message in
-            guard let self else { return }
-            switch message {
-            case .connectingCloud:
-                self.state = .loading
-            case .cloudConnected:
-                self.fetchAccountWrappers()
-            case .cloudConnectionFailed:
-                self.state = .cloudError
-            default:
-                break
-            }            
-        }
-    }
-        
     func setupAccountMessageBinding() {
         bindAccountMessage{ [weak self] message in
             switch message {
@@ -133,8 +80,6 @@ extension AccountListViewModel {
         bindControlMessage{ [weak self] message in
             guard let self else { return }
             switch message {
-            case .updateSortInfo:
-                self.sortAccountWrappers()
             case .changeSearchType(let type):
                 self.changeState(type)
             default:

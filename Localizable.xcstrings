@@ -524,6 +524,23 @@
         }
       }
     },
+    "userNotFound" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User info not found"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 정보를 찾을 수 없습니다"
+          }
+        }
+      }
+    },
     "비밀번호" : {
 
     },

@@ -12,14 +12,11 @@ struct AccountAddBtnView: View {
     @State private var showDialog = false
     
     var body: some View {
-        if viewModel.searchTypeManager.type == .normal {
+        if viewModel.type == .normal {
             Button {
                 showDialog = true
             } label: {
                 IconBgCircleBtnStyle(image: "plus")
-            }
-            .onChange(of: viewModel.searchTypeManager.type) { _, type in
-                print("type: \(type)")
             }
             .confirmationDialog(
                 String(localized: "addAccount.prompt"),
@@ -52,19 +49,8 @@ struct AccountAddBtnView: View {
             } label: {
                 IconBgCircleBtnStyle(image: "xmark")
             }
-            .onChange(of: viewModel.searchTypeManager.type) { _, type in
-                print("type: \(type)")
-            }
         }
-//        switch viewModel.searchTypeManager.type {
-//        case .normal:
-//            
-//        case .search:
-//            
-//        }
-            
     }
-        
 }
 
 #Preview {

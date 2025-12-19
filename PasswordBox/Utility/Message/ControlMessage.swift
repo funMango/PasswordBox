@@ -14,7 +14,7 @@ enum ControlMessage{
     case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField
     case activateSocialTextField
-    case updateSitename(String)
+    case updateSitename(String)    
     case syncIcloud
     
     /// searchBar
@@ -30,6 +30,10 @@ enum ControlMessage{
     
     /// Sort
     case updateSortInfo
+    
+    /// Toolbar Title
+    case toolbarTitleAppear
+    case toolbarTitleDisappear
 }
 
 protocol ControlMessageBindable: AnyObject {

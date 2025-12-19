@@ -14,6 +14,9 @@ struct ListTitleStyle: View {
         Text(text)
             .font(.title)
             .fontWeight(.bold)
-            .padding(.horizontal)
     }
+}
+
+#Preview {
+    ListTitleStyle(text: "전체")
 }

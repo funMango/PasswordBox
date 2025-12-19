@@ -13,17 +13,34 @@ extension Resolver {
     public static func registerSubjects() {
         register {
             PassthroughSubject<ControlMessage, Never>()
-        }
-        .scope(.application)
+        }.scope(.application)
         
         register {
             PassthroughSubject<AccountMessage, Never>()
-        }
-        .scope(.application)
-        
+        }.scope(.application)
+                
         register {
             CurrentValueSubject<String?, Never>(nil)
-        }
-        .scope( .application)
+        }.scope(.application)
+                
+        register {
+            CurrentValueSubject<[AccountDTO]?, Never>(nil)
+        }.scope(.application)
+    }
+}
+
+extension Resolver {
+    public static func registerDTOSubjects() {
+        register {
+            CurrentValueSubject<[AccountDTO]?, Never>(nil)
+        }.scope(.application)
+        
+        register {
+            CurrentValueSubject<[SocialAccountDTO]?, Never>(nil)
+        }.scope(.application)
+        
+        register {
+            CurrentValueSubject<UserDTO?, Never>(nil)
+        }.scope(.application)
     }
 }

@@ -10,14 +10,14 @@ import Foundation
 import Resolver
 import Combine
 
-class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
-    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
-    @Published var searchTypeManager: SearchTypeManager = Resolver.resolve()
-    @Published var searchType: SearchType = .normal    
+@MainActor
+class AccountAddBtnViewModel: ObservableObject, @MainActor ControlMessageBindable {
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>    
+    @Published var type: SearchType = .normal
     var cancellables: Set<AnyCancellable> = []
     
     init() {
-        setupSearchTypeBinding()
+        setupControlMessageBinding()
     }
         
     func toggleIsShowingAccountAddSheet() {
@@ -31,15 +31,19 @@ class AccountAddBtnViewModel: ObservableObject, ControlMessageBindable {
     func tappedCloseButton() {
         controlSubject.send(.changeSearchType(.normal))
     }
-    
-    func setupSearchTypeBinding() {
-        searchTypeManager.$type
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
+}
+
+extension AccountAddBtnViewModel {
+    func setupControlMessageBinding() {
+        bindControlMessage() { [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .changeSearchType(let type):
                 withAnimation {
-                    self?.searchType = newValue
+                    self.type = type
                 }
+            default: break
             }
-            .store(in: &cancellables)
+        }
     }
 }

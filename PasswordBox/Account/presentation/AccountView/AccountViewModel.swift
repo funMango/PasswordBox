@@ -24,24 +24,24 @@ class AccountViewModel: ObservableObject, @MainActor ControlMessageBindable {
         setupControlMessageBindng()
     }
     
-    func triggerCloudSync() {
-        controlSubject.send(.connectingCloud)
-        
-        Task { [weak self] in
-            guard let self else { return }
-            let result = await cloudManager.awaitSyncCycle(maxWait: 10)
-            
-            switch result {
-            case .success:
-                print("☁️ Cloud연결 성공")
-                controlSubject.send(.cloudConnected)
-                
-            case .failure(let error):
-                print("⚠️ Cloud연결 실패: \(error.localizedDescription)")
-                controlSubject.send(.cloudConnectionFailed)
-            }
-        }
-    }
+//    func triggerCloudSync() {
+//        controlSubject.send(.connectingCloud)
+//        
+//        Task { [weak self] in
+//            guard let self else { return }
+//            let result = await cloudManager.awaitSyncCycle(maxWait: 10)
+//            
+//            switch result {
+//            case .success:
+//                print("☁️ Cloud연결 성공")
+//                controlSubject.send(.cloudConnected)
+//                
+//            case .failure(let error):
+//                print("⚠️ Cloud연결 실패: \(error.localizedDescription)")
+//                controlSubject.send(.cloudConnectionFailed)
+//            }
+//        }
+//    }
     
     private func setupControlMessageBindng() {
         bindControlMessage { [weak self] message in

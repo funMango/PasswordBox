@@ -24,7 +24,7 @@ extension Resolver {
         }.scope(.application)
                 
         register {
-            CurrentValueSubject<[AccountDTO]?, Never>(nil)
+            CurrentValueSubject<[AccountInfoWrapper], Never>([])
         }.scope(.application)
     }
 }

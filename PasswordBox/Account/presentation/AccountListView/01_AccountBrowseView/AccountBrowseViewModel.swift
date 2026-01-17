@@ -10,17 +10,15 @@ import Resolver
 import Combine
 
 @MainActor
-class AccountBrowseViewModel: ObservableObject, @MainActor ControlMessageBindable, @MainActor AccountMessageBindable {
-    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
-    @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
+class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindable {
+    @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
     @Injected var accountService: AccountService
     @Injected var socialAccountService: SocialAccountService
     @Published var accountWrappers: [AccountInfoWrapper] = []
     var cancellables: Set<AnyCancellable> = []
     
-    init() {
-        setupControlMessageBinding()
-        setupAccountMessageBinding()
+    init() {        
+        setupAccountWrappers()
     }
                     
     func deleteAccount(offset: IndexSet) {
@@ -46,27 +44,10 @@ class AccountBrowseViewModel: ObservableObject, @MainActor ControlMessageBindabl
 }
 
 extension AccountBrowseViewModel {
-    func setupControlMessageBinding() {
-        bindControlMessage{ [weak self] message in
+    func setupAccountWrappers() {
+        bindAccountWrappers{ [weak self] wrappers in
             guard let self else { return }
-            switch message {
-//            case .updateSortInfo:
-//                // self.sortAccountWrappers()
-            default:
-                return
-            }
-        }
-    }
-    
-    func setupAccountMessageBinding() {
-        bindAccountMessage { [weak self] message in
-            guard let self else { return }
-            switch message {
-            case .fetchWrappers(let wrappers):
-                self.accountWrappers = wrappers
-            default:
-                break
-            }
+            self.accountWrappers = wrappers
         }
     }
 }

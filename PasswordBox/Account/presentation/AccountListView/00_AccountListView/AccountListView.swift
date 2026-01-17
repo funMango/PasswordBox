@@ -11,27 +11,16 @@ import SwiftData
 
 struct AccountListView: View {
     @StateObject var viewModel = AccountListViewModel()
-    
-    var body: some View {
-        switch viewModel.state {
-        case .loading:            
-            ProgressView()
-        case .list, .search:
-            AccountListOrSearchView(viewModel: viewModel)
-        case .error, .cloudError:
-            Text("⚠️ Error")
-        }
-    }
-}
-
-struct AccountListOrSearchView: View {
-    @ObservedObject var viewModel: AccountListViewModel
     @StateObject var router: Router = Resolver.resolve()
-    @State var showToolbarTitle: Bool = false    
     
     var body: some View {
-        List {            
-            AccountBrowseView()
+        List {
+            switch viewModel.type {
+            case .normal:
+                AccountBrowseView()
+            case .search:
+                AccountSearchView()
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -44,7 +33,6 @@ struct AccountListOrSearchView: View {
             
             ToolbarItem(placement: .principal) {
                 AccountListToolbarTitleView()
-                    
             }
         }
         .toolbarBackground(.clear, for: .navigationBar)
@@ -60,8 +48,7 @@ struct AccountListOrSearchView: View {
         }
         .scrollDismissesKeyboard(.immediately)
         .listStyle(.plain)
-        .refreshable {
-            viewModel.onRefresh()
-        }
     }
 }
+
+

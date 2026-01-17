@@ -13,6 +13,7 @@ class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var defaultAccountSubject: CurrentValueSubject<[AccountDTO]?, Never>
     @Injected var socialAccountSubject: CurrentValueSubject<[SocialAccountDTO]?, Never>
+    @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
     @Injected var userSubject: CurrentValueSubject<UserDTO?, Never>
     @Injected var accountFetcher: AccountFetcher
     @Injected var accountSorter: AccountListSorter
@@ -54,8 +55,8 @@ class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
             order: user.sortOrder,
             orderBy: user.sortBy
         )
-        
-        accountSubject.send(.fetchWrappers(wrappers))
+                
+        accountWrapperSubject.send(wrappers)
     }
     
     private func getWrappers(defaults: [AccountDTO], socials: [SocialAccountDTO], order: AccountOrder, orderBy: AccountOrderBy) -> [AccountInfoWrapper] {
@@ -95,8 +96,8 @@ extension AccountWrappersFetchViewModel {
                 order: user.sortOrder,
                 orderBy: user.sortBy
             )
-            
-            accountSubject.send(.fetchWrappers(wrappers))
+                        
+            accountWrapperSubject.send(wrappers)
         }
         .store(in: &cancellables)
     }

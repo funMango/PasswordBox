@@ -40,13 +40,15 @@ extension AccountListHighlightCellView {
         var attr = AttributedString(source)
         attr.foregroundColor = nonMatchColor
 
+        // Preprocess query: remove all whitespace characters
+        let preprocessedQuery = query.filter { !$0.isWhitespace }
         let foldedSource = source.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
-        let foldedQuery = query.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+        let foldedQuery = preprocessedQuery.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
 
         guard !foldedQuery.isEmpty else { return attr }
 
         // 1) 모든 문자 포함 조건 확인
-        guard containsAllChars(source: source, query: query) else {
+        guard containsAllChars(source: source, query: preprocessedQuery) else {
             // 포함하지 않으면 강조 없음(전부 nonMatchColor)
             return attr
         }
@@ -66,8 +68,10 @@ extension AccountListHighlightCellView {
     }
     
     func containsAllChars(source: String, query: String) -> Bool {
+        // Preprocess query: remove all whitespace characters
+        let preprocessedQuery = query.filter { !$0.isWhitespace }
         let foldedSource = source.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
-        let foldedQuery = query.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+        let foldedQuery = preprocessedQuery.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
         guard !foldedQuery.isEmpty else { return true }
 
         // source 문자 카운트

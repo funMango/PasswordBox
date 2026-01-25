@@ -23,7 +23,8 @@ fileprivate extension String {
 // subsequence(부분 부분 일치) 매칭: query의 각 문자가 text 안에서 순서대로 등장하면 true
 func fuzzyUnorderedContains(text: String, query: String) -> Bool {
     let t = text.normalizedForFuzzyMatch()
-    let q = query.normalizedForFuzzyMatch()
+    var q = query.normalizedForFuzzyMatch()
+    q.removeAll(where: { $0.isWhitespace })
     if q.isEmpty { return true }
 
     var freq: [Character: Int] = [:]
@@ -35,3 +36,4 @@ func fuzzyUnorderedContains(text: String, query: String) -> Bool {
     }
     return true
 }
+

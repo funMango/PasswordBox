@@ -13,8 +13,9 @@ import Combine
 class AccountSearchViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor AccountWrapperBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
-    @Published var searchText: String = ""
+    @Injected var accountFilter: AccountSearchFilter
     @Published var accountWrappers: [AccountInfoWrapper] = []
+    @Published var displayWrappers: [AccountInfoWrapper] = []
     var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -29,18 +30,26 @@ extension AccountSearchViewModel {
             guard let self else { return }
             switch message {
             case .changeSearchText(let text):
-                self.searchText = text
-            case .fetchWrappers(let wrappers):
-                self.accountWrappers = wrappers
+                filterWrappersByQuery(query: text)
             default: break
             }
         }
+    }
+    
+    func filterWrappersByQuery(query: String) {
+        if query.isEmpty {
+            self.displayWrappers = accountFilter.filterByDate(accounts: accountWrappers)
+            return
+        }
+            
+        self.displayWrappers = accountFilter.filter(accounts: accountWrappers, query: query)        
     }
     
     func setupAccountWrappers() {
         bindAccountWrappers{ [weak self] wrappers in            
             guard let self else { return }
             self.accountWrappers = wrappers
+            self.displayWrappers = accountFilter.filterByDate(accounts: accountWrappers)
         }
     }
 }

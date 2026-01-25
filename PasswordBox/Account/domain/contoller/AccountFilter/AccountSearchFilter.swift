@@ -9,6 +9,7 @@ import Foundation
 
 protocol AccountSearchFilter {
     func filter(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper]
+    func filterByDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper]
 }
 
 class DefaultAccountSearchFilter: AccountSearchFilter {
@@ -19,17 +20,24 @@ class DefaultAccountSearchFilter: AccountSearchFilter {
             filteredAccounts: filterdBySitename,
             query: query
         )
-        
         return filterdBySitename + filterdBySocialSitenameOrUsername
     }
     
-    private func filterBySitename(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper] {
+    func filterByDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+        let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+        let recentAccounts = accounts.filter { account in
+            account.createDate >= oneWeekAgo ||
+            account.updateDate >= oneWeekAgo
+        }
         
+        return recentAccounts
+    }
+    
+    private func filterBySitename(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper] {
         return accounts.filter { $0.matchBySitename(query: query) }
             .sorted { a, b in
                 a.sitename.localizedCaseInsensitiveCompare(b.sitename) == .orderedAscending
             }
-        
     }
     
     private func filterBySocialSitenameOrUsername(
@@ -39,11 +47,21 @@ class DefaultAccountSearchFilter: AccountSearchFilter {
     ) -> [AccountInfoWrapper] {
         
         return accounts.filter {
-            $0.matchBySocialSiteNameOrUsername(query: query) &&
-            !filteredAccounts.contains(accounts)
+            !filteredAccounts.contains($0) &&
+            $0.matchBySocialSiteNameOrUsername(query: query)
         }
         .sorted { a, b in
             a.sitename.localizedCaseInsensitiveCompare(b.sitename) == .orderedAscending
         }
     }
 }
+
+
+          
+           
+           
+         
+         
+         
+         
+    

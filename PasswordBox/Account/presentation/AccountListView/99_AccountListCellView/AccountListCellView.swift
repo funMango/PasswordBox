@@ -10,27 +10,20 @@ import SwiftUI
 struct AccountListCellView: View {
     var sitename: String
     var username: String
-    
-    
-    init(sitename: String, username: String) {
-        self.sitename = sitename
-        self.username = username        
-    }
-    
+
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 5) {
+        AccountListCellContent(
+            titleView: AnyView(
                 Text(sitename)
+                    .foregroundStyle(.primary)
                     .fontWeight(.regular)
-                
+            ),
+            subtitleView: AnyView(
                 Text(verbatim: username)
                     .foregroundStyle(Color.gray)
                     .font(.caption)
-            }
-            
-            Spacer()
-        }
-        .frame(height: 40)
+            )
+        )
     }
 }
 

@@ -81,19 +81,38 @@ enum AccountInfoWrapper: Equatable, Hashable {
             )
         }
     }
+    
+    @ViewBuilder
+    func cellHighlightedView(query: String) -> some View {
+        switch self {
+        case .account(let acc):
+            AccountListHighlightCellView(
+                sitename: acc.sitename,
+                username: acc.username,
+                query: query
+            )
+        case .social(let soc):
+            AccountListHighlightCellView(
+                sitename: soc.sitename,
+                username: soc.socialSitename,
+                query: query
+            )
+        }
+    }
 }
 
 extension AccountInfoWrapper {
     func matchBySitename(query: String) -> Bool {
-        return fuzzySubsequenceMatch(text: self.sitename, query: query)
+        return fuzzyUnorderedContains(text: self.sitename, query: query)
     }
     
     func matchBySocialSiteNameOrUsername(query: String) -> Bool {
         if let candidate = self.socialSiteName ?? self.username,
-           fuzzySubsequenceMatch(text: candidate, query: query) {
+           fuzzyUnorderedContains(text: candidate, query: query) {
             return true
         }
         
         return false
     }
 }
+

@@ -21,17 +21,17 @@ fileprivate extension String {
 }
 
 // subsequence(부분 부분 일치) 매칭: query의 각 문자가 text 안에서 순서대로 등장하면 true
-func fuzzySubsequenceMatch(text: String, query: String) -> Bool {
+func fuzzyUnorderedContains(text: String, query: String) -> Bool {
     let t = text.normalizedForFuzzyMatch()
     let q = query.normalizedForFuzzyMatch()
     if q.isEmpty { return true }
 
-    var qIndex = q.startIndex
-    for ch in t {
-        if qIndex == q.endIndex { break }
-        if ch == q[qIndex] {
-            qIndex = q.index(after: qIndex)
-        }
+    var freq: [Character: Int] = [:]
+    for ch in t { freq[ch, default: 0] += 1 }
+
+    for ch in q {
+        guard let count = freq[ch], count > 0 else { return false }
+        freq[ch] = count - 1
     }
-    return qIndex == q.endIndex
+    return true
 }

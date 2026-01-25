@@ -20,7 +20,11 @@ struct AccountSearchView: View {
                 Button {
                     router.push(.account(wrapper))
                 } label: {
-                    wrapper.cellView
+                    if viewModel.query.isEmpty {
+                        wrapper.cellView
+                    } else {
+                        wrapper.cellHighlightedView(query: viewModel.query)
+                    }                    
                 }
                 .buttonStyle(.plain)
                 .listRowSeparator(index == 0 ? .hidden : .visible, edges: .top)

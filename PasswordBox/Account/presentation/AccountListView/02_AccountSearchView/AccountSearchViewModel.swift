@@ -16,6 +16,7 @@ class AccountSearchViewModel: ObservableObject, @MainActor AccountMessageBindabl
     @Injected var accountFilter: AccountSearchFilter
     @Published var accountWrappers: [AccountInfoWrapper] = []
     @Published var displayWrappers: [AccountInfoWrapper] = []
+    @Published var query: String = ""
     var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -37,6 +38,8 @@ extension AccountSearchViewModel {
     }
     
     func filterWrappersByQuery(query: String) {
+        self.query = query
+        
         if query.isEmpty {
             self.displayWrappers = accountFilter.filterByDate(accounts: accountWrappers)
             return

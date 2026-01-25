@@ -24,6 +24,8 @@ class AccountSearchBarViewModel: ObservableObject, @MainActor ControlMessageBind
     
     func setupBindings() {
         $text
+            .removeDuplicates()
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] newText in
                 self?.accountSubject.send(.changeSearchText(newText))
             }

@@ -6,32 +6,40 @@
 //
 
 import SwiftUI
+import FixedMenu
 
 struct AccountSortView: View {
-    @StateObject var viewModel = AccountSortViewModel()    
+    @StateObject var viewModel = AccountSortViewModel()
     
     var body: some View {
         Menu {
-            Section {
-                Picker("Sort by", selection: $viewModel.orderBy) {
-                    ForEach(AccountOrderBy.allCases, id: \.self) { option in
-                        AccountSortBtnView(option: option)
-                    }
-                }
-            }
-            
-            Section {
-                Picker("Order", selection: $viewModel.order) {
-                    ForEach(AccountOrder.allCases, id: \.self) { option in
-                        AccountSortBtnView(option: option)
-                    }
-                }
-            }            
+            menuContent
         } label: {
             IconBgCircleBtnStyle(image: "arrow.up.arrow.down")
+                
         }
+        .glassEffect()
         .menuStyle(BorderlessButtonMenuStyle())
         .buttonStyle(EmpeyActionStyle())
+    }
+    
+    @ViewBuilder
+    var menuContent: some View {
+        Section {
+            Picker("Sort by", selection: $viewModel.orderBy) {
+                ForEach(AccountOrderBy.allCases, id: \.self) { option in
+                    AccountSortBtnView(option: option)
+                }
+            }
+        }
+
+        Section {
+            Picker("Order", selection: $viewModel.order) {
+                ForEach(AccountOrder.allCases, id: \.self) { option in
+                    AccountSortBtnView(option: option)
+                }
+            }
+        }
     }
 }
 

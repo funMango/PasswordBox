@@ -80,7 +80,6 @@ extension AccountSortViewModel {
             default:
                 break
             }
-            
         }
     }
 }

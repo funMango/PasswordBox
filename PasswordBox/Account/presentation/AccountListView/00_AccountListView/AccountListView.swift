@@ -23,17 +23,19 @@ struct AccountListView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "line.3.horizontal")
+            if viewModel.type == .normal {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "line.3.horizontal")
+                    }
                 }
-            }
-            
-            ToolbarItem(placement: .principal) {
-                AccountListToolbarTitleView()
-            }
+                
+                ToolbarItem(placement: .principal) {
+                    AccountListToolbarTitleView()
+                }
+            }            
         }
         .toolbarBackground(.clear, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)

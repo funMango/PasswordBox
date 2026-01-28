@@ -10,15 +10,18 @@ import Resolver
 import Combine
 
 @MainActor
-class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindable {
+class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindable, @MainActor ControlMessageBindable {
     @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountService: AccountService
+    @Injected var accountListSorter: AccountListSorter
     @Injected var socialAccountService: SocialAccountService
     @Published var accountWrappers: [AccountInfoWrapper] = []
     var cancellables: Set<AnyCancellable> = []
     
     init() {        
         setupAccountWrappers()
+        setupControlMessageBindable()
     }
                     
     func deleteAccount(offset: IndexSet) {
@@ -48,6 +51,25 @@ extension AccountBrowseViewModel {
         bindAccountWrappers{ [weak self] wrappers in
             guard let self else { return }
             self.accountWrappers = wrappers
+        }
+    }
+    
+    func setupControlMessageBindable() {
+        bindControlMessage { [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .updateSortInfo:
+                print("received updateSortInfo message.")
+                setAccountWrappers()
+            default: break
+            }
+        }
+    }
+    
+    private func setAccountWrappers() {
+        Task { [weak self] in
+            guard let self else { return }
+            self.accountWrappers = try await self.accountListSorter.sort(wrappers: self.accountWrappers)
         }
     }
 }

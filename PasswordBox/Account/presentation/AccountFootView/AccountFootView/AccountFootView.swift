@@ -16,7 +16,7 @@ struct AccountFootView: View {
             if viewModel.type == .normal {
                 AccountSortView()
             }
-                        
+
             AccountSearchBarView()
             
             AccountAddBtnView()

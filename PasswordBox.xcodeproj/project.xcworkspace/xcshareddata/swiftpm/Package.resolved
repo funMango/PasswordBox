@@ -1,6 +1,15 @@
 {
-  "originHash" : "75832de695473b491b0ec69a2bd6b39f6d00fe301d2c985565ad3b94b2d65d97",
+  "originHash" : "3aa91a6196582129f519109e13899feda4b7e59d66ed0f57427d97309c405ed3",
   "pins" : [
+    {
+      "identity" : "fixedmenu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mezhevikin/FixedMenu.git",
+      "state" : {
+        "revision" : "7e0f4d9b99c1d7045ccfa3c51fe308a3d9acef20",
+        "version" : "0.1.0"
+      }
+    },
     {
       "identity" : "resolver",
       "kind" : "remoteSourceControl",

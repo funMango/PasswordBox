@@ -40,9 +40,12 @@ struct AccountBrowseContentView: View {
             Button(action: {
                 onSelect(account)
             }) {
-                account.cellView
+                VStack(alignment: .leading, spacing: 0) {
+                    account.cellView
+                }
+                .fullRowTappable()
             }
-            .buttonStyle(.plain)
+            .rowButtonStyle()
             .listRowSeparator(index == 0 ? .hidden : .visible, edges: .top)
         }
         .onDelete { indexSet in
@@ -56,3 +59,4 @@ struct AccountBrowseContentView: View {
 #Preview {
     AccountBrowseView()
 }
+

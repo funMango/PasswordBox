@@ -19,6 +19,7 @@ struct AccountEncryptor {
             password: try crypto.encryptString(entity.password),
             pin: entity.pin != nil ? try crypto.encryptString(entity.pin!) : nil,
             memo: entity.memo != nil ? try crypto.encryptString(entity.memo!) : nil,
+            socialId: entity.socialId != nil ? try crypto.encryptString(entity.socialId!) : nil,
             createDate: entity.createDate,
             updateDate: entity.updateDate
         )
@@ -33,6 +34,7 @@ struct AccountEncryptor {
             password: try crypto.decryptString(dto.password),
             pin: dto.pin != nil ? try crypto.decryptString(dto.pin!) : nil,
             memo: dto.memo != nil ? try crypto.decryptString(dto.memo!) : nil,
+            socialId: dto.socialId != nil ? try crypto.decryptString(dto.socialId!) : nil,
             createDate: dto.createDate,
             updateDate: dto.updateDate
         )

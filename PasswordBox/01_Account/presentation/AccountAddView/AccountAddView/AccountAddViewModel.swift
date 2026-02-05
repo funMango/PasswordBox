@@ -16,9 +16,10 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
         
     @Published var isSiteSearchActive: Bool = false
     @Published var isSocialSearchActive: Bool = false
+    
     @Published var accountCredentials: AccountCredentials?
     @Published var sitename: String = ""
-    @Published var socialId: String = ""
+    @Published var socialId: String?
     
     var cancellables: Set<AnyCancellable> = []
             
@@ -39,7 +40,8 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
             username: accountCredentials.username,
             password: accountCredentials.password,
             pin: accountCredentials.pin,
-            memo: accountCredentials.memo
+            memo: accountCredentials.memo,
+            socialId: socialId
         )
         
         AccountService.save(request)

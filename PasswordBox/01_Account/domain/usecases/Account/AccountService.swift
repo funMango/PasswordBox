@@ -25,7 +25,8 @@ class DefaultAccountService: AccountService {
             username: request.username,
             password: request.password,
             pin: request.pin,
-            memo: request.memo
+            memo: request.memo,
+            socialId: request.socialId
         )
         
         repository.save(account)

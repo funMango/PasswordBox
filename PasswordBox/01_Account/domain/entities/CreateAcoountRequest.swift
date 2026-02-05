@@ -13,4 +13,5 @@ struct CreateAccountRequest{
     let password: String
     let pin: String?
     let memo: String?
+    let socialId: String?
 }

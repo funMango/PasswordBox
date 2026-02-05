@@ -16,6 +16,7 @@ class AccountDTO {
     var password: Data = Data()     // 🔐 암호문
     var pin: Data? = nil            // 🔐 암호문 (옵션)
     var memo: Data? = nil           // 🔐 암호문 (옵션)
+    var socialId: Data? = nil       // 🔐 암호문 (옵션)
     var createDate: Date = Date()
     var updateDate: Date = Date()
     var order: Int = 0
@@ -27,6 +28,7 @@ class AccountDTO {
         password: Data,
         pin: Data?,
         memo: Data?,
+        socialId: Data?,
         createDate: Date = Date(),
         updateDate: Date = Date(),
         order: Int = 0
@@ -37,6 +39,7 @@ class AccountDTO {
         self.password = password
         self.pin = pin
         self.memo = memo
+        self.socialId = socialId
         self.createDate = createDate
         self.updateDate = updateDate
         self.order = order
@@ -52,6 +55,7 @@ extension AccountDTO {
             password: try crypto.decryptString(self.password),
             pin: self.pin != nil ? try crypto.decryptString(self.pin!) : nil,
             memo: self.memo != nil ? try crypto.decryptString(self.memo!) : nil,
+            socialId: self.socialId != nil ? try crypto.decryptString(self.socialId!) : nil,
             createDate: self.createDate,
             updateDate: self.updateDate
         )

@@ -15,6 +15,7 @@ struct Account: Hashable, Equatable {
     var password: String
     var pin: String? = nil
     var memo: String? = nil
+    var socialId: String? = nil
     var createDate: Date = Date()
     var updateDate: Date = Date()
 }

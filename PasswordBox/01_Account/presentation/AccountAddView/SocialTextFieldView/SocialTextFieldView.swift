@@ -23,8 +23,8 @@ struct SocialTextFieldView: View {
             )
         } else {
             AccountListCellView(
-                sitename: viewModel.account?.sitename ?? "",
-                username: viewModel.account?.username ?? ""
+                title: viewModel.account?.sitename ?? "",
+                subTitle: viewModel.account?.username ?? ""
             )
             .onTapGesture {
                 viewModel.sendMessage()

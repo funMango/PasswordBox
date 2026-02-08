@@ -18,7 +18,6 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
     @Published var isSocialSearchActive: Bool = false
     @Published var accountCredentials: AccountCredentials?
     
-    
     var cancellables: Set<AnyCancellable> = []
             
     init() {
@@ -64,7 +63,7 @@ extension AccountAddViewModel {
             return false
         }
         
-        return !cred.sitename.isEmpty                        
+        return !cred.sitename.isEmpty
     }
 }
 

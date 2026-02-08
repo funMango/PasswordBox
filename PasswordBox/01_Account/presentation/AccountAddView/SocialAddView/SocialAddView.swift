@@ -14,7 +14,7 @@ struct SocialAddView: View {
         List {
             SearchSectionView(
                 placeholder: "searchSiteOrAccount",
-                textBinding: $viewModel.text                
+                textBinding: $viewModel.text
             )
             
             SocialFilteredSectionView(
@@ -25,8 +25,8 @@ struct SocialAddView: View {
                 },
                 cellView: { account in
                     AccountListCellView(
-                        sitename: account.sitename,
-                        username: account.username
+                        title: account.sitename,
+                        subTitle: account.username
                     )
                 }
             )

@@ -37,7 +37,7 @@ class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindabl
         // 3) 실제 서비스 삭제 수행
         for target in targets {
             switch target {
-            case .account(let acc):
+            case .account(let acc, _):
                 accountService.delete(acc.id)
             case .social(let soc):
                 socialAccountService.delete(id: soc.id)

@@ -11,6 +11,7 @@ struct AccountListHighlightCellView: View {
     var sitename: String
     var username: String
     var query: String
+    var showsLinkIcon: Bool = false
 
     var body: some View {
         AccountListCellContent(
@@ -23,13 +24,20 @@ struct AccountListHighlightCellView: View {
                 ))
             ),
             subtitleView: AnyView(
-                Text(highlightedText(
-                    username,
-                    query: query,
-                    matchColor: .primary,
-                    nonMatchColor: .secondary
-                ))
-                .font(.caption)
+                HStack(spacing: 4) {
+                    if showsLinkIcon {
+                        Image(systemName: "link")
+                            .foregroundStyle(Color.gray)
+                            .font(.caption)
+                    }
+                    Text(highlightedText(
+                        username,
+                        query: query,
+                        matchColor: .primary,
+                        nonMatchColor: .secondary
+                    ))
+                    .font(.caption)
+                }
             )
         )
     }

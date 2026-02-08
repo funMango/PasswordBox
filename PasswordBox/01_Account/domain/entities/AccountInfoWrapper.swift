@@ -8,47 +8,48 @@
 import SwiftUI
 
 enum AccountInfoWrapper: Equatable, Hashable {
-    case account(Account)
+    case account(Account, fallbackSitename: String?)
     case social(SocialAccount)
     
     var id: String {
         switch self {
-        case .account(let acc): return acc.id
+        case .account(let acc, _): return acc.id
         case .social(let soc): return soc.id
         }
     }
     
     var sitename: String {
         switch self {
-        case .account(let acc): return acc.sitename
+        case .account(let acc, _): return acc.sitename
         case .social(let soc): return soc.sitename
         }
     }
     
     var username: String? {
         switch self {
-        case .account(let acc): return acc.username
+        case .account(let acc, let fallback):
+            return acc.username.isEmpty ? fallback : acc.username
         case .social(let soc): return soc.username
         }
     }
     
     var socialSiteName: String? {
         switch self {
-        case .account(_): return nil
+        case .account(_, _): return nil
         case .social(let soc): return soc.socialSitename
         }
     }
     
     var createDate: Date {
         switch self{
-        case .account(let acc): return acc.createDate
+        case .account(let acc, _): return acc.createDate
         case .social(let soc): return soc.createDate
         }
     }
     
     var updateDate: Date {
         switch self{
-        case .account(let acc): return acc.updateDate
+        case .account(let acc, _): return acc.updateDate
         case .social(let soc): return soc.updateDate
         }
     }
@@ -56,7 +57,7 @@ enum AccountInfoWrapper: Equatable, Hashable {
     @ViewBuilder
         var destinationView: some View {
             switch self {
-            case .account(let acc):
+            case .account(let acc, _):
                 AccountDetailView(viewModel: AccountDetailViewModel(account: acc))
             case .social(let soc):
                 SocialAccountDetailView(
@@ -68,16 +69,19 @@ enum AccountInfoWrapper: Equatable, Hashable {
     @ViewBuilder
     var cellView: some View {
         switch self {
-        case .account(let acc):
+        case .account(let acc, let fallback):
+            let usesFallback = acc.username.isEmpty && fallback != nil
+            let subTitle = acc.username.isEmpty ? (fallback ?? "") : acc.username
             AccountListCellView(
-                sitename: acc.sitename,
-                username: acc.username
+                title: acc.sitename,
+                subTitle: subTitle,
+                showsLinkIcon: usesFallback
             )
             
         case .social(let soc):            
             AccountListCellView(
-                sitename: soc.sitename,
-                username: soc.socialSitename
+                title: soc.sitename,
+                subTitle: soc.socialSitename
             )
         }
     }
@@ -85,11 +89,14 @@ enum AccountInfoWrapper: Equatable, Hashable {
     @ViewBuilder
     func cellHighlightedView(query: String) -> some View {
         switch self {
-        case .account(let acc):
+        case .account(let acc, let fallback):
+            let usesFallback = acc.username.isEmpty && fallback != nil
+            let displayUsername = acc.username.isEmpty ? (fallback ?? "") : acc.username
             AccountListHighlightCellView(
                 sitename: acc.sitename,
-                username: acc.username,
-                query: query
+                username: displayUsername,
+                query: query,
+                showsLinkIcon: usesFallback
             )
         case .social(let soc):
             AccountListHighlightCellView(
@@ -115,4 +122,3 @@ extension AccountInfoWrapper {
         return false
     }
 }
-

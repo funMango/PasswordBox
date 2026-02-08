@@ -8,20 +8,28 @@
 import SwiftUI
 
 struct AccountListCellView: View {
-    var sitename: String
-    var username: String
+    var title: String
+    var subTitle: String
+    var showsLinkIcon: Bool = false
 
     var body: some View {
         AccountListCellContent(
             titleView: AnyView(
-                Text(sitename)
+                Text(title)
                     .foregroundStyle(.primary)
                     .fontWeight(.regular)
             ),
             subtitleView: AnyView(
-                Text(verbatim: username)
-                    .foregroundStyle(Color.gray)
-                    .font(.caption)
+                HStack(spacing: 4) {
+                    if showsLinkIcon {
+                        Image(systemName: "link")
+                            .foregroundStyle(Color.gray)
+                            .font(.caption)
+                    }
+                    Text(verbatim: subTitle)
+                        .foregroundStyle(Color.gray)
+                        .font(.caption)
+                }
             )
         )
     }
@@ -29,6 +37,6 @@ struct AccountListCellView: View {
 
 #Preview {
     AccountListCellView(
-        sitename: "Apple", username: "bluemango@apple.com"
+        title: "Apple", subTitle: "bluemango@apple.com"
     )
 }

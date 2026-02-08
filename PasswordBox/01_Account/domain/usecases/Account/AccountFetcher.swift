@@ -21,9 +21,15 @@ final class DefaultAccountFetcher: AccountFetcher {
     func fetchAll() async throws -> [AccountInfoWrapper] {
         let accounts = try await accountService.fetchAll()
         let socialAccounts = try await socialAccountService.fetchAll()
-        
-        let merged = accounts.map(AccountInfoWrapper.account)
-                 + socialAccounts.map(AccountInfoWrapper.social)
+
+        let accountSitenameById: [String: String] = Dictionary(
+            uniqueKeysWithValues: accounts.map { ($0.id, $0.sitename) }
+        )
+
+        let merged = accounts.map { account in
+            let fallback = account.socialId.flatMap { accountSitenameById[$0] }
+            return AccountInfoWrapper.account(account, fallbackSitename: fallback)
+        } + socialAccounts.map(AccountInfoWrapper.social)
 
         return merged.sorted {
             $0.sitename.localizedCaseInsensitiveCompare($1.sitename) == .orderedAscending
@@ -35,9 +41,14 @@ final class DefaultAccountFetcher: AccountFetcher {
         let accounts: [Account] = defaultDTOs.compactMap { try? $0.toEntity(using: crypto) }
         let socialAccounts: [SocialAccount] = socialDTOs.compactMap { try? $0.toEntity(using: crypto) }
 
+        let accountSitenameById: [String: String] = Dictionary(
+            uniqueKeysWithValues: accounts.map { ($0.id, $0.sitename) }
+        )
+
         // 2) 엔티티 -> Wrapper
-        return accounts.map(AccountInfoWrapper.account)
-                + socialAccounts.map(AccountInfoWrapper.social)
+        return accounts.map { account in
+            let fallback = account.socialId.flatMap { accountSitenameById[$0] }
+            return AccountInfoWrapper.account(account, fallbackSitename: fallback)
+        } + socialAccounts.map(AccountInfoWrapper.social)
     }
 }
-

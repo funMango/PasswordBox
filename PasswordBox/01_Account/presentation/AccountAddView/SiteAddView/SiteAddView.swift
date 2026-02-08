@@ -27,6 +27,9 @@ struct SiteAddView: View {
                 setItem: { account in
                     viewModel.setSite(from: account.sitename)
                 },
+                itemTitle: { account in
+                    account.sitename
+                },
                 cellView: { account in
                     Text(account.sitename)
                 }

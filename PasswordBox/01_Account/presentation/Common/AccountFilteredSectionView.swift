@@ -12,10 +12,16 @@ struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
     var text: String
     var updateItem: () -> Void
     var setItem: (Item) -> Void
+    var itemTitle: (Item) -> String
     @ViewBuilder var cellView: (Item) -> Cell
     
     var body: some View {
-        if filteredItems.isEmpty && !text.isEmpty {
+        let normalizedText = text.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let hasExactMatch = !normalizedText.isEmpty && filteredItems.contains { item in
+            itemTitle(item).trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == normalizedText
+        }
+
+        if !normalizedText.isEmpty && !hasExactMatch {
             Section {
                 Button {
                     updateItem()
@@ -24,9 +30,9 @@ struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
                     Text(String(format: fmt, locale: .current, text))
                 }
             }
-        } else {
-            SectionList(filteredItems: $filteredItems, text: text, setItem: setItem, cellView: cellView)
         }
+
+        SectionList(filteredItems: $filteredItems, text: text, setItem: setItem, cellView: cellView)
     }
 }
 

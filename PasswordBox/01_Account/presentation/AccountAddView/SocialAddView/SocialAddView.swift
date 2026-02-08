@@ -14,17 +14,12 @@ struct SocialAddView: View {
         List {
             SearchSectionView(
                 placeholder: "searchSiteOrAccount",
-                textBinding: $viewModel.text,
-                onSubmit: {
-                    viewModel.updateSite()
-                }
+                textBinding: $viewModel.text                
             )
             
-            AccountFilteredSectionView(
+            SocialFilteredSectionView(
                 filteredItems: $viewModel.filteredAccounts,
                 text: viewModel.text,
-                type: .social,
-                updateItem: viewModel.updateSite,
                 setItem: { account in
                     viewModel.updateAccount(account)
                 },
@@ -41,7 +36,7 @@ struct SocialAddView: View {
         }
         .scrollDismissesKeyboard(.immediately)
         .onDisappear {
-            viewModel.reset()
+            // viewModel.reset()
         }
     }
 }
@@ -49,4 +44,3 @@ struct SocialAddView: View {
 #Preview {
     SocialAddView()
 }
-

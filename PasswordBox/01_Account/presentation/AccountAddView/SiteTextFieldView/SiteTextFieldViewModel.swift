@@ -23,7 +23,7 @@ class SiteTextFieldViewModel: ObservableObject, AccountMessageBindable {
         controlSubject.send(.activateSiteTextField)
     }
     
-    func setupAccountMessageBinding() {
+    private func setupAccountMessageBinding() {
         bindAccountMessage{ [weak self] message in
             switch message {
             case .updateSitename(let sitename):
@@ -34,5 +34,4 @@ class SiteTextFieldViewModel: ObservableObject, AccountMessageBindable {
         }
     }
 }
-
 

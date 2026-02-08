@@ -7,21 +7,15 @@
 
 import SwiftUI
 
-enum AccountFilterType {
-    case account
-    case social
-}
-
 struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
     @Binding var filteredItems: [Item]
     var text: String
-    var type: AccountFilterType
     var updateItem: () -> Void
     var setItem: (Item) -> Void
     @ViewBuilder var cellView: (Item) -> Cell
     
     var body: some View {
-        if filteredItems.isEmpty && !text.isEmpty && type == .account {
+        if filteredItems.isEmpty && !text.isEmpty {
             Section {
                 Button {
                     updateItem()
@@ -30,7 +24,20 @@ struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
                     Text(String(format: fmt, locale: .current, text))
                 }
             }
-        } else if filteredItems.isEmpty && !text.isEmpty {
+        } else {
+            SectionList(filteredItems: $filteredItems, text: text, setItem: setItem, cellView: cellView)
+        }
+    }
+}
+
+struct SocialFilteredSectionView<Item: Hashable, Cell: View>: View {
+    @Binding var filteredItems: [Item]
+    var text: String
+    var setItem: (Item) -> Void
+    @ViewBuilder var cellView: (Item) -> Cell
+    
+    var body: some View {
+        if filteredItems.isEmpty && !text.isEmpty {
             Section {
                 EmptySearchResultView(query: text)
                     .frame(maxWidth: .infinity)
@@ -38,33 +45,26 @@ struct AccountFilteredSectionView<Item: Hashable, Cell: View>: View {
                     .listRowBackground(Color.clear)
             }
         } else {
-            Section {
-                ForEach(filteredItems, id: \.self) { item in
-                    Button {
-                        setItem(item)
-                    } label: {
-                        cellView(item)
-                    }
-                }
-            }
+            SectionList(filteredItems: $filteredItems, text: text, setItem: setItem, cellView: cellView)
         }
     }
 }
 
-extension AccountFilteredSectionView where Item == AccountInfoWrapper {
-    init(
-        filteredAccounts: Binding<[AccountInfoWrapper]>,
-        text: String,
-        type: AccountFilterType,
-        updateItem: @escaping () -> Void,
-        setItem: @escaping (AccountInfoWrapper) -> Void,
-        cellView: @escaping (AccountInfoWrapper) -> Cell
-    ) {
-        self._filteredItems = filteredAccounts
-        self.text = text
-        self.type = type
-        self.updateItem = updateItem
-        self.setItem = setItem
-        self.cellView = cellView
+private struct SectionList<Item: Hashable, Cell: View>: View {
+    @Binding var filteredItems: [Item]
+    var text: String
+    var setItem: (Item) -> Void
+    @ViewBuilder var cellView: (Item) -> Cell
+    
+    var body: some View {
+        Section {
+            ForEach(filteredItems, id: \.self) { item in
+                Button {
+                    setItem(item)
+                } label: {
+                    cellView(item)
+                }
+            }
+        }
     }
 }

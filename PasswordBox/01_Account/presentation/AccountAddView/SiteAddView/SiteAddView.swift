@@ -21,9 +21,8 @@ struct SiteAddView: View {
             )
             
             AccountFilteredSectionView(
-                filteredAccounts: $viewModel.filteredAccounts,
+                filteredItems: $viewModel.filteredAccounts,
                 text: viewModel.text,
-                type: .account,
                 updateItem: viewModel.updateSite,
                 setItem: { account in
                     viewModel.setSite(from: account.sitename)

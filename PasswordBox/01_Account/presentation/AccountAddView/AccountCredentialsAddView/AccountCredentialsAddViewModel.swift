@@ -18,15 +18,32 @@ class AccountCredentialsAddViewModel: ObservableObject, @MainActor AccountMessag
             
     init() {
         setupBindings()
+        setupAccountMessageBinding()
     }
     
     func setupBindings() {
         $credentials
-            .dropFirst() // 초기값은 무시
+            .dropFirst()
             .sink { [weak self] cred in
                 self?.accountSubject.send(.updateAccountCredentials(cred))
             }
             .store(in: &cancellables)
+    }
+}
+
+extension AccountCredentialsAddViewModel {
+    private func setupAccountMessageBinding() {
+        bindAccountMessage{ [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .updateSitename(let sitename):
+                self.credentials.set(sitename: sitename)
+            case .updateSocialId(let socialId):
+                self.credentials.set(socialId: socialId)
+            default:
+                return
+            }
+        }
     }
 }
 

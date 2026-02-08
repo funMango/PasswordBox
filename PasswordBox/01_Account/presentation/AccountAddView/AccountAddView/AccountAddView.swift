@@ -24,7 +24,7 @@ struct AccountAddView: View {
             }
             .sheet(isPresented: $viewModel.isSocialSearchActive) {
                 SocialAddView()
-            }
+            }            
             .navigationTitle(String(localized: "addAccount"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

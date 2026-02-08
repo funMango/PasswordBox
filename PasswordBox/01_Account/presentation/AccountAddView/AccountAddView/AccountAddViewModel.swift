@@ -16,10 +16,8 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
         
     @Published var isSiteSearchActive: Bool = false
     @Published var isSocialSearchActive: Bool = false
-    
     @Published var accountCredentials: AccountCredentials?
-    @Published var sitename: String = ""
-    @Published var socialId: String?
+    
     
     var cancellables: Set<AnyCancellable> = []
             
@@ -36,12 +34,12 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
         }
         
         let request = CreateAccountRequest(
-            sitename: sitename,
+            sitename: accountCredentials.sitename,
             username: accountCredentials.username,
             password: accountCredentials.password,
             pin: accountCredentials.pin,
             memo: accountCredentials.memo,
-            socialId: socialId
+            socialId: accountCredentials.socialId
         )
         
         AccountService.save(request)
@@ -54,7 +52,6 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
     }
     
     private func reset() {
-        self.sitename = ""
         self.accountCredentials = nil
     }
 }
@@ -67,11 +64,7 @@ extension AccountAddViewModel {
             return false
         }
         
-        if sitename.isEmpty || cred.username.isEmpty || cred.password.isEmpty {
-            return false
-        }
-                
-        return true
+        return !cred.sitename.isEmpty                        
     }
 }
 
@@ -83,7 +76,7 @@ extension AccountAddViewModel {
             case .activateSiteTextField:
                 self?.isSiteSearchActive = true
             case .activateSocialTextField:
-                self?.isSocialSearchActive.toggle()
+                self?.isSocialSearchActive = true
             default:
                 return
             }
@@ -93,17 +86,19 @@ extension AccountAddViewModel {
     private func setupAccountMessageBinding() {
         bindAccountMessage{ [weak self] message in
             switch message {
-            case .updateSitename(let sitename):
-                self?.sitename = sitename
+            case .updateSitename:
                 self?.isSiteSearchActive.toggle()
+            case .updateSocialId:                
+                self?.isSocialSearchActive.toggle()
             case .updateAccountCredentials(let cred):
                 self?.accountCredentials = cred
-            case .selectAccount(let account):
-                self?.socialId = account.id
-                self?.isSocialSearchActive.toggle()
             default:
                 return
             }
         }
     }
+    
+    
+    
+    
 }

@@ -12,6 +12,7 @@ enum AccountMessage {
     case changeSearchText(String)
     case updateAccountCredentials(AccountCredentials)
     case updateSitename(String)
+    case updateSocialId(String)
     
     case selectAccount(Account)
     case selectSite(String)

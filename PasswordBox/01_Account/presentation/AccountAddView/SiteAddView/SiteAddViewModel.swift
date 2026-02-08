@@ -14,7 +14,6 @@ class SiteAddViewModel: ObservableObject {
     @Injected var accountService: AccountService
     @Injected var accountFetcher: AccountFetcher
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Injected var sitenameSubject: CurrentValueSubject<String?, Never>
         
     @Published var text: String = ""
     @Published var allAccountInfo: [AccountInfoWrapper] = []
@@ -35,7 +34,6 @@ class SiteAddViewModel: ObservableObject {
     
     func updateSite() {
         accountSubject.send(.updateSitename(text))
-        sitenameSubject.send(text)
     }
 }
 

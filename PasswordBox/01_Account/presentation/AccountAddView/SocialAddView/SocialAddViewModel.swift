@@ -11,7 +11,7 @@ import Resolver
 import Combine
 
 @MainActor
-class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor SitenameMessageBindable {
+class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var sitenameSubject: CurrentValueSubject<String?, Never>
@@ -27,20 +27,12 @@ class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable, @
     init(filter: AccountFilter) {
         self.filter = filter
         setupAccounts()
-        setupSitenameMessageBindings()
         setupTextBindings()
     }
         
     func updateAccount(_ account: Account) {
+        accountSubject.send(.updateSocialId(account.id))
         accountSubject.send(.selectAccount(account))
-    }
-    
-    func updateSite() {
-        accountSubject.send(.selectSite(text))
-    }
-    
-    func reset() {
-        sitenameSubject.send(nil)
     }
 }
 
@@ -54,13 +46,6 @@ extension SocialAddViewModel {
             } catch(let error) {
                 print(error.localizedDescription)
             }
-        }
-    }
-    
-    func setupSitenameMessageBindings() {
-        bindSitenameMessage{ [weak self] sitename in
-            guard let sitename = sitename else { return }
-            self?.sitename = sitename
         }
     }
     

@@ -18,7 +18,6 @@ enum AccountMessage {
     case selectSite(String)
     
     case fetchAccounts
-    case fetchWrappers([AccountInfoWrapper])
     case onRefresh
 }
 

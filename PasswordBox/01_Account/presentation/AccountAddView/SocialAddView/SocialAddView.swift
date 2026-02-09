@@ -24,10 +24,13 @@ struct SocialAddView: View {
                     viewModel.updateAccount(account)
                 },
                 cellView: { account in
-                    AccountInfoWrapper.account(
-                        account,
-                        fallbackSitename: viewModel.fallbackSitename(for: account)
-                    ).cellView
+                    let fallback = viewModel.fallbackSitename(for: account)
+                    let usesFallback = account.username.isEmpty && fallback != nil
+                    AccountListCellView(
+                        title: account.sitename,
+                        subTitle: account.username.isEmpty ? (fallback ?? "") : account.username,
+                        showsLinkIcon: usesFallback
+                    )
                 }
             )
         }

@@ -8,5 +8,5 @@
 import Foundation
 
 enum Route: Hashable {
-    case account(AccountInfoWrapper) // 예: 상세 화면
+    case account(Account) // 예: 상세 화면
 }

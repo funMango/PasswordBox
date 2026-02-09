@@ -21,8 +21,8 @@ struct AccountBrowseView: View {
         }
         .listRowSeparator(.hidden)
         
-        AccountBrowseContentView(viewModel: viewModel) { wrapper in
-            router.push(.account(wrapper))
+        AccountBrowseContentView(viewModel: viewModel) { account in
+            router.push(.account(account))
         }
         
     }
@@ -31,7 +31,7 @@ struct AccountBrowseView: View {
 struct AccountBrowseContentView: View {
     @ObservedObject var viewModel: AccountBrowseViewModel
     
-    var onSelect: (AccountInfoWrapper) -> Void
+    var onSelect: (Account) -> Void
     
     var body: some View {
         ForEach(viewModel.accountWrappers.indices, id: \.self) { index in
@@ -41,7 +41,12 @@ struct AccountBrowseContentView: View {
                 onSelect(account)
             }) {
                 VStack(alignment: .leading, spacing: 0) {
-                    account.cellView
+                    let subtitle = viewModel.displaySubtitle(for: account)
+                    AccountListCellView(
+                        title: account.sitename,
+                        subTitle: subtitle.text,
+                        showsLinkIcon: subtitle.usesFallback
+                    )
                 }
                 .fullRowTappable()
             }
@@ -59,4 +64,3 @@ struct AccountBrowseContentView: View {
 #Preview {
     AccountBrowseView()
 }
-

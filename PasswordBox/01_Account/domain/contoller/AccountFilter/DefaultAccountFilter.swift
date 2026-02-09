@@ -8,7 +8,7 @@
 import Foundation
 
 final class DefalutAccountInfoFilter: AccountInfoFilter {
-    func filtering(accounts: [AccountInfoWrapper], query: String, excluded: String?) -> [AccountInfoWrapper] {
+    func filtering(accounts: [Account], query: String, excluded: String?) -> [Account] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         let uniqueAccounts = removeDuplicates(accounts)
 
@@ -19,15 +19,15 @@ final class DefalutAccountInfoFilter: AccountInfoFilter {
         return filtering(accounts: uniqueAccounts, query: query)
     }
     
-    func filtering(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper] {
+    func filtering(accounts: [Account], query: String) -> [Account] {
         let filterBySitenmae = Spec.sitename(by: query)
         return accounts.filter { filterBySitenmae.isSatisfied($0) }
     }
     
     
-    func removeDuplicates(_ accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+    func removeDuplicates(_ accounts: [Account]) -> [Account] {
         var seen = Set<String>()
-        var result: [AccountInfoWrapper] = []
+        var result: [Account] = []
         result.reserveCapacity(accounts.count)
 
         for account in accounts {

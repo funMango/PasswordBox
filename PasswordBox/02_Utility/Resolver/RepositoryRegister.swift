@@ -16,10 +16,6 @@ extension Resolver {
         }
         
         register{
-            DefaultSocialAccount() as SocialAccountRepository
-        }
-        
-        register{
             DefaultUserRepository() as UserRepository
         }        
     }

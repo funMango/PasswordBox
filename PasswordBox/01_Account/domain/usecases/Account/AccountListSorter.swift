@@ -10,64 +10,64 @@ import Resolver
 import Combine
 
 protocol AccountListSorter {
-    func sort(wrappers: [AccountInfoWrapper]) async throws -> [AccountInfoWrapper]
-    func sort(wrappers: [AccountInfoWrapper], order: AccountOrder, orderBy: AccountOrderBy) -> [AccountInfoWrapper]
+    func sort(accounts: [Account]) async throws -> [Account]
+    func sort(accounts: [Account], order: AccountOrder, orderBy: AccountOrderBy) -> [Account]
 }
 
 class DefaultAccountListSorter: AccountListSorter {
     @Injected var userService: UserService
     
-    func sort(wrappers: [AccountInfoWrapper]) async throws -> [AccountInfoWrapper] {
+    func sort(accounts: [Account]) async throws -> [Account] {
         let (order, orderBy) = try await userService.getOrderAndOrderBy()        
         
         switch orderBy {
         case .title:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.sitename < $1.sitename }
+                return accounts.sorted { $0.sitename < $1.sitename }
             case .descending:
-                return wrappers.sorted { $0.sitename > $1.sitename }
+                return accounts.sorted { $0.sitename > $1.sitename }
             }
         case .createDate:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.createDate < $1.createDate }
+                return accounts.sorted { $0.createDate < $1.createDate }
             case .descending:
-                return wrappers.sorted { $0.createDate > $1.createDate }
+                return accounts.sorted { $0.createDate > $1.createDate }
             }
         case .updateDate:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.updateDate < $1.updateDate }
+                return accounts.sorted { $0.updateDate < $1.updateDate }
             case .descending:
-                return wrappers.sorted { $0.updateDate > $1.updateDate }
+                return accounts.sorted { $0.updateDate > $1.updateDate }
             }
         }
     }
     
-    func sort(wrappers: [AccountInfoWrapper], order: AccountOrder, orderBy: AccountOrderBy) -> [AccountInfoWrapper] {
+    func sort(accounts: [Account], order: AccountOrder, orderBy: AccountOrderBy) -> [Account] {
         
         switch orderBy {
         case .title:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.sitename < $1.sitename }
+                return accounts.sorted { $0.sitename < $1.sitename }
             case .descending:
-                return wrappers.sorted { $0.sitename > $1.sitename }
+                return accounts.sorted { $0.sitename > $1.sitename }
             }
         case .createDate:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.createDate < $1.createDate }
+                return accounts.sorted { $0.createDate < $1.createDate }
             case .descending:
-                return wrappers.sorted { $0.createDate > $1.createDate }
+                return accounts.sorted { $0.createDate > $1.createDate }
             }
         case .updateDate:
             switch order {
             case .ascending:
-                return wrappers.sorted { $0.updateDate < $1.updateDate }
+                return accounts.sorted { $0.updateDate < $1.updateDate }
             case .descending:
-                return wrappers.sorted { $0.updateDate > $1.updateDate }
+                return accounts.sorted { $0.updateDate > $1.updateDate }
             }
         }
     }

@@ -12,11 +12,11 @@ import Combine
 class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var defaultAccountSubject: CurrentValueSubject<[AccountDTO]?, Never>
-    @Injected var socialAccountSubject: CurrentValueSubject<[SocialAccountDTO]?, Never>
-    @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
+    @Injected var accountWrapperSubject: CurrentValueSubject<[Account], Never>
     @Injected var userSubject: CurrentValueSubject<UserDTO?, Never>
     @Injected var accountFetcher: AccountFetcher
     @Injected var accountSorter: AccountListSorter
+    @Injected var accountCache: AccountCache
     var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -26,10 +26,6 @@ class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
     
     func pushDefaultAccount(_ account: [AccountDTO]) {
         defaultAccountSubject.send(account)
-    }
-    
-    func pushSocialAccount(_ account: [SocialAccountDTO]) {
-        socialAccountSubject.send(account)
     }
     
     func pushUser(_ user: [UserDTO]) {
@@ -43,34 +39,32 @@ class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
     func fetch() {
         guard
             let defaultAccounts = defaultAccountSubject.value,
-            let socialAccounts = socialAccountSubject.value,
             let user = userSubject.value
         else {
             return
         }
 
-        let wrappers = getWrappers(
+        let accounts = getAccounts(
             defaults: defaultAccounts,
-            socials: socialAccounts,
             order: user.sortOrder,
             orderBy: user.sortBy
         )
                 
-        accountWrapperSubject.send(wrappers)
+        accountWrapperSubject.send(accounts)
     }
     
-    private func getWrappers(defaults: [AccountDTO], socials: [SocialAccountDTO], order: AccountOrder, orderBy: AccountOrderBy) -> [AccountInfoWrapper] {
-        
-        let wrappers = accountFetcher.getWrappers(
-            defaultDTOs: defaults,
-            socialDTOs: socials
-        )
+    private func getAccounts(defaults: [AccountDTO], order: AccountOrder, orderBy: AccountOrderBy) -> [Account] {
+        let accounts = accountFetcher.getAccounts(defaultDTOs: defaults)
 
         let sorted = accountSorter.sort(
-            wrappers: wrappers,
+            accounts: accounts,
             order: order,
             orderBy: orderBy
         )
+        
+        Task { [weak self] in
+            await self?.accountCache.update(accounts: sorted)
+        }
         
         return sorted
     }
@@ -79,25 +73,23 @@ class AccountWrappersFetchViewModel: ObservableObject, AccountMessageBindable {
 // Observing
 extension AccountWrappersFetchViewModel {
     func observeSubjects() {
-        Publishers.CombineLatest3(
+        Publishers.CombineLatest(
             defaultAccountSubject,
-            socialAccountSubject,
             userSubject
         )
-        .compactMap { defaultAccounts, socialAccounts, user -> ([AccountDTO], [SocialAccountDTO], UserDTO)? in
-            guard let da = defaultAccounts, let sa = socialAccounts, let u = user else { return nil }
-            return (da, sa, u)
+        .compactMap { defaultAccounts, user -> ([AccountDTO], UserDTO)? in
+            guard let da = defaultAccounts, let u = user else { return nil }
+            return (da, u)
         }
-        .sink { [weak self] defaultAccounts, socialAccounts, user in
+        .sink { [weak self] defaultAccounts, user in
             guard let self else { return }
-            let wrappers = getWrappers(
+            let accounts = getAccounts(
                 defaults: defaultAccounts,
-                socials: socialAccounts,
                 order: user.sortOrder,
                 orderBy: user.sortBy
             )
                         
-            accountWrapperSubject.send(wrappers)
+            accountWrapperSubject.send(accounts)
         }
         .store(in: &cancellables)
     }

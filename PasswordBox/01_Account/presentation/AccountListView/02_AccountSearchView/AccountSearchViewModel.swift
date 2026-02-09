@@ -12,14 +12,18 @@ import Combine
 @MainActor
 class AccountSearchViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor AccountWrapperBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
-    @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
+    @Injected var accountWrapperSubject: CurrentValueSubject<[Account], Never>
     @Injected var accountFilter: AccountSearchFilter
-    @Published var accountWrappers: [AccountInfoWrapper] = []
-    @Published var displayWrappers: [AccountInfoWrapper] = []
+    @Injected var accountCache: AccountCache
+    @Published var accountWrappers: [Account] = []
+    @Published var displayWrappers: [Account] = []
     @Published var query: String = ""
     var cancellables = Set<AnyCancellable>()
     
     init() {
+        Task { [weak self] in
+            await self?.accountCache.ensureLoaded()
+        }
         setupAccountMessageBindable()
         setupAccountWrappers()
     }
@@ -54,5 +58,13 @@ extension AccountSearchViewModel {
             self.accountWrappers = wrappers
             self.displayWrappers = accountFilter.filterByDate(accounts: accountWrappers)
         }
+    }
+
+    @MainActor
+    func displaySubtitle(for account: Account) -> (text: String, usesFallback: Bool) {
+        if account.username.isEmpty, let id = account.socialId, let sitename = accountCache.sitename(for: id) {
+            return (sitename, true)
+        }
+        return (account.username, false)
     }
 }

@@ -17,7 +17,6 @@ class AccountViewModel: ObservableObject, @MainActor ControlMessageBindable {
     @Injected var cloudManager: CloudManager
         
     @Published var isShowingAccountAddSheet = false
-    @Published var isShowingSocialAccountAddSheet: Bool = false
     var cancellables: Set<AnyCancellable> = []
         
     init() {        

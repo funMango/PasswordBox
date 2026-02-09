@@ -16,8 +16,8 @@ class SiteAddViewModel: ObservableObject {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
         
     @Published var text: String = ""
-    @Published var allAccountInfo: [AccountInfoWrapper] = []
-    @Published var filteredAccounts: [AccountInfoWrapper] = []
+    @Published var allAccountInfo: [Account] = []
+    @Published var filteredAccounts: [Account] = []
     
     var filter: AccountInfoFilter
     

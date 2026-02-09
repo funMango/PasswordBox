@@ -8,22 +8,22 @@
 import Foundation
 
 protocol AccountSearchFilter {
-    func filter(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper]
-    func filterByDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper]
+    func filter(accounts: [Account], query: String) -> [Account]
+    func filterByDate(accounts: [Account]) -> [Account]
 }
 
 class DefaultAccountSearchFilter: AccountSearchFilter {
-    func filter(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper] {
-        let filterdBySitename = filterBySitename(accounts: accounts, query: query)
-        let filterdBySocialSitenameOrUsername = filterBySocialSitenameOrUsername(
+    func filter(accounts: [Account], query: String) -> [Account] {
+        let filteredBySitename = filterBySitename(accounts: accounts, query: query)
+        let filteredByUsername = filterByUsername(
             accounts: accounts,
-            filteredAccounts: filterdBySitename,
+            filteredAccounts: filteredBySitename,
             query: query
         )
-        return filterdBySitename + filterdBySocialSitenameOrUsername
+        return filteredBySitename + filteredByUsername
     }
     
-    func filterByDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+    func filterByDate(accounts: [Account]) -> [Account] {
         let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         let recentAccounts = accounts.filter { account in
             account.createDate >= oneWeekAgo ||
@@ -33,22 +33,21 @@ class DefaultAccountSearchFilter: AccountSearchFilter {
         return recentAccounts
     }
     
-    private func filterBySitename(accounts: [AccountInfoWrapper], query: String) -> [AccountInfoWrapper] {
-        return accounts.filter { $0.matchBySitename(query: query) }
+    private func filterBySitename(accounts: [Account], query: String) -> [Account] {
+        return accounts.filter { Spec.sitename(by: query).isSatisfied($0) }
             .sorted { a, b in
                 a.sitename.localizedCaseInsensitiveCompare(b.sitename) == .orderedAscending
             }
     }
     
-    private func filterBySocialSitenameOrUsername(
-        accounts: [AccountInfoWrapper],
-        filteredAccounts: [AccountInfoWrapper],
+    private func filterByUsername(
+        accounts: [Account],
+        filteredAccounts: [Account],
         query: String
-    ) -> [AccountInfoWrapper] {
-        
+    ) -> [Account] {
         return accounts.filter {
             !filteredAccounts.contains($0) &&
-            $0.matchBySocialSiteNameOrUsername(query: query)
+            Spec.username(by: query).isSatisfied($0)
         }
         .sorted { a, b in
             a.sitename.localizedCaseInsensitiveCompare(b.sitename) == .orderedAscending

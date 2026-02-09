@@ -8,7 +8,7 @@
 import Foundation
 
 struct AccountAscendingSorter: AccountSortable {
-    func sort(accounts: [AccountInfoWrapper], by: AccountOrderBy) -> [AccountInfoWrapper] {
+    func sort(accounts: [Account], by: AccountOrderBy) -> [Account] {
         switch by {
         case .title:
             return sortByTitle(accounts: accounts)
@@ -19,15 +19,15 @@ struct AccountAscendingSorter: AccountSortable {
         }
     }
     
-    private func sortByTitle(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+    private func sortByTitle(accounts: [Account]) -> [Account] {
         return accounts.sorted { $0.sitename < $1.sitename }
     }
     
-    private func sortByCreateDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+    private func sortByCreateDate(accounts: [Account]) -> [Account] {
         return accounts.sorted { $0.createDate < $1.createDate }
     }
     
-    private func sortByUpdateDate(accounts: [AccountInfoWrapper]) -> [AccountInfoWrapper] {
+    private func sortByUpdateDate(accounts: [Account]) -> [Account] {
         return accounts.sorted { $0.updateDate < $1.updateDate }
     }
 }

@@ -41,8 +41,8 @@ struct AccountListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: Route.self) { route in
             switch route {
-            case .account(let wrapper):
-                wrapper.destinationView
+            case .account(let account):
+                AccountDetailView(viewModel: AccountDetailViewModel(account: account))
             }
         }
         .safeAreaInset(edge: .bottom) {
@@ -52,5 +52,3 @@ struct AccountListView: View {
         .listStyle(.plain)
     }
 }
-
-

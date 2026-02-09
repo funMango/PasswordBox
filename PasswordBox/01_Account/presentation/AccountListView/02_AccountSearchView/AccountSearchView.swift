@@ -15,16 +15,27 @@ struct AccountSearchView: View {
     var body: some View {        
         Section(header: viewModel.query.isEmpty ? Text(String(localized: "recentlyUpdatedAccounts")) : Text("")) {
             ForEach(viewModel.displayWrappers.indices, id: \.self) { index in
-                let wrapper = viewModel.displayWrappers[index]
+                let account = viewModel.displayWrappers[index]
                 
                 Button {
-                    router.push(.account(wrapper))
+                    router.push(.account(account))
                 } label: {
                     Group {
                         if viewModel.query.isEmpty {
-                            wrapper.cellView
+                            let subtitle = viewModel.displaySubtitle(for: account)
+                            AccountListCellView(
+                                title: account.sitename,
+                                subTitle: subtitle.text,
+                                showsLinkIcon: subtitle.usesFallback
+                            )
                         } else {
-                            wrapper.cellHighlightedView(query: viewModel.query)
+                            let subtitle = viewModel.displaySubtitle(for: account)
+                            AccountListHighlightCellView(
+                                sitename: account.sitename,
+                                username: subtitle.text,
+                                query: viewModel.query,
+                                showsLinkIcon: subtitle.usesFallback
+                            )
                         }
                     }
                     .fullRowTappable()

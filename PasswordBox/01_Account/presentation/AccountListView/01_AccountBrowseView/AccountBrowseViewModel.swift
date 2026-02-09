@@ -11,13 +11,12 @@ import Combine
 
 @MainActor
 class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindable, @MainActor ControlMessageBindable {
-    @Injected var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never>
+    @Injected var accountWrapperSubject: CurrentValueSubject<[Account], Never>
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountService: AccountService
     @Injected var accountListSorter: AccountListSorter
-    @Injected var socialAccountService: SocialAccountService
     @Injected var accountCache: AccountCache
-    @Published var accountWrappers: [AccountInfoWrapper] = []
+    @Published var accountWrappers: [Account] = []
     var cancellables: Set<AnyCancellable> = []
     
     init() {        
@@ -27,7 +26,7 @@ class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindabl
                     
     func deleteAccount(offset: IndexSet) {
         // 1) 삭제 대상 요소를 먼저 확보
-        let targets: [AccountInfoWrapper] = offset.compactMap { index in
+        let targets: [Account] = offset.compactMap { index in
             guard accountWrappers.indices.contains(index) else { return nil }
             return accountWrappers[index]
         }
@@ -37,12 +36,7 @@ class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindabl
         
         // 3) 실제 서비스 삭제 수행
         for target in targets {
-            switch target {
-            case .account(let acc, _):
-                accountService.delete(acc.id)
-            case .social(let soc):
-                socialAccountService.delete(id: soc.id)
-            }
+            accountService.delete(target.id)
         }
 
         Task { [weak self] in
@@ -73,7 +67,15 @@ extension AccountBrowseViewModel {
     private func setAccountWrappers() {
         Task { [weak self] in
             guard let self else { return }
-            self.accountWrappers = try await self.accountListSorter.sort(wrappers: self.accountWrappers)
+            self.accountWrappers = try await self.accountListSorter.sort(accounts: self.accountWrappers)
         }
+    }
+
+    @MainActor
+    func displaySubtitle(for account: Account) -> (text: String, usesFallback: Bool) {
+        if account.username.isEmpty, let id = account.socialId, let sitename = accountCache.sitename(for: id) {
+            return (sitename, true)
+        }
+        return (account.username, false)
     }
 }

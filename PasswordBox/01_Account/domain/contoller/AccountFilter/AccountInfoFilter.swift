@@ -8,5 +8,5 @@
 import Foundation
 
 protocol AccountInfoFilter {
-    func filtering(accounts: [AccountInfoWrapper], query: String, excluded: String?) -> [AccountInfoWrapper]
+    func filtering(accounts: [Account], query: String, excluded: String?) -> [Account]
 }

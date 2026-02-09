@@ -8,12 +8,16 @@
 import Foundation
 
 protocol AccountSortable {
-    func sort(accounts: [AccountInfoWrapper], by: AccountOrderBy) -> [AccountInfoWrapper]
+    func sort(accounts: [Account], by: AccountOrderBy) -> [Account]
 }
 
 struct AccountSorter {
-    func sortByTitle(accounts: [AccountInfoWrapper], order: AccountOrder, by: AccountOrderBy) -> [AccountInfoWrapper] {
-        
-        return []
+    func sortByTitle(accounts: [Account], order: AccountOrder, by: AccountOrderBy) -> [Account] {
+        switch order {
+        case .ascending:
+            return accounts.sorted { $0.sitename < $1.sitename }
+        case .descending:
+            return accounts.sorted { $0.sitename > $1.sitename }
+        }
     }
 }

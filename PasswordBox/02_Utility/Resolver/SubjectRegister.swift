@@ -24,7 +24,7 @@ extension Resolver {
         }.scope(.application)
                 
         register {
-            CurrentValueSubject<[AccountInfoWrapper], Never>([])
+            CurrentValueSubject<[Account], Never>([])
         }.scope(.application)
     }
 }
@@ -33,10 +33,6 @@ extension Resolver {
     public static func registerDTOSubjects() {
         register {
             CurrentValueSubject<[AccountDTO]?, Never>(nil)
-        }.scope(.application)
-        
-        register {
-            CurrentValueSubject<[SocialAccountDTO]?, Never>(nil)
         }.scope(.application)
         
         register {

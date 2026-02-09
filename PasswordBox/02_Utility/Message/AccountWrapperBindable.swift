@@ -9,12 +9,12 @@ import Foundation
 import Combine
 
 protocol AccountWrapperBindable: AnyObject {
-    var accountWrapperSubject: CurrentValueSubject<[AccountInfoWrapper], Never> { get }
+    var accountWrapperSubject: CurrentValueSubject<[Account], Never> { get }
     var cancellables: Set<AnyCancellable> { get set }
 }
 
 extension AccountWrapperBindable {
-    func bindAccountWrappers(action: @escaping ([AccountInfoWrapper]) -> Void) {
+    func bindAccountWrappers(action: @escaping ([Account]) -> Void) {
         accountWrapperSubject
             .receive(on: DispatchQueue.main) // @MainActor지만 명시하면 안전
             .sink { wrappers in

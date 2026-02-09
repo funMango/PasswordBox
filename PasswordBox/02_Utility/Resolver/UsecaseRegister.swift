@@ -16,10 +16,6 @@ extension Resolver {
         }
         
         register {
-            DefaultSocialAccountService() as SocialAccountService
-        }
-        
-        register {
             DefaultUserService() as UserService
         }
         

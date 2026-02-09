@@ -15,8 +15,7 @@ extension Resolver {
             do {
                 let schema = Schema([
                     AccountDTO.self,
-                    UserDTO.self,
-                    SocialAccountDTO.self
+                    UserDTO.self
                 ])
                 
                 let container = try ModelContainer(

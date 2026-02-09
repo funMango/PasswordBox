@@ -22,12 +22,14 @@ struct SocialTextFieldView: View {
                 }
             )
         } else {
-            AccountListCellView(
-                title: viewModel.account?.sitename ?? "",
-                subTitle: viewModel.account?.username ?? ""
-            )
-            .onTapGesture {
-                viewModel.sendMessage()
+            if let account = viewModel.account {
+                AccountInfoWrapper.account(
+                    account,
+                    fallbackSitename: viewModel.fallbackSitename(for: account)
+                ).cellView
+                .onTapGesture {
+                    viewModel.sendMessage()
+                }
             }
         }
     }

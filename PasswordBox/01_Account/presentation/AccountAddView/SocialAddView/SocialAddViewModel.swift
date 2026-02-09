@@ -15,6 +15,7 @@ class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable {
     @Injected var accountService: AccountService
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var sitenameSubject: CurrentValueSubject<String?, Never>
+    @Injected var accountCache: AccountCache
     
     @Published var text: String = ""
     @Published var sitename: String = ""
@@ -34,6 +35,11 @@ class SocialAddViewModel: ObservableObject, @MainActor AccountMessageBindable {
         accountSubject.send(.updateSocialId(account.id))
         accountSubject.send(.selectAccount(account))
     }
+
+    func fallbackSitename(for account: Account) -> String? {
+        guard let id = account.socialId else { return nil }
+        return accountCache.sitename(for: id)
+    }
 }
 
 // MARK: - Bindings
@@ -43,6 +49,7 @@ extension SocialAddViewModel {
         Task {
             do {
                 self.allAccounts = try await accountService.fetchAll()
+                self.accountCache.update(accounts: self.allAccounts)
             } catch(let error) {
                 print(error.localizedDescription)
             }
@@ -65,4 +72,3 @@ extension SocialAddViewModel {
             .assign(to: &$filteredAccounts)
     }
 }
-

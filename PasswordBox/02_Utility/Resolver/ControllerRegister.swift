@@ -21,6 +21,11 @@ extension Resolver {
         register {
             DefaultAccountSearchFilter() as AccountSearchFilter
         }
+        
+        register {
+            AccountCache()
+        }
+        .scope(.application)
                         
         register {
             Router()

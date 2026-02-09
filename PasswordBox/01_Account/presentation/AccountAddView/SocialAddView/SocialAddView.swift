@@ -24,10 +24,10 @@ struct SocialAddView: View {
                     viewModel.updateAccount(account)
                 },
                 cellView: { account in
-                    AccountListCellView(
-                        title: account.sitename,
-                        subTitle: account.username
-                    )
+                    AccountInfoWrapper.account(
+                        account,
+                        fallbackSitename: viewModel.fallbackSitename(for: account)
+                    ).cellView
                 }
             )
         }

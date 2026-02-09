@@ -13,6 +13,7 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
     @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
     @Injected var AccountService: AccountService
+    @Injected var accountCache: AccountCache
         
     @Published var isSiteSearchActive: Bool = false
     @Published var isSocialSearchActive: Bool = false
@@ -42,6 +43,9 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
         )
         
         AccountService.save(request)
+        Task { [weak self] in
+            await self?.accountCache.refresh()
+        }
         deactivatePage()
     }
     

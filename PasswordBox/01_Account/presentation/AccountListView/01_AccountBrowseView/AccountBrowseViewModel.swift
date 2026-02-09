@@ -16,6 +16,7 @@ class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindabl
     @Injected var accountService: AccountService
     @Injected var accountListSorter: AccountListSorter
     @Injected var socialAccountService: SocialAccountService
+    @Injected var accountCache: AccountCache
     @Published var accountWrappers: [AccountInfoWrapper] = []
     var cancellables: Set<AnyCancellable> = []
     
@@ -42,6 +43,10 @@ class AccountBrowseViewModel: ObservableObject, @MainActor AccountWrapperBindabl
             case .social(let soc):
                 socialAccountService.delete(id: soc.id)
             }
+        }
+
+        Task { [weak self] in
+            await self?.accountCache.refresh()
         }
     }
 }

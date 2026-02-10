@@ -12,7 +12,7 @@ struct AccountCredentials {
     var username: String = ""
     var password: String = ""
     var pin: String? = nil
-    private(set) var socialId: String = ""
+    private(set) var socialId: String?
     var memo: String? = nil
     
     
@@ -20,7 +20,7 @@ struct AccountCredentials {
         self.sitename = sitename
     }
     
-    mutating func set(socialId: String) {
+    mutating func set(socialId: String?) {
         self.socialId = socialId
     }
 }

@@ -12,6 +12,7 @@ struct AccountListHighlightCellView: View {
     var username: String
     var query: String
     var showsLinkIcon: Bool = false
+    var showsChevron: Bool = true
 
     var body: some View {
         AccountListCellContent(
@@ -38,7 +39,8 @@ struct AccountListHighlightCellView: View {
                     ))
                     .font(.caption)
                 }
-            )
+            ),
+            showsChevron: showsChevron
         )
     }
 }

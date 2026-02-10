@@ -25,11 +25,21 @@ struct SocialTextFieldView: View {
             if let account = viewModel.account {
                 let fallback = viewModel.fallbackSitename(for: account)
                 let usesFallback = account.username.isEmpty && fallback != nil
-                AccountListCellView(
-                    title: account.sitename,
-                    subTitle: account.username.isEmpty ? (fallback ?? "") : account.username,
-                    showsLinkIcon: usesFallback
-                )
+                HStack(spacing: 8) {
+                    AccountListCellView(
+                        title: account.sitename,
+                        subTitle: account.username.isEmpty ? (fallback ?? "") : account.username,
+                        showsLinkIcon: usesFallback,
+                        showsChevron: false
+                    )
+                    Button {
+                        viewModel.tapXmarkButton()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.gray)
+                    }
+                    .buttonStyle(.plain)
+                }
                 .onTapGesture {
                     viewModel.sendMessage()
                 }

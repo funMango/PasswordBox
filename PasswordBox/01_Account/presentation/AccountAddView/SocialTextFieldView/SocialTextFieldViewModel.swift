@@ -28,6 +28,16 @@ class SocialTextFieldViewModel: ObservableObject, AccountMessageBindable {
         controlSubject.send(.activateSocialTextField)
     }
     
+    func tapXmarkButton() {
+        controlSubject.send(.deleteSocialId)
+        resetAccountInfo()
+    }
+    
+    private func resetAccountInfo() {
+        self.sitename = ""
+        self.account = nil
+    }
+    
     @MainActor
     func fallbackSitename(for account: Account) -> String? {
         guard let id = account.socialId else { return nil }

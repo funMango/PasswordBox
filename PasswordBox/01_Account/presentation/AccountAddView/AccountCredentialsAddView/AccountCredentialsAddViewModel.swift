@@ -10,8 +10,9 @@ import Resolver
 import Combine
 
 @MainActor
-class AccountCredentialsAddViewModel: ObservableObject, @MainActor AccountMessageBindable {
+class AccountCredentialsAddViewModel: ObservableObject, @MainActor AccountMessageBindable, @MainActor ControlMessageBindable {
     @Injected var accountSubject: PassthroughSubject<AccountMessage, Never>
+    @Injected var controlSubject: PassthroughSubject<ControlMessage, Never>
     @Published var credentials = AccountCredentials()
     
     var cancellables: Set<AnyCancellable> = []
@@ -19,6 +20,7 @@ class AccountCredentialsAddViewModel: ObservableObject, @MainActor AccountMessag
     init() {
         setupBindings()
         setupAccountMessageBinding()
+        setupControlMessageBinding()
     }
     
     func setupBindings() {
@@ -42,6 +44,17 @@ extension AccountCredentialsAddViewModel {
                 self.credentials.set(socialId: socialId)
             default:
                 return
+            }
+        }
+    }
+    
+    private func setupControlMessageBinding() {
+        bindControlMessage { [weak self] message in
+            guard let self else { return }
+            switch message {
+            case .deleteSocialId:
+                credentials.set(socialId: nil)
+            default: break
             }
         }
     }

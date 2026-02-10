@@ -11,6 +11,7 @@ struct AccountListCellView: View {
     var title: String
     var subTitle: String
     var showsLinkIcon: Bool = false
+    var showsChevron: Bool = true
 
     var body: some View {
         AccountListCellContent(
@@ -30,7 +31,8 @@ struct AccountListCellView: View {
                         .foregroundStyle(Color.gray)
                         .font(.caption)
                 }
-            )
+            ),
+            showsChevron: showsChevron
         )
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct AccountListCellContent: View {
     let titleView: AnyView
     let subtitleView: AnyView
+    var showsChevron: Bool = true
 
     var body: some View {
         HStack {
@@ -18,9 +19,11 @@ struct AccountListCellContent: View {
                 subtitleView
             }
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.gray)
+            if showsChevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.gray)
+            }
         }
         .frame(height: 40)
     }

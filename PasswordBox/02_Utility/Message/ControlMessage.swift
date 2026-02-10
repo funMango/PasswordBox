@@ -15,6 +15,7 @@ enum ControlMessage{
     case activateSocialTextField
     case updateSitename(String)    
     case syncIcloud
+    case deleteSocialId
     
     /// searchBar
     case focusSearchBar

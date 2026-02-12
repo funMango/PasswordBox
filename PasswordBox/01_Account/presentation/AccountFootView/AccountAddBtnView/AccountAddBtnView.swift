@@ -15,15 +15,20 @@ struct AccountAddBtnView: View {
             Button {
                 viewModel.toggleIsShowingAccountAddSheet()
             } label: {
-                IconBgCircleBtnStyle(image: "plus")
+                Label("Plus", systemImage: "plus")
+                    .glassIconLabel(size: 50)
             }
+            .glassButtonStyle()
+            
         } else {
             Button {
                 hideKeyboard()
                 viewModel.tappedCloseButton()
             } label: {
-                IconBgCircleBtnStyle(image: "xmark")
+                Label("Cancel", systemImage: "xmark")
+                    .glassIconLabel(size: 50)
             }
+            .glassButtonStyle()
         }
     }
 }

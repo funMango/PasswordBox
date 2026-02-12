@@ -15,10 +15,12 @@ struct AccountSortView: View {
         Menu {
             menuContent
         } label: {
-            IconBgCircleBtnStyle(image: "arrow.up.arrow.down")
-                
+            Label("Sort", systemImage: "arrow.up.arrow.down")
+                .glassIconLabel(size: 50)
+                .font(.system(size: 13))
+                .foregroundStyle(.blackWhite)
         }
-        .glassEffect()
+        .glassButtonStyle()
         .menuStyle(BorderlessButtonMenuStyle())
         .buttonStyle(EmpeyActionStyle())
     }

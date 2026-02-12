@@ -18,7 +18,6 @@ struct IconBgCircleBtnStyle: View {
                 .frame(width: length, height: length)
                 .background(.ultraThinMaterial)
                 .clipShape(Circle())
-            
             Image(systemName: image)
                 .foregroundStyle(.blackWhite)
         }

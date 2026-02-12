@@ -12,6 +12,7 @@ struct SearchBarStyleModifier: ViewModifier {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.blackWhite.opacity(0.7))
+                .padding(.leading, 5)
 
             content
                 .foregroundStyle(.blackWhite)

@@ -10,14 +10,15 @@ import SwiftUI
 struct SearchBarStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(height: 25)
+            .frame(height: 42)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
             .padding(.horizontal, 10)
             .disableAutocorrection(true)
-            .background(
-                RoundedRectangle(cornerRadius: 50)
-                    .fill(.ultraThinMaterial)
+            .glassEffect(.regular.interactive())
+            .clipShape(Capsule())
+            .overlay(
+                Capsule()
                     .stroke(Color.gray.opacity(0.1), lineWidth: 1)
             )
             .onAppear {

@@ -9,7 +9,14 @@ import SwiftUI
 
 struct SearchBarStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
-        content
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.blackWhite.opacity(0.7))
+
+            content
+                .foregroundStyle(.blackWhite)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
             .frame(height: 42)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)

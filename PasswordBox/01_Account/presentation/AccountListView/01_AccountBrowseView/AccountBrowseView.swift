@@ -34,8 +34,7 @@ struct AccountBrowseContentView: View {
     var onSelect: (Account) -> Void
     
     var body: some View {
-        ForEach(viewModel.accountWrappers.indices, id: \.self) { index in
-            let account = viewModel.accountWrappers[index]
+        ForEach(viewModel.accountWrappers, id: \.id) { account in
 
             Button(action: {
                 onSelect(account)
@@ -51,10 +50,12 @@ struct AccountBrowseContentView: View {
                 .fullRowTappable()
             }
             .rowButtonStyle()
-            .listRowSeparator(index == 0 ? .hidden : .visible, edges: .top)
+            .listRowSeparator(account.id == viewModel.accountWrappers.first?.id ? .hidden : .visible, edges: .top)
         }
         .onDelete { indexSet in
-            viewModel.deleteAccount(offset: indexSet)
+            withAnimation(.default) {
+                viewModel.deleteAccount(offset: indexSet)
+            }
         }        
     }
 }

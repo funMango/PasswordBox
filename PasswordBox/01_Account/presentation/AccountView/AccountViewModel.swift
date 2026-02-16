@@ -28,6 +28,10 @@ class AccountViewModel: ObservableObject, @MainActor ControlMessageBindable {
             switch message {                            
             case .toggleIsShowingAccountAddSheet:
                 self?.isShowingAccountAddSheet.toggle()
+            case .showAccountAddSheet:
+                self?.isShowingAccountAddSheet = true
+            case .hideAccountAddSheet:
+                self?.isShowingAccountAddSheet = false
             default:
                 return
             }

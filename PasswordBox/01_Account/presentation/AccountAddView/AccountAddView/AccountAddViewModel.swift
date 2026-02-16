@@ -51,7 +51,7 @@ class AccountAddViewModel: ObservableObject, ControlMessageBindable, AccountMess
     
     private func deactivatePage() {
         reset()
-        controlSubject.send(.toggleIsShowingAccountAddSheet)
+        controlSubject.send(.hideAccountAddSheet)
     }
     
     private func reset() {

@@ -20,8 +20,8 @@ class AccountAddBtnViewModel: ObservableObject, @MainActor ControlMessageBindabl
         setupControlMessageBinding()
     }
         
-    func toggleIsShowingAccountAddSheet() {
-        controlSubject.send(.toggleIsShowingAccountAddSheet)
+    func showAccountAddSheet() {
+        controlSubject.send(.showAccountAddSheet)
     }
     
     func tappedCloseButton() {

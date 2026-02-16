@@ -13,7 +13,7 @@ struct AccountAddBtnView: View {
     var body: some View {
         if viewModel.type == .normal {
             Button {
-                viewModel.toggleIsShowingAccountAddSheet()
+                viewModel.showAccountAddSheet()
             } label: {
                 Label("Plus", systemImage: "plus")
                     .glassIconLabel(size: 50)

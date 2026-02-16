@@ -10,6 +10,8 @@ import Combine
 
 enum ControlMessage{
     case toggleIsShowingAccountAddSheet
+    case showAccountAddSheet
+    case hideAccountAddSheet
     case setupSiteOrder(AccountOrder, AccountOrderBy)
     case activateSiteTextField
     case activateSocialTextField

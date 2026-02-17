@@ -16,7 +16,6 @@ enum CloudSyncEvents {
 }
 
 enum CycleError: Error {
-    case noImportBeforeFinish
     case timedOut
 }
 
@@ -32,15 +31,14 @@ final class DefaultCloudManager: CloudManager {
             /// 1) 이벤트 소비 태스크
             group.addTask { [weak self] in
                 guard let self else { return .failure(CycleError.timedOut) }
-                var sawImported = false
                 for await state in self.events() {
                     switch state {
                     case .started:
                         continue
-                    case .imported:
-                        sawImported = true
                     case .finished:
-                        return sawImported ? .success(()) : .failure(CycleError.noImportBeforeFinish)
+                        return .success(())
+                    case .imported:
+                        continue
                     case .failed(let error):
                         return .failure(error)
                     }
@@ -91,5 +89,4 @@ final class DefaultCloudManager: CloudManager {
         }
     }
 }
-
 

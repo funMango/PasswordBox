@@ -18,20 +18,20 @@ struct SearchBarStyleModifier: ViewModifier {
                 .foregroundStyle(.blackWhite)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-            .frame(height: 42)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 10)
-            .disableAutocorrection(true)
-            .glassEffect(.regular.interactive())
-            .clipShape(Capsule())
-            .overlay(
-                Capsule()
-                    .stroke(Color.gray.opacity(0.1), lineWidth: 1)
-            )
-            .onAppear {
-                UITextField.appearance().clearButtonMode = .whileEditing
-            }
+        .frame(height: 42)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 10)
+        .disableAutocorrection(true)
+        .glassEffect(.regular.interactive())
+        .clipShape(Capsule())
+        .overlay(
+            Capsule()
+                .stroke(Color.gray.opacity(0.1), lineWidth: 1)
+        )
+        .onAppear {
+            UITextField.appearance().clearButtonMode = .whileEditing
+        }
     }
 }
 

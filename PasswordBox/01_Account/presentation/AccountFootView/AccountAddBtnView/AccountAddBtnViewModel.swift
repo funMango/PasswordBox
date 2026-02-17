@@ -25,6 +25,7 @@ class AccountAddBtnViewModel: ObservableObject, @MainActor ControlMessageBindabl
     }
     
     func tappedCloseButton() {
+        controlSubject.send(.deFocusSearchBar)
         controlSubject.send(.changeSearchType(.normal))
     }
 }

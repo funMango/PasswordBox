@@ -22,7 +22,6 @@ struct AccountAddBtnView: View {
             
         } else {
             Button {
-                hideKeyboard()
                 viewModel.tappedCloseButton()
             } label: {
                 Label("Cancel", systemImage: "xmark")
